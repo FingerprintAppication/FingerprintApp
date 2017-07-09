@@ -17,7 +17,7 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
     String splitName[];
     StudentModel studentModelResponse;
     EditText name;
-    EditText studentId;
+    EditText studentID;
     EditText phone;
     EditText email;
     WSManager manager;
@@ -27,6 +27,7 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
     String resultCheck;
     ParentModel parentModel;
     WSTaskPost wsPost;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,13 +36,13 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
 
     public void getPersonData(View view){
         name = (EditText)findViewById(R.id.nametxt);
-        studentId = (EditText)findViewById(R.id.studentId);
+        studentID = (EditText)findViewById(R.id.studentId);
         phone = (EditText)findViewById(R.id.phone);
         email = (EditText)findViewById(R.id.email);
         manager = WSManager.getWsManager(this);
         final StudentModel studentModel = new StudentModel();
         final ProgressDialog progress = ProgressDialog.show(VerifyStudentParentActivity.this,"Please Wait...","Please wait...",true);
-        studentModel.getStudent().setStudentID(Long.parseLong(studentId.getText().toString()));
+        studentModel.getStudent().setStudentID(Long.parseLong(studentID.getText().toString()));
         studentModel.getStudent().setParentPhone(phone.getText().toString());
 
         manager.doVerifyStudentParent(studentModel, new WSManager.WSManagerListener() {
@@ -63,13 +64,14 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
                             parentModel.getParent().setLastName(splitName[1]);
                             parentModel.getParent().setPhoneNo(inputPhone);
                             parentModel.getParent().setEmail(email.getText().toString());
-                            parentModel.getParent().setTitle(studentId.getText().toString());
                             manager.verifyParent(parentModel, new WSManager.WSManagerListener() {
                                 @Override
                                 public void onComplete(Object response) {
                                         Log.d("result ",response.toString());
                                     if("duplicate".equals(response.toString())){
                                         result.setText("รหัสนักศึกษานี้ได้มีการลงทะเบียนแล้ว");
+                                    } else {
+                                        result.setText("ลงทะเบียนสำเหร็จ");
                                     }
                                 }
 
