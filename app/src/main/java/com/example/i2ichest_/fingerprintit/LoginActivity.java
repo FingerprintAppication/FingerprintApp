@@ -1,10 +1,12 @@
 package com.example.i2ichest_.fingerprintit;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -117,5 +119,10 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Toast.makeText(this, " " + username.getText().toString() + " / " + password.getText().toString() , Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickVerifyParent(View view){
+        Intent intent = new Intent(LoginActivity.this,VerifyStudentParentActivity.class);
+        startActivity(intent);
     }
 }
