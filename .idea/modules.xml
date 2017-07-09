@@ -5,6 +5,10 @@
       <module fileurl="file://$PROJECT_DIR$/FingerprintApp.iml" filepath="$PROJECT_DIR$/FingerprintApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      <module fileurl="file://$PROJECT_DIR$/fingerprint-master.iml" filepath="$PROJECT_DIR$/fingerprint-master.iml" />
+>>>>>>> c1d2e321da068a0e46300929ea80333b2658cf7d
 =======
       <module fileurl="file://$PROJECT_DIR$/fingerprint-master.iml" filepath="$PROJECT_DIR$/fingerprint-master.iml" />
 >>>>>>> c1d2e321da068a0e46300929ea80333b2658cf7d
