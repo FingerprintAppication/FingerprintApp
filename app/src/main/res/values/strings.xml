@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">FingerprintIT</string>
+
+
+
+    <string name="verify_student_parent">/student</string>
+    <string name="verifyParent">/verifyparent</string>
+    <string name="student_not_found">/student not found</string>
+    <string name="menu_action_member">เมนูสมาชิก</string>
+    <string name="menu_action_profile">โปรไฟล์</string>
+    <string name="menu_action_my_activities">กิจกรรมของฉัน</string>
+    <string name="menu_action_logout">ออกจากระบบ</string>
+</resources>
