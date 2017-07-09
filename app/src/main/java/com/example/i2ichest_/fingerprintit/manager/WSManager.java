@@ -3,6 +3,7 @@ package com.example.i2ichest_.fingerprintit.manager;
 import android.content.Context;
 import android.util.Log;
 import com.example.i2ichest_.fingerprintit.R;
+import com.example.i2ichest_.fingerprintit.model.LoginModel;
 import com.example.i2ichest_.fingerprintit.model.ParentModel;
 import com.example.i2ichest_.fingerprintit.model.PersonModel;
 import com.example.i2ichest_.fingerprintit.model.StudentModel;
@@ -18,12 +19,11 @@ public class WSManager {
     private Context context;
     ParentModel parentModel;
     StudentModel studentModel;
+
     public interface WSManagerListener{
         void onComplete(Object response) ;
         void onError(String error);
     }
-
-
 
     public WSManager(Context context) {
         this.context = context;
@@ -35,6 +35,30 @@ public class WSManager {
         return  wsManager;
     }
 
+    public void doLogin(Object object,final WSManagerListener listener){
+        if (!(object instanceof LoginModel)){
+            return;
+        }
+
+        LoginModel loginModel = (LoginModel) object;
+        loginModel.toJSONString();
+
+        WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                listener.onComplete(response);
+                Log.d("onLoginComplete " , response.toString());
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+                Log.d("onLoginError " , err.toString());
+            }
+        });
+        task.execute("/login",loginModel.toJSONString());
+    }
+
     public void doVerifyStudentParent(Object object,final WSManagerListener listener){
         if(!(object instanceof StudentModel)){
             return;
@@ -43,8 +67,6 @@ public class WSManager {
         WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-
-
                     try {
                         JSONObject job = new JSONObject(response.toString());
                         Log.d("job ",job.toString());
@@ -58,9 +80,6 @@ public class WSManager {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
-
             }
 
             @Override
@@ -68,9 +87,7 @@ public class WSManager {
                 listener.onError(err);
             }
         });
-
         task.execute(context.getString(R.string.verify_student_parent),studentModel.toJSONString());
-
     }
 
     public void verifyParent(Object object,final WSManagerListener listener){
@@ -91,9 +108,7 @@ public class WSManager {
                 listener.onError(err);
             }
         });
-
         task.execute(context.getString(R.string.verifyParent), parentModel.toJSONString());
-
     }
 
 
