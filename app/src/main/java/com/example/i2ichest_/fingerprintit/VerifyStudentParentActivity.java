@@ -51,7 +51,7 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
                 progress.dismiss();
 
                     result = (TextView) findViewById(R.id.result);
-                    if(!response.toString().equalsIgnoreCase("student not found")) {
+                    if(!response.toString().equalsIgnoreCase("ไม่พบรหัสนักศึกษาในฐานข้อมูล")) {
                         studentModelResponse = (StudentModel)response;
                         inputPhone = phone.getText().toString();
                         databasePhone = studentModelResponse.getStudent().getParentPhone();
@@ -64,6 +64,7 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
                             parentModel.getParent().setLastName(splitName[1]);
                             parentModel.getParent().setPhoneNo(inputPhone);
                             parentModel.getParent().setEmail(email.getText().toString());
+                            parentModel.getParent().setTitle(studentID.getText().toString());
                             manager.verifyParent(parentModel, new WSManager.WSManagerListener() {
                                 @Override
                                 public void onComplete(Object response) {
@@ -83,7 +84,7 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
 
                         }
                     }else{
-                        result.setText("Student not found");
+                        result.setText("ไม่พบรหัสนักศึกษาในฐานข้อมูล");
                     }
             }
 

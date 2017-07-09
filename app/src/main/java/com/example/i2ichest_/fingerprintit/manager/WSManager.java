@@ -75,7 +75,7 @@ public class WSManager {
                             StudentModel studentModel = new StudentModel(job.toString());
                             listener.onComplete(studentModel);
                         }else{
-                            listener.onComplete("student not found");
+                            listener.onComplete("ไม่พบรหัสนักศึกษาในฐานข้อมูล");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
