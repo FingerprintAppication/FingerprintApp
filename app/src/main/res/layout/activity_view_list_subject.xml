@@ -11,10 +11,18 @@
     tools:context="com.example.i2ichest_.fingerprintit.ViewListSubjectActivity">
 
     <TextView
-        android:text="TextView"
+        android:text="รายชื่อวิชาทั้งหมด"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/text" />
+        android:id="@+id/textTitleList"
+        android:textSize="24sp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textTitleList"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/listViewSubject" />
 </RelativeLayout>

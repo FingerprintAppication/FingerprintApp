@@ -63,7 +63,10 @@ public class LoginActivity extends AppCompatActivity {
                         String title = jsonPerson.getString("title");
                         String firstName = jsonPerson.getString("firstName");
                         String lastName = jsonPerson.getString("lastName");
-                        String fingerData = jsonPerson.getString("fingerprintData");
+
+                        /************** set fingerData ************/
+                        JSONObject jsonFingerData = jsonPerson.getJSONObject("fingerprintData");
+                        String fingerData = jsonFingerData.getString("fingerprintNumber");
 
                         PersonModel person = new PersonModel();
                         person.getPerson().setPersonID(personID);
@@ -103,6 +106,9 @@ public class LoginActivity extends AppCompatActivity {
                         gb.getLoginModel().getLogin().setPerson(person.getPerson());
 
                         Log.d("GB : ",gb.getLoginModel().getLogin().toString());
+
+                        Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
+                        startActivity(intent);
                     }
 
                 } catch (JSONException e) {

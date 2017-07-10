@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".VerifyStudentParentActivity" />
-        <activity android:name=".ViewListSubjectActivity"></activity>
+        <activity android:name=".ViewListSubjectActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>
