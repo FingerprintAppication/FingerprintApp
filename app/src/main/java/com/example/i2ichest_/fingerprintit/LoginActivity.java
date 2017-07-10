@@ -64,16 +64,18 @@ public class LoginActivity extends AppCompatActivity {
                         String firstName = jsonPerson.getString("firstName");
                         String lastName = jsonPerson.getString("lastName");
 
-                        /************** set fingerData ************/
-                        JSONObject jsonFingerData = jsonPerson.getJSONObject("fingerprintData");
-                        String fingerData = jsonFingerData.getString("fingerprintNumber");
-
                         PersonModel person = new PersonModel();
                         person.getPerson().setPersonID(personID);
                         person.getPerson().setTitle(title);
                         person.getPerson().setFirstName(firstName);
                         person.getPerson().setLastName(lastName);
-                        person.getPerson().setFingerprintData(fingerData);
+
+                        /************** set fingerData ************/
+                        if (!jsonPerson.getString("fingerprintData").equals("null")) {
+                            JSONObject jsonFingerData = jsonPerson.getJSONObject("fingerprintData");
+                            String fingerData = jsonFingerData.getString("fingerprintNumber");
+                            person.getPerson().setFingerprintData(fingerData);
+                        }
 
                         /************** set Major ************/
                         JSONObject jsonMajor = jsonPerson.getJSONObject("major");
@@ -107,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         Log.d("GB : ",gb.getLoginModel().getLogin().toString());
 
+                        Toast.makeText(LoginActivity.this, "สวัสดี " + title + " " + firstName + " " + lastName, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
                         startActivity(intent);
                     }
