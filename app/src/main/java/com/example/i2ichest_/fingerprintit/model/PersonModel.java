@@ -92,6 +92,10 @@ public class PersonModel implements Serializable {
         public void setFingerprintData(String fingerprintData) {
             this.fingerprintData = fingerprintData;
         }
+
+        public void searchSubject(){
+
+        }
     }
 
 }

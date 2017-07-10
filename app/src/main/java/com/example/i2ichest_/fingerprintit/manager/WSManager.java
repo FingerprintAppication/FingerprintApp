@@ -43,7 +43,7 @@ public class WSManager {
         LoginModel loginModel = (LoginModel) object;
         loginModel.toJSONString();
 
-        WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+        WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
                 listener.onComplete(response);
@@ -56,7 +56,31 @@ public class WSManager {
                 Log.d("onLoginError " , err.toString());
             }
         });
-        task.execute("/login",loginModel.toJSONString());
+        taskPost.execute("/login",loginModel.toJSONString());
+    }
+
+    public void doSearchSubject(Object object,final WSManagerListener listener){
+        if(!(object instanceof PersonModel)){
+            return;
+        }
+
+        PersonModel personModel = (PersonModel) object;
+        personModel.toJSONString();
+
+        WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                listener.onComplete(response);
+                Log.d("onSearchSubjectComplete" , response.toString());
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+                Log.d("onSearchSubjectError" , err.toString());
+            }
+        });
+        taskPost.execute("/viewListSubject",personModel.toJSONString());
     }
 
     public void doVerifyStudentParent(Object object,final WSManagerListener listener){
