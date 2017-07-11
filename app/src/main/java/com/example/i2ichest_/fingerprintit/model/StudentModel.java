@@ -24,9 +24,6 @@ public class StudentModel extends PersonModel{
         return gson.toJson(this.student);
     }
 
-
-
-
     public class Student extends Person{
         private Long studentID;
         private String  encode;
