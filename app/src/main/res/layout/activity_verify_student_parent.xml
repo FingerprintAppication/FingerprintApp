@@ -46,15 +46,6 @@
         android:layout_marginTop="34dp"
         android:id="@+id/textView5" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/email"
-        android:layout_toEndOf="@+id/register"
-        android:layout_marginTop="21dp"
-        android:id="@+id/result"
-        android:textColor="@android:color/holo_red_dark" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -111,5 +102,14 @@
         android:layout_alignBaseline="@+id/register"
         android:layout_alignBottom="@+id/register"
         android:layout_alignEnd="@+id/email" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:id="@+id/result"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
