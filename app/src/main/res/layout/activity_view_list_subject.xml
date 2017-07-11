@@ -17,9 +17,11 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/textTitleList"
-        android:textSize="24sp" />
+        android:textSize="18sp"
+        android:textColor="@color/colorAccent" />
 
     <ListView
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/textTitleList"
