@@ -85,5 +85,16 @@ public class SubjectModel implements Serializable{
         public void setCredit(int credit) {
             this.credit = credit;
         }
+
+        @Override
+        public String toString() {
+            return "Subject{" +
+                    "subjectID=" + subjectID +
+                    ", credit=" + credit +
+                    ", subjectName='" + subjectName + '\'' +
+                    ", subjectNumber='" + subjectNumber + '\'' +
+                    ", major=" + major +
+                    '}';
+        }
     }
 }
