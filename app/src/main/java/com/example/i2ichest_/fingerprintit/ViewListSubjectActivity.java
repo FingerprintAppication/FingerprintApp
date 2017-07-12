@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -52,7 +54,7 @@ public class ViewListSubjectActivity extends AppCompatActivity {
                 progress.dismiss();
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
-                    List<SubjectModel> listSubject = new ArrayList<SubjectModel>();
+                    final List<SubjectModel> listSubject = new ArrayList<SubjectModel>();
                     List<String> listSubjectName = new ArrayList<String>();
 
                     for (int i = 0 ; i < jsonArray.length() ; i++){
@@ -98,6 +100,13 @@ public class ViewListSubjectActivity extends AppCompatActivity {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewListSubjectActivity.this,android.R.layout.simple_selectable_list_item,listSubjectName);
                     listView.setAdapter(adapter);
 
+                   listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                       @Override
+                       public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                           Toast.makeText(ViewListSubjectActivity.this, "CLICK " + listSubject.get(i).getSubject().toString(), Toast.LENGTH_SHORT).show();
+                       }
+                   });
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -108,7 +117,7 @@ public class ViewListSubjectActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 progress.dismiss();
-                Toast.makeText(ViewListSubjectActivity.this, "ERror " + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewListSubjectActivity.this, "Error " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }

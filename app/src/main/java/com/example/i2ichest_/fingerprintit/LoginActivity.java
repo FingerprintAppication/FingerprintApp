@@ -48,8 +48,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 try {
                     JSONObject jsonObject = new JSONObject(response.toString());
+                    JSONObject jsonPerson = jsonObject.getJSONObject("person");
 
-                    if(jsonObject.getString("username").equals("null")){
+                    if (jsonObject.getString("username").equals("null") || jsonPerson.getString("firstName").equals("Admin")) {
                         Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
                     } else {
                         /************** set Login ************/
@@ -58,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
                         String password = jsonObject.getString("password");
 
                         /************** set Person ************/
-                        JSONObject jsonPerson = jsonObject.getJSONObject("person");
                         long personID = jsonPerson.getLong("personID");
                         String title = jsonPerson.getString("title");
                         String firstName = jsonPerson.getString("firstName");
