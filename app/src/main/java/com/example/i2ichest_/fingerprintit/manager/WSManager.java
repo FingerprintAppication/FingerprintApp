@@ -3,6 +3,7 @@ package com.example.i2ichest_.fingerprintit.manager;
 import android.content.Context;
 import android.util.Log;
 import com.example.i2ichest_.fingerprintit.R;
+import com.example.i2ichest_.fingerprintit.model.EnrollmentModel;
 import com.example.i2ichest_.fingerprintit.model.LoginModel;
 import com.example.i2ichest_.fingerprintit.model.ParentModel;
 import com.example.i2ichest_.fingerprintit.model.PersonModel;
@@ -136,7 +137,38 @@ public class WSManager {
     }
 
 
+    public void getEnrollment(Object object,final WSManagerListener listener){
+        if(!(object instanceof StudentModel)){
+            return;
+        }
+        studentModel = (StudentModel)object;
+        WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                EnrollmentModel eroll = new EnrollmentModel(response);
 
+                /*try {
+                    JSONObject job = new JSONObject(response.toString());
+                    Log.d("job ",job.toString());
+                    if(!job.get("personID").toString().equals("0")) {
+                        job.remove("fingerprintData");
+                        StudentModel studentModel = new StudentModel(job.toString());
+                        listener.onComplete(studentModel);
+                    }else{
+                        listener.onComplete("ไม่พบรหัสนักศึกษาในฐานข้อมูล");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+            }
+        });
+        task.execute(context.getString(R.string.verify_student_parent),studentModel.toJSONString());
+    }
 
 
 
