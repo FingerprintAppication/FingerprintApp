@@ -8,6 +8,7 @@ import com.example.i2ichest_.fingerprintit.model.LoginModel;
 import com.example.i2ichest_.fingerprintit.model.ParentModel;
 import com.example.i2ichest_.fingerprintit.model.PersonModel;
 import com.example.i2ichest_.fingerprintit.model.StudentModel;
+import com.example.i2ichest_.fingerprintit.model.SubjectModel;
 import com.example.i2ichest_.fingerprintit.task.WSTask;
 import com.example.i2ichest_.fingerprintit.task.WSTaskPost;
 
@@ -82,6 +83,30 @@ public class WSManager {
             }
         });
         taskPost.execute("/viewListSubject",personModel.toJSONString());
+    }
+
+    public void doSearchPeriod(Object object,final WSManagerListener listener){
+        if(!(object instanceof SubjectModel)){
+            return;
+        }
+
+        SubjectModel subjectModel = (SubjectModel) object;
+        subjectModel.toJSONString();
+
+        WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                listener.onComplete(response);
+                Log.d("onSearchPeriodComplete" ,  response.toString());
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+                Log.d("onSearchPeriodError" , err.toString());
+            }
+        });
+        taskPost.execute("/viewListSubject/period",subjectModel.toJSONString());
     }
 
     public void doVerifyStudentParent(Object object,final WSManagerListener listener){

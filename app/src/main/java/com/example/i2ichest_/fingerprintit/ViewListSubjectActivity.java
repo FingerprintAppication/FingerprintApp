@@ -1,9 +1,12 @@
 package com.example.i2ichest_.fingerprintit;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -19,10 +22,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewListSubjectActivity extends AppCompatActivity {
+public class ViewListSubjectActivity extends AppCompatActivity implements Serializable {
     private GlobalClass gb;
     WSManager wsManager;
 
@@ -52,7 +56,7 @@ public class ViewListSubjectActivity extends AppCompatActivity {
                 progress.dismiss();
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
-                    List<SubjectModel> listSubject = new ArrayList<SubjectModel>();
+                    final List<SubjectModel> listSubject = new ArrayList<SubjectModel>();
                     List<String> listSubjectName = new ArrayList<String>();
 
                     for (int i = 0 ; i < jsonArray.length() ; i++){
@@ -98,6 +102,17 @@ public class ViewListSubjectActivity extends AppCompatActivity {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewListSubjectActivity.this,android.R.layout.simple_selectable_list_item,listSubjectName);
                     listView.setAdapter(adapter);
 
+                   listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                       @Override
+                       public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                           Intent intent = new Intent(ViewListSubjectActivity.this,PeriodActivity.class);
+                           intent.putExtra("subjectID", listSubject.get(i).getSubject().getSubjectID());
+                           intent.putExtra("subjectNumber", listSubject.get(i).getSubject().getSubjectNumber());
+                           intent.putExtra("subjectName", listSubject.get(i).getSubject().getSubjectName());
+                           startActivity(intent);
+                       }
+                   });
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -108,7 +123,7 @@ public class ViewListSubjectActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 progress.dismiss();
-                Toast.makeText(ViewListSubjectActivity.this, "ERror " + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ViewListSubjectActivity.this, "Error " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }

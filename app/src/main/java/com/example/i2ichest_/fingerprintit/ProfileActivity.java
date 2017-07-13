@@ -11,7 +11,6 @@ import com.example.i2ichest_.fingerprintit.manager.WSManager;
 
 public class ProfileActivity extends AppCompatActivity {
     private GlobalClass gb;
-    WSManager wsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
