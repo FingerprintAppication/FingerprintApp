@@ -43,75 +43,79 @@ public class LoginActivity extends AppCompatActivity {
 
         wsManager.doLogin(loginModel, new WSManager.WSManagerListener() {
             @Override
-            public void onComplete(final Object response) {
+            public void onComplete(Object response) {
                 progress.dismiss();
 
                 try {
                     JSONObject jsonObject = new JSONObject(response.toString());
-                    JSONObject jsonPerson = jsonObject.getJSONObject("person");
 
-                    if (jsonObject.getString("username").equals("null") || jsonPerson.getString("firstName").equals("Admin")) {
+                    if (jsonObject.getString("username").equals("null") || jsonObject.getJSONObject("person").equals("null")) {
                         Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
-                    } else {
-                        /************** set Login ************/
-                        long loginID = jsonObject.getLong("loginID");
-                        String username = jsonObject.getString("username");
-                        String password = jsonObject.getString("password");
+                    } else if (!jsonObject.getJSONObject("person").equals("null")) {
+                        JSONObject jsonPerson = jsonObject.getJSONObject("person");
+                        if (jsonPerson.getString("firstName").equals("Admin")) {
+                            Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
+                        } else {
+                            /************** set Login ************/
+                            long loginID = jsonObject.getLong("loginID");
+                            String username = jsonObject.getString("username");
+                            String password = jsonObject.getString("password");
 
-                        /************** set Person ************/
-                        long personID = jsonPerson.getLong("personID");
-                        String title = jsonPerson.getString("title");
-                        String firstName = jsonPerson.getString("firstName");
-                        String lastName = jsonPerson.getString("lastName");
+                            /************** set Person ************/
+                            long personID = jsonPerson.getLong("personID");
+                            String title = jsonPerson.getString("title");
+                            String firstName = jsonPerson.getString("firstName");
+                            String lastName = jsonPerson.getString("lastName");
 
-                        PersonModel person = new PersonModel();
-                        person.getPerson().setPersonID(personID);
-                        person.getPerson().setTitle(title);
-                        person.getPerson().setFirstName(firstName);
-                        person.getPerson().setLastName(lastName);
+                            PersonModel person = new PersonModel();
+                            person.getPerson().setPersonID(personID);
+                            person.getPerson().setTitle(title);
+                            person.getPerson().setFirstName(firstName);
+                            person.getPerson().setLastName(lastName);
 
-                        /************** set fingerData ************/
-                        if (!jsonPerson.getString("fingerprintData").equals("null")) {
-                            JSONObject jsonFingerData = jsonPerson.getJSONObject("fingerprintData");
-                            String fingerData = jsonFingerData.getString("fingerprintNumber");
-                            person.getPerson().setFingerprintData(fingerData);
+                            /************** set fingerData ************/
+                            if (!jsonPerson.getString("fingerprintData").equals("null")) {
+                                JSONObject jsonFingerData = jsonPerson.getJSONObject("fingerprintData");
+                                String fingerData = jsonFingerData.getString("fingerprintNumber");
+                                person.getPerson().setFingerprintData(fingerData);
+                            }
+
+                            /************** set Major ************/
+                            JSONObject jsonMajor = jsonPerson.getJSONObject("major");
+                            long majorID = jsonMajor.getLong("majorID");
+                            String secondaryMajorID = jsonMajor.getString("secondaryMajorID");
+                            String majorName = jsonMajor.getString("majorName");
+
+                            MajorModel major = new MajorModel();
+                            major.getMajor().setMajorID(majorID);
+                            major.getMajor().setScondaryMajorID(secondaryMajorID);
+                            major.getMajor().setMajorName(majorName);
+
+                            /************** set Faculty ************/
+                            JSONObject jsonFaculty = jsonMajor.getJSONObject("faculty");
+                            long facultyID = jsonFaculty.getLong("facultyID");
+                            String facultyName = jsonFaculty.getString("facultyName");
+
+                            FacultyModel faculty = new FacultyModel();
+                            faculty.getFaculty().setFacultyID(facultyID);
+                            faculty.getFaculty().setFacultyName(facultyName);
+
+                            /************** Finish Add to Person ************/
+                            major.getMajor().setFaculty(faculty.getFaculty());
+                            person.getPerson().setMajor(major.getMajor());
+
+                            /************** set Global Class or LoginModel ************/
+                            gb.getLoginModel().getLogin().setLoginID(loginID);
+                            gb.getLoginModel().getLogin().setUsername(username);
+                            gb.getLoginModel().getLogin().setPassword(password);
+                            gb.getLoginModel().getLogin().setPerson(person.getPerson());
+
+                            Log.d("GB : ", gb.getLoginModel().getLogin().toString());
+
+                            Toast.makeText(LoginActivity.this, "สวัสดี " + title + " " + firstName + " " + lastName, Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                            startActivity(intent);
                         }
-
-                        /************** set Major ************/
-                        JSONObject jsonMajor = jsonPerson.getJSONObject("major");
-                        long majorID = jsonMajor.getLong("majorID");
-                        String secondaryMajorID = jsonMajor.getString("secondaryMajorID");
-                        String majorName = jsonMajor.getString("majorName");
-
-                        MajorModel major = new MajorModel();
-                        major.getMajor().setMajorID(majorID);
-                        major.getMajor().setScondaryMajorID(secondaryMajorID);
-                        major.getMajor().setMajorName(majorName);
-
-                        /************** set Faculty ************/
-                        JSONObject jsonFaculty = jsonMajor.getJSONObject("faculty");
-                        long facultyID = jsonFaculty.getLong("facultyID");
-                        String facultyName = jsonFaculty.getString("facultyName");
-
-                        FacultyModel faculty = new FacultyModel();
-                        faculty.getFaculty().setFacultyID(facultyID);
-                        faculty.getFaculty().setFacultyName(facultyName);
-
-                        /************** Finish Add to Person ************/
-                        major.getMajor().setFaculty(faculty.getFaculty());
-                        person.getPerson().setMajor(major.getMajor());
-
-                        /************** set Global Class or LoginModel ************/
-                        gb.getLoginModel().getLogin().setLoginID(loginID);
-                        gb.getLoginModel().getLogin().setUsername(username);
-                        gb.getLoginModel().getLogin().setPassword(password);
-                        gb.getLoginModel().getLogin().setPerson(person.getPerson());
-
-                        Log.d("GB : ",gb.getLoginModel().getLogin().toString());
-
-                        Toast.makeText(LoginActivity.this, "สวัสดี " + title + " " + firstName + " " + lastName, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
-                        startActivity(intent);
                     }
 
                 } catch (JSONException e) {
@@ -126,8 +130,6 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Error " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        Toast.makeText(this, " " + username.getText().toString() + " / " + password.getText().toString() , Toast.LENGTH_SHORT).show();
     }
 
     public void onClickVerifyParent(View view){
