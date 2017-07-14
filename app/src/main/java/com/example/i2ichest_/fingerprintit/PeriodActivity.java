@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,12 +21,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class PeriodActivity extends AppCompatActivity {
     WSManager wsManager;
+    final String[] subj = new String[7];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,10 @@ public class PeriodActivity extends AppCompatActivity {
     public void showPeriod(){
         Intent intent = getIntent();
         long subjectID = intent.getLongExtra("subjectID",1L);
-        String subjectNumber = intent.getStringExtra("subjectNumber");
+        final String subjectNumber = intent.getStringExtra("subjectNumber");
         String subjectName = intent.getStringExtra("subjectName");
+        subj[0] = subjectNumber;
+        subj[1] = subjectName;
 
         TextView textViewSubjectName = (TextView) findViewById(R.id.textViewSubjectName);
         final TextView textViewSectionTitle = (TextView) findViewById(R.id.textViewSectionTitle);
@@ -52,7 +57,7 @@ public class PeriodActivity extends AppCompatActivity {
         subjectModel.getSubject().setSubjectID(subjectID);
         wsManager.doSearchPeriod(subjectModel, new WSManager.WSManagerListener() {
             @Override
-            public void onComplete(Object response) {
+            public void onComplete(final Object response) {
                 progress.dismiss();
                 Toast.makeText(PeriodActivity.this, "CONNECT SUCCESS", Toast.LENGTH_SHORT).show();
 
@@ -61,12 +66,14 @@ public class PeriodActivity extends AppCompatActivity {
                     Log.d("SECTION @@@@ :",jsonArray.toString());
 
                     JSONObject jsonSection = new JSONObject(jsonArray.get(0).toString());
+                    /*section ID here*/
+                    final String sectionID = jsonSection.getString("sectionID");
                     String sectionNumber = jsonSection.getString("sectionNumber");
                     int semester = jsonSection.getInt("semester");
                     int schoolYear = jsonSection.getInt("schoolYear");
                     textViewSectionTitle.setText("กลุ่มเรียน " + sectionNumber + " : ภาคเรียนที่ " + semester + " : ปีการศึกษา " + schoolYear);
-
-                    List<PeriodModel.Period> listPeriod = new ArrayList<PeriodModel.Period>();
+                    subj[5] = semester+"/"+schoolYear;
+                    final List<PeriodModel.Period> listPeriod = new ArrayList<PeriodModel.Period>();
                     JSONArray jsonPeriod = new JSONArray(jsonSection.getJSONArray("periodList").toString());
                     Log.d("jsonPeriod @@@@ :",jsonPeriod.toString());
                     for ( int k = 0; k < jsonPeriod.length() ; k++ ) {
@@ -103,6 +110,15 @@ public class PeriodActivity extends AppCompatActivity {
 
                         listPeriod.add(periodModel.getPeriod());
                     }
+                    /*get teahcer to attendance*/
+                    JSONArray jsonteacher = new JSONArray(jsonSection.getJSONArray("teacherList").toString());
+                    subj[6] = "";
+                    for ( int k = 0; k < jsonteacher.length() ; k++ ) {
+                        JSONObject jsonObject = new JSONObject(jsonteacher.get(k).toString());
+                        subj[6] += jsonObject.getString("title")+" "+jsonObject.getString("firstName")+" "+jsonObject.getString("lastName")+"\n";
+
+                    }
+
                     Log.d("LIST PERIOD :: " , listPeriod.toString());
 
                     GridLayout gridLayout = (GridLayout) findViewById(R.id.period_gridlayout);
@@ -114,12 +130,34 @@ public class PeriodActivity extends AppCompatActivity {
                         TextView txtType = (TextView) view.findViewById(R.id.textViewPeriodType);
                         TextView txtRoom = (TextView)  view.findViewById(R.id.textViewPeriodRoom);
                         TextView txtBuild = (TextView) view.findViewById(R.id.textViewPeriodBuild);
-
+                        Button viewAttendance = (Button) view.findViewById(R.id.buttonViewAttendance);
                         txtDay.setText("วันที่เรียน : " +listPeriod.get(g).getDayOfWeek());
                         txtTime.setText("เวลา : " + listPeriod.get(g).getPeriodStartTime() + " - " + listPeriod.get(g).getPeriodEndTime());
                         txtType.setText("ประเภท : " + listPeriod.get(g).getStudyType());
                         txtRoom.setText("ห้อง : " + listPeriod.get(g).getRoom().getRoomName());
                         txtBuild.setText("ตึก : " +listPeriod.get(g).getRoom().getBuilding().getBuildingName());
+
+                        final Long periodForAttendance = listPeriod.get(g).getPeriodID();
+                        final String time = listPeriod.get(g).getPeriodStartTime() + " - " + listPeriod.get(g).getPeriodEndTime();
+                        final String type = listPeriod.get(g).getStudyType();
+                        final String room = listPeriod.get(g).getRoom().getRoomName();
+
+                        /*receive data and send to ws*/
+                        viewAttendance.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                subj[2] = time;
+                                subj[3] = type;
+                                subj[4] = room;
+                                Intent intent = new Intent(PeriodActivity.this,VIewAttendanceActivity.class);
+                                intent.putExtra("forAttendance",sectionID+"-"+periodForAttendance+"-"+subjectNumber);
+                                intent.putExtra("allSubjectData",response.toString());
+                                Bundle b=new Bundle();
+                                b.putStringArray("sub", subj);
+                                intent.putExtras(b);
+                                startActivity(intent);
+                            }
+                        });
 
                         gridLayout.addView(view);
                     }

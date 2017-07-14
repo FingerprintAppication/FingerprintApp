@@ -29,6 +29,7 @@ public class EnrollmentModel {
         private String status;
         StudentModel.Student student;
         List<AttendanceModel.Attendance> attendanceList;
+        SectionModel.Section section;
 
         public Enrollment() {
         }
@@ -68,6 +69,14 @@ public class EnrollmentModel {
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public SectionModel.Section getSection() {
+            return section;
+        }
+
+        public void setSection(SectionModel.Section section) {
+            this.section = section;
         }
     }
 
