@@ -3,8 +3,11 @@ package com.example.i2ichest_.fingerprintit.manager;
 import android.content.Context;
 import android.util.Log;
 import com.example.i2ichest_.fingerprintit.R;
+import com.example.i2ichest_.fingerprintit.model.AttendanceModel;
+import com.example.i2ichest_.fingerprintit.model.EnrollmentModel;
 import com.example.i2ichest_.fingerprintit.model.LoginModel;
 import com.example.i2ichest_.fingerprintit.model.ParentModel;
+import com.example.i2ichest_.fingerprintit.model.PeriodModel;
 import com.example.i2ichest_.fingerprintit.model.PersonModel;
 import com.example.i2ichest_.fingerprintit.model.StudentModel;
 import com.example.i2ichest_.fingerprintit.model.SubjectModel;
@@ -14,6 +17,9 @@ import com.example.i2ichest_.fingerprintit.task.WSTaskPost;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WSManager {
     private static WSManager wsManager;
@@ -161,7 +167,56 @@ public class WSManager {
     }
 
 
+    public void getEnrollment(Object object,final WSManagerListener listener){
+        if(!(object instanceof PeriodModel)){
+            return;
+        }
+        PeriodModel period = (PeriodModel)object;
 
+        WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                List<AttendanceModel.Attendance> listAttendance = new ArrayList<AttendanceModel.Attendance>();
+                Log.d("Attendance response ###",response.toString()+" ####");
+
+                try {
+                    JSONObject jsonObj = new JSONObject(response);
+                    JSONArray c = jsonObj.getJSONArray("attendace");
+                    for(int x=0;x<c.length();x++){
+                        JSONObject obj = c.getJSONObject(x);
+                        AttendanceModel att = new AttendanceModel();
+                        Long attendanceID = Long.parseLong(obj.getString("attendanceID"));
+                        String status = obj.getString("status");
+                        String statusDescription = obj.getString("statusDescription");
+                        att.getAttendance().setAttendanceID(attendanceID);
+                        att.getAttendance().setStatus(status);
+                        att.getAttendance().setStatusDescription(statusDescription);
+                        listAttendance.add(att.getAttendance());
+                        Log.d("Attendance status ###",status+" ####");
+                    }
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                Log.d("##SIZE1 ",listAttendance.size()+" $$$");
+
+                listener.onComplete(listAttendance);
+
+
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+            }
+        });
+        task.execute(context.getString(R.string.attendance),period.toJSONString());
+    }
 
 
 
