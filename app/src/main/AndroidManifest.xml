@@ -29,22 +29,21 @@
 
         <receiver android:name=".model.AlarmReceiver">
             <intent-filter>
-<<<<<<< HEAD
+
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-=======
+
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
->>>>>>> 735d60d2cf539844705682c94b87a82199e2eb92
+
             </intent-filter>
         </receiver>
 
         <activity android:name=".VerifyStudentParentActivity" />
         <activity android:name=".ViewListSubjectActivity" />
         <activity android:name=".ProfileActivity" />
-<<<<<<< HEAD
+
         <activity android:name=".VIewAttendanceActivity"></activity>
-=======
+
         <activity android:name=".PeriodActivity"></activity>
->>>>>>> 735d60d2cf539844705682c94b87a82199e2eb92
     </application>
 
 </manifest>
