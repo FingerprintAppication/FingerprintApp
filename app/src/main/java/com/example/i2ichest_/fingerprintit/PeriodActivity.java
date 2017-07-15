@@ -10,30 +10,27 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.BuildingModel;
 import com.example.i2ichest_.fingerprintit.model.PeriodModel;
 import com.example.i2ichest_.fingerprintit.model.RoomModel;
 import com.example.i2ichest_.fingerprintit.model.SubjectModel;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class PeriodActivity extends AppCompatActivity {
     WSManager wsManager;
-    final String[] subj = new String[7];
+    final String[] subjectDetail = new String[7];
+    private GlobalClass gb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_period);
+        gb = (GlobalClass) this.getApplicationContext();
         showPeriod();
     }
 
@@ -42,8 +39,8 @@ public class PeriodActivity extends AppCompatActivity {
         long subjectID = intent.getLongExtra("subjectID",1L);
         final String subjectNumber = intent.getStringExtra("subjectNumber");
         String subjectName = intent.getStringExtra("subjectName");
-        subj[0] = subjectNumber;
-        subj[1] = subjectName;
+        subjectDetail[0] = subjectNumber;
+        subjectDetail[1] = subjectName;
 
         TextView textViewSubjectName = (TextView) findViewById(R.id.textViewSubjectName);
         final TextView textViewSectionTitle = (TextView) findViewById(R.id.textViewSectionTitle);
@@ -72,7 +69,7 @@ public class PeriodActivity extends AppCompatActivity {
                     int semester = jsonSection.getInt("semester");
                     int schoolYear = jsonSection.getInt("schoolYear");
                     textViewSectionTitle.setText("กลุ่มเรียน " + sectionNumber + " : ภาคเรียนที่ " + semester + " : ปีการศึกษา " + schoolYear);
-                    subj[5] = semester+"/"+schoolYear;
+                    subjectDetail[5] = semester+"/"+schoolYear;
                     final List<PeriodModel.Period> listPeriod = new ArrayList<PeriodModel.Period>();
                     JSONArray jsonPeriod = new JSONArray(jsonSection.getJSONArray("periodList").toString());
                     Log.d("jsonPeriod @@@@ :",jsonPeriod.toString());
@@ -112,10 +109,10 @@ public class PeriodActivity extends AppCompatActivity {
                     }
                     /*get teahcer to attendance*/
                     JSONArray jsonteacher = new JSONArray(jsonSection.getJSONArray("teacherList").toString());
-                    subj[6] = "";
+                    subjectDetail[6] = "";
                     for ( int k = 0; k < jsonteacher.length() ; k++ ) {
                         JSONObject jsonObject = new JSONObject(jsonteacher.get(k).toString());
-                        subj[6] += jsonObject.getString("title")+" "+jsonObject.getString("firstName")+" "+jsonObject.getString("lastName")+"\n";
+                        subjectDetail[6] += jsonObject.getString("title")+" "+jsonObject.getString("firstName")+" "+jsonObject.getString("lastName")+"\n";
 
                     }
 
@@ -146,16 +143,39 @@ public class PeriodActivity extends AppCompatActivity {
                         viewAttendance.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                subj[2] = time;
-                                subj[3] = type;
-                                subj[4] = room;
-                                Intent intent = new Intent(PeriodActivity.this,VIewAttendanceActivity.class);
-                                intent.putExtra("forAttendance",sectionID+"-"+periodForAttendance+"-"+subjectNumber);
-                                intent.putExtra("allSubjectData",response.toString());
-                                Bundle b=new Bundle();
-                                b.putStringArray("sub", subj);
-                                intent.putExtras(b);
-                                startActivity(intent);
+
+                            wsManager.findTeacher(gb.getLoginModel().getLogin().getPerson().getPersonID(), new WSManager.WSManagerListener() {
+                                @Override
+                                public void onComplete(Object response) {
+                                    if("teacher".equals(response.toString())){
+                                        Intent intent = new Intent(PeriodActivity.this,ViewAttendanceForTeacherActivity.class);
+                                        intent.putExtra("sectionPeriod",sectionID+"-"+periodForAttendance);
+                                        intent.putExtra("subjectName", subjectDetail[0]+" "+ subjectDetail[1].toString());
+                                        Log.d("Teacher login $$ ",response+"------------------");
+
+                                        startActivity(intent);
+                                    }else{
+                                        subjectDetail[2] = time;
+                                        subjectDetail[3] = type;
+                                        subjectDetail[4] = room;
+                                        Intent intent = new Intent(PeriodActivity.this,VIewAttendanceActivity.class);
+                                        intent.putExtra("forAttendance",sectionID+"-"+periodForAttendance+"-"+subjectNumber);
+                                        intent.putExtra("allSubjectData",response.toString());
+                                        Bundle b = new Bundle();
+                                        b.putStringArray("sub", subjectDetail);
+                                        intent.putExtras(b);
+                                        startActivity(intent);
+                                    }
+
+                                }
+
+                                @Override
+                                public void onError(String error) {
+
+                                }
+                            });
+
+
                             }
                         });
 
