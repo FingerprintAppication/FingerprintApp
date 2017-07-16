@@ -25,7 +25,7 @@ public class PersonModel implements Serializable {
         return gson.toJson(this.person);
     }
 
-    public class Person {
+    public class Person implements Serializable {
 
         private Long personID;
         private String title;

@@ -1,13 +1,28 @@
 package com.example.i2ichest_.fingerprintit;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
+import com.example.i2ichest_.fingerprintit.model.FacultyModel;
+import com.example.i2ichest_.fingerprintit.model.MajorModel;
+import com.example.i2ichest_.fingerprintit.model.PersonModel;
+import com.example.i2ichest_.fingerprintit.model.StudentModel;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
     private GlobalClass gb;
@@ -61,7 +76,86 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void onClickBtnViewListSubject(View view){
-        Intent intent = new Intent(ProfileActivity.this,ViewListSubjectActivity.class);
-        startActivity(intent);
+        WSManager wsManager;
+        final ProgressDialog progress = ProgressDialog.show(ProfileActivity.this,"Please Wait...","Please wait...",true);
+        wsManager = WSManager.getWsManager(this);
+
+        PersonModel personModel = new PersonModel();
+        personModel.getPerson().setPersonID(gb.getLoginModel().getLogin().getPerson().getPersonID());
+        wsManager.doSearchStudentParent(personModel, new WSManager.WSManagerListener() {
+            @Override
+            public void onComplete(Object response) {
+                progress.dismiss();
+
+                try {
+                    JSONArray jsonArray = new JSONArray(response.toString());
+                    gb.getListStudent().clear();
+
+                    for (int i = 0 ; i < jsonArray.length() ; i++){
+                        JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
+
+                        String title = jsonObject.getString("title");
+                        String firstName = jsonObject.getString("firstName");
+                        String lastName = jsonObject.getString("lastName");
+
+                        JSONObject jsonMajor = jsonObject.getJSONObject("major");
+                        long majorID = jsonMajor.getLong("majorID");
+                        String secondaryMajorID = jsonMajor.getString("secondaryMajorID");
+                        String majorName = jsonMajor.getString("majorName");
+
+                        JSONObject jsonFaculty = jsonMajor.getJSONObject("faculty");
+                        long facultyID = jsonFaculty.getLong("facultyID");
+                        String facultyName = jsonFaculty.getString("facultyName");
+
+                        long studentID = jsonObject.getLong("studentID");
+                        String parentPhone = jsonObject.getString("parentPhone");
+                        long personID = jsonObject.getLong("personID");
+
+                        StudentModel studentModel = new StudentModel();
+                        studentModel.getStudent().setTitle(title);
+                        studentModel.getStudent().setFirstName(firstName);
+                        studentModel.getStudent().setLastName(lastName);
+
+                        FacultyModel facultyModel = new FacultyModel();
+                        facultyModel.getFaculty().setFacultyID(facultyID);
+                        facultyModel.getFaculty().setFacultyName(facultyName);
+
+                        MajorModel majorModel = new MajorModel();
+                        majorModel.getMajor().setMajorID(majorID);
+                        majorModel.getMajor().setScondaryMajorID(secondaryMajorID);
+                        majorModel.getMajor().setMajorName(majorName);
+                        majorModel.getMajor().setFaculty(facultyModel.getFaculty());
+
+                        studentModel.getStudent().setMajor(majorModel.getMajor());
+                        studentModel.getStudent().setPersonID(personID);
+                        studentModel.getStudent().setStudentID(studentID);
+                        studentModel.getStudent().setParentPhone(parentPhone);
+
+                        gb.getListStudent().add(studentModel.getStudent());
+                    }
+                    Log.d("LIST STUDENT ADD ", gb.getListStudent().toString());
+
+                    Intent intent = null;
+                    //Log.d("Size ", listStudent.size() + "");
+                    if ( gb.getListStudent().size() > 1) {
+                        intent = new Intent(ProfileActivity.this, SelectStudentParentActivity.class);
+                    } else {
+                        intent = new Intent(ProfileActivity.this, ViewListSubjectActivity.class);
+                    }
+                    startActivity(intent);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                progress.dismiss();
+            }
+        });
+
+
+
     }
 }

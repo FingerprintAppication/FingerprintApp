@@ -3,6 +3,10 @@ package com.example.i2ichest_.fingerprintit;
 import android.app.Application;
 
 import com.example.i2ichest_.fingerprintit.model.LoginModel;
+import com.example.i2ichest_.fingerprintit.model.StudentModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by MSI on 9/7/2560.
@@ -11,6 +15,7 @@ import com.example.i2ichest_.fingerprintit.model.LoginModel;
 public class GlobalClass extends Application {
     String typeUser;
     LoginModel loginModel = new LoginModel();
+    List<StudentModel.Student> listStudent = new ArrayList<>();
 
     public GlobalClass(){}
 
@@ -30,5 +35,11 @@ public class GlobalClass extends Application {
         this.loginModel = loginModel;
     }
 
+    public List<StudentModel.Student> getListStudent() {
+        return listStudent;
+    }
 
+    public void setListStudent(List<StudentModel.Student> listStudent) {
+        this.listStudent = listStudent;
+    }
 }

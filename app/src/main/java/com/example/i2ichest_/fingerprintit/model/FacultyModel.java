@@ -24,7 +24,7 @@ public class FacultyModel implements Serializable {
         return gson.toJson(this.faculty);
     }
 
-        public class Faculty {
+        public class Faculty implements Serializable{
             private Long facultyID;
             private String facultyName;
 
