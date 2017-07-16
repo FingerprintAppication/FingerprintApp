@@ -26,6 +26,7 @@ public class WSManager {
     private Context context;
     ParentModel parentModel;
     StudentModel studentModel;
+    String splitReceive[]  = null;
 
     public interface WSManagerListener{
         void onComplete(Object response) ;
@@ -218,66 +219,10 @@ public class WSManager {
         task.execute(context.getString(R.string.attendance),period.toJSONString());
     }
 
+    public void findTeacher(Object object,final WSManagerListener listener){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   /* public void doLogin(Object object,final WSManagerListener listener){
-        if(!(object instanceof UserModel)){
-            return;
-        }
-
-        UserModel userModel = (UserModel)object;
-        userModel.toJSONString();
-        WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
-            @Override
-            public void onComplete(String response) {
-               // UserModel userModel = new UserModel(response);
-                listener.onComplete(response);
-            }
-
-            @Override
-            public void onError(String err) {listener.onError(err);
-
-            }
-        });
-        task.execute("/api/login", userModel.toJSONString());
-    }
-
-    public void doEditUserProfile(Object object,final WSManagerListener listener){
-        if(!(object instanceof UserModel)){
-            return;
-        }
-
-        UserModel userModel = (UserModel)object;
-        userModel.toJSONString();
         WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
             @Override
             public void onComplete(String response) {
@@ -289,16 +234,11 @@ public class WSManager {
 
             }
         });
-        task.execute("/api/user", userModel.toJSONString());
+        task.execute("/searchTeacher?id="+object.toString(),"##");
     }
 
-    public void doBuddhistDay(Object object,final WSManagerListener listener){
-        if(!(object instanceof BuddhistDayModel)){
-            return;
-        }
-
-        BuddhistDayModel buddhistDayModel = (BuddhistDayModel) object;
-        buddhistDayModel.toJSONString();
+    public void studentAttendaceForTeacher(String object,final WSManagerListener listener){
+        splitReceive = object.toString().split("-");
         WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
             @Override
             public void onComplete(String response) {
@@ -310,66 +250,7 @@ public class WSManager {
                 listener.onError(err);
             }
         });
-        task.execute("/api/days",buddhistDayModel.toJSONString());
+        task.execute("/attendanceTeacher?section="+splitReceive[0]+"&period="+splitReceive[1],"##");
     }
-
-    public void addActivityOfDay(Object object,final WSManagerListener listener){
-        if(!(object instanceof ActivityDayModel)){
-            return;
-        }
-        ActivityDayModel dm = (ActivityDayModel)object;
-
-        dm.toJSONString();
-        WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
-            @Override
-            public void onComplete(String response) {
-
-                Log.d("response get days ",response.toString());
-
-                listener.onComplete(response);
-            }
-
-            @Override
-            public void onError(String err) {
-
-            }
-        });
-
-        try {
-
-            task.execute("/api/addactivity", dm.toJSONString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    //NEW*****************************
-    public void findActivityOfDay(Object object,final WSManagerListener listener){
-        if(!(object instanceof ActivityDayModel)){
-            return;
-        }
-        ActivityDayModel ad = (ActivityDayModel)object;
-
-        ad.toJSONString();
-        WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
-            @Override
-            public void onComplete(String response) {
-                Log.d("response get days ",response.toString());
-                listener.onComplete(response);
-            }
-
-            @Override
-            public void onError(String err) {
-
-            }
-        });
-
-        try {
-
-            task.execute("/api/findactivity", ad.toJSONString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
 }
