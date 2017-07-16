@@ -16,6 +16,7 @@ public class GlobalClass extends Application {
     String typeUser;
     LoginModel loginModel = new LoginModel();
     List<StudentModel.Student> listStudent = new ArrayList<>();
+    StudentModel.Student parentStudent = new StudentModel().getStudent();
 
     public GlobalClass(){}
 
@@ -41,5 +42,13 @@ public class GlobalClass extends Application {
 
     public void setListStudent(List<StudentModel.Student> listStudent) {
         this.listStudent = listStudent;
+    }
+
+    public StudentModel.Student getParentStudent() {
+        return parentStudent;
+    }
+
+    public void setParentStudent(StudentModel.Student parentStudent) {
+        this.parentStudent = parentStudent;
     }
 }

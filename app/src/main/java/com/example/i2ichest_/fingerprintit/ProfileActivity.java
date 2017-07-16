@@ -139,8 +139,13 @@ public class ProfileActivity extends AppCompatActivity {
                     //Log.d("Size ", listStudent.size() + "");
                     if ( gb.getListStudent().size() > 1) {
                         intent = new Intent(ProfileActivity.this, SelectStudentParentActivity.class);
+                    } else if (gb.getTypeUser().equals("parent")) {
+                        intent = new Intent(ProfileActivity.this, ViewListSubjectActivity.class);
+                        intent.putExtra("personID", gb.getListStudent().get(0).getPersonID());
+                        gb.setParentStudent(gb.getListStudent().get(0));
                     } else {
                         intent = new Intent(ProfileActivity.this, ViewListSubjectActivity.class);
+                        intent.putExtra("personID", gb.getLoginModel().getLogin().getPerson().getPersonID());
                     }
                     startActivity(intent);
 

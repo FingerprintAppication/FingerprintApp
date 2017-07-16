@@ -46,6 +46,7 @@ public class SelectStudentParentActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(SelectStudentParentActivity.this,ViewListSubjectActivity.class);
                 intent.putExtra("personID" , gb.getListStudent().get(i).getPersonID());
+                gb.setParentStudent(gb.getListStudent().get(i));
                 startActivity(intent);
             }
         });

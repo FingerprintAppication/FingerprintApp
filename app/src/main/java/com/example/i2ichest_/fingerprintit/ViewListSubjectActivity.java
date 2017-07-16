@@ -49,13 +49,11 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
         wsManager = WSManager.getWsManager(this);
 
         PersonModel personModel = new PersonModel();
-        if (gb.getTypeUser().equals("parent")){
-            Intent intent = getIntent();
-            Long pID = intent.getLongExtra("personID",1L);
-            personModel.getPerson().setPersonID(pID);
-        } else {
-            personModel.getPerson().setPersonID(gb.getLoginModel().getLogin().getPerson().getPersonID());
-        }
+
+        Intent intent = getIntent();
+        Long pID = intent.getLongExtra("personID",1L);
+        personModel.getPerson().setPersonID(pID);
+
         wsManager.doSearchSubject(personModel, new WSManager.WSManagerListener() {
             @Override
             public void onComplete(Object response) {
