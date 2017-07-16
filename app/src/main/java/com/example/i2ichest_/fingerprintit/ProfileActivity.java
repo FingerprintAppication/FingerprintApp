@@ -32,12 +32,22 @@ public class ProfileActivity extends AppCompatActivity {
         TextView fingerID = (TextView) findViewById(R.id.textFD);
 
         name.setText(sumStr);
-        major.setText(gb.getLoginModel().getLogin().getPerson().getMajor().getMajorName());
 
-        if (gb.getLoginModel().getLogin().getPerson().getFingerprintData() != null){
+        String typeUser = gb.getTypeUser();
+        if (!typeUser.equals("parent")){
+            major.setText(gb.getLoginModel().getLogin().getPerson().getMajor().getMajorName());
+        }
+
+        if (typeUser.equals("student")){
             stuID.setText(gb.getLoginModel().getLogin().getUsername());
             fingerID.setText(gb.getLoginModel().getLogin().getPerson().getFingerprintData());
-        } else {
+
+        } else if (typeUser.equals("teacher") ||typeUser.equals("parent")) {
+            if (gb.getTypeUser().equals("parent")){
+                major.setText("");
+                TextView m = (TextView) findViewById(R.id.textMajor);
+                m.setText("");
+            }
             stuID.setText("");
             fingerID.setText("");
 

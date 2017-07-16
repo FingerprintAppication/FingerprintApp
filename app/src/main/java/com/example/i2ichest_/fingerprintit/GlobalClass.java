@@ -9,9 +9,18 @@ import com.example.i2ichest_.fingerprintit.model.LoginModel;
  */
 
 public class GlobalClass extends Application {
+    String typeUser;
     LoginModel loginModel = new LoginModel();
 
     public GlobalClass(){}
+
+    public String getTypeUser() {
+        return typeUser;
+    }
+
+    public void setTypeUser(String typeUser) {
+        this.typeUser = typeUser;
+    }
 
     public LoginModel getLoginModel(){
         return loginModel;
