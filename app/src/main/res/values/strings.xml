@@ -28,4 +28,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--string title name-->
+    <string-array name="title">
+        <item>นาย</item>
+        <item>นาง</item>
+        <item>นางสาว</item>
+
+    </string-array>
 </resources>

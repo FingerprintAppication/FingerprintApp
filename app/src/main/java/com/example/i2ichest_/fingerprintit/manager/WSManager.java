@@ -139,43 +139,15 @@ public class WSManager {
         taskPost.execute("/viewListSubject/period",subjectModel.toJSONString());
     }
 
-    public void doVerifyStudentParent(Object object,final WSManagerListener listener){
+
+
+    public void verifyParent(Object object,final WSManagerListener listener){
         if(!(object instanceof StudentModel)){
             return;
         }
+        studentModel = null;
         studentModel = (StudentModel)object;
-        WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
-            @Override
-            public void onComplete(String response) {
-                    try {
-                        JSONObject job = new JSONObject(response.toString());
-                        Log.d("job ",job.toString());
-                        if(!job.get("personID").toString().equals("0")) {
-                            job.remove("fingerprintData");
-                            StudentModel studentModel = new StudentModel(job.toString());
-                            listener.onComplete(studentModel);
-                        }else{
-                            listener.onComplete("ไม่พบรหัสนักศึกษาในฐานข้อมูล");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-            }
-
-            @Override
-            public void onError(String err) {
-                listener.onError(err);
-            }
-        });
-        task.execute(context.getString(R.string.verify_student_parent),studentModel.toJSONString());
-    }
-
-    public void verifyParent(Object object,final WSManagerListener listener){
-        if(!(object instanceof ParentModel)){
-            return;
-        }
-        parentModel = (ParentModel)object;
-
+        Log.d("studentParent ",studentModel.toJSONString());
         WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
@@ -188,7 +160,7 @@ public class WSManager {
                 listener.onError(err);
             }
         });
-        task.execute(context.getString(R.string.verifyParent), parentModel.toJSONString());
+        task.execute(context.getString(R.string.verifyParent), studentModel.toJSONString());
     }
 
 

@@ -10,106 +10,157 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.i2ichest_.fingerprintit.VerifyStudentParentActivity">
 
+    <Spinner
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:id="@+id/titleSpinner"
+        android:layout_width="100dp"
+        android:layout_marginStart="21dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textView2"
+        android:entries="@array/title" />
+
     <TextView
-        android:text="ชื่อ-สกุล"
+        android:text="นามสกุล"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="39dp"
-        android:id="@+id/textView2" />
+        android:id="@+id/lnTxt"
+        android:layout_alignBaseline="@+id/lastNameTxt"
+        android:layout_alignBottom="@+id/lastNameTxt"
+        android:layout_alignStart="@+id/fn"
+        android:paddingTop="10dp" />
 
     <TextView
         android:text="รหัสนักศึกษา"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="26dp"
-        android:id="@+id/txt" />
-
-    <TextView
-        android:text="เบอร์โทรศัพท์"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp"
-        android:id="@+id/textView4" />
-
-    <TextView
-        android:text="อีเมล์"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
-        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lastNameTxt"
+        android:layout_alignStart="@+id/lnTxt"
         android:layout_marginTop="34dp"
-        android:id="@+id/textView5" />
+        android:id="@+id/textView10"
+        android:paddingTop="8dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/nametxt"
-        android:hint="นาย สมยอด ใจดี"
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_toEndOf="@+id/textView4" />
+        android:layout_marginTop="15dp"
+        android:id="@+id/lastNameTxt"
+        android:hint="ใจดี"
+        android:layout_below="@+id/firstNameTxt"
+        android:layout_alignStart="@+id/studentIdTxt" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/firstNameTxt"
+        android:hint="สมชาย"
+        android:layout_alignBaseline="@+id/fn"
+        android:layout_alignBottom="@+id/fn"
+        android:layout_alignStart="@+id/lastNameTxt" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:layout_alignTop="@+id/txt"
-        android:layout_toEndOf="@+id/textView4"
-        android:id="@+id/studentId" />
+        android:id="@+id/studentIdTxt"
+        android:hint="5704106355"
+        android:layout_alignBaseline="@+id/textView10"
+        android:layout_alignBottom="@+id/textView10"
+        android:layout_alignStart="@+id/titleSpinner" />
+
+    <TextView
+        android:text="เบอร์โทรศัพท์"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/studentIdTxt"
+        android:layout_alignStart="@+id/textView10"
+        android:layout_marginTop="31dp"
+        android:id="@+id/textView18" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="phone"
+        android:inputType="number"
         android:ems="10"
-        android:layout_below="@+id/studentId"
-        android:layout_toEndOf="@+id/textView4"
-        android:id="@+id/phone" />
+        android:layout_below="@+id/studentIdTxt"
+        android:layout_alignStart="@+id/studentIdTxt"
+        android:layout_marginTop="14dp"
+        android:id="@+id/phoneTxt"
+        android:hint="0801234567" />
 
-    <EditText
+    <TextView
+        android:text="อีเมล์"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:layout_below="@+id/phone"
-        android:layout_alignStart="@+id/phone"
-        android:id="@+id/email" />
+        android:layout_below="@+id/phoneTxt"
+        android:layout_alignStart="@+id/textView18"
+        android:layout_marginTop="26dp"
+        android:id="@+id/textView19"
+        android:paddingTop="8dp" />
 
-    <Button
-        android:text="ลงทะเบียน"
+    <TextView
+        android:text="คำนำหน้าชื่อ"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/register"
-        android:onClick="getPersonData"
-        android:layout_marginTop="53dp"
-        android:layout_below="@+id/result"
-        android:layout_toEndOf="@+id/txt" />
+        android:layout_marginStart="20dp"
+        android:id="@+id/textView2"
+        android:paddingTop="10dp"
+        android:layout_alignBaseline="@+id/titleSpinner"
+        android:layout_alignBottom="@+id/titleSpinner"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:text="ยกเลิก"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button2"
-        android:layout_alignBaseline="@+id/register"
-        android:layout_alignBottom="@+id/register"
-        android:layout_alignEnd="@+id/email" />
+        android:id="@+id/cancel"
+        android:layout_alignBaseline="@+id/onVerifyParent"
+        android:layout_alignBottom="@+id/onVerifyParent"
+        android:layout_toEndOf="@+id/resultVerify" />
 
     <TextView
+        android:text="TextView"
         android:layout_width="wrap_content"
-        android:gravity="center"
         android:layout_height="wrap_content"
-        android:id="@+id/result"
-        android:textColor="@android:color/holo_red_dark"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="11dp"
+        android:id="@+id/resultVerify"
+        android:layout_below="@+id/emailTxt"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/holo_red_dark" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/emailTxt"
+        android:hint="somchai@gmail.com"
+        android:layout_alignBaseline="@+id/textView19"
+        android:layout_alignBottom="@+id/textView19"
+        android:layout_alignStart="@+id/phoneTxt" />
+
+    <TextView
+        android:text="ชื่อ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:id="@+id/fn"
+        android:paddingTop="10dp"
+        android:layout_below="@+id/titleSpinner"
+        android:layout_alignStart="@+id/textView2" />
+
+    <Button
+        android:text="ลงทะเบียน"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/onVerifyParent"
+        android:onClick="getPersonData"
+        android:layout_below="@+id/resultVerify"
+        android:layout_toStartOf="@+id/resultVerify"
+        android:layout_marginTop="42dp" />
 </RelativeLayout>
