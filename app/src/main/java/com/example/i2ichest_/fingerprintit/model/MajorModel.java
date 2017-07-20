@@ -16,6 +16,7 @@ public class MajorModel implements Serializable {
         major = gson.fromJson(jsonResponse,Major.class);
     }
 
+
     public Major getMajor(){
         return major;
     }
@@ -24,7 +25,7 @@ public class MajorModel implements Serializable {
         return gson.toJson(this.major);
     }
 
-        public class Major {
+        public class Major implements Serializable {
             private Long majorID;
             private String scondaryMajorID;
             private String majorName;

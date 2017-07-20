@@ -30,10 +30,18 @@ public class VIewAttendanceActivity extends AppCompatActivity {
         wsManager = WSManager.getWsManager(this);
         final Intent intent = getIntent();
         gb = (GlobalClass) this.getApplicationContext();
+
         TextView studentName = (TextView)findViewById(R.id.studentName);
-        String title = gb.getLoginModel().getLogin().getPerson().getTitle();
-        String name = gb.getLoginModel().getLogin().getPerson().getFirstName() +" " +gb.getLoginModel().getLogin().getPerson().getLastName();
-        studentName.setText(gb.getLoginModel().getLogin().getUsername()+" "+title+" "+name);
+        String title = null;
+        String name = null;
+        if(gb.getTypeUser().equals("parent")){
+            title = gb.getParentStudent().getTitle();
+            name = gb.getParentStudent().getFirstName() + " " + gb.getParentStudent().getLastName();
+        } else {
+            title = gb.getLoginModel().getLogin().getPerson().getTitle();
+            name = gb.getLoginModel().getLogin().getPerson().getFirstName() +" " +gb.getLoginModel().getLogin().getPerson().getLastName();
+        }
+        studentName.setText(title+" "+name);
         String forAttendance =  intent.getExtras().getString("forAttendance");
         String forAttendances[] = forAttendance.split("-");
         PeriodModel period = new PeriodModel();

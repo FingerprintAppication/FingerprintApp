@@ -39,7 +39,8 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".VIewAttendanceActivity" />
         <activity android:name=".PeriodActivity" />
-        <activity android:name=".ViewAttendanceForTeacherActivity"></activity>
+        <activity android:name=".ViewAttendanceForTeacherActivity" />
+        <activity android:name=".SelectStudentParentActivity"></activity>
     </application>
 
 </manifest>

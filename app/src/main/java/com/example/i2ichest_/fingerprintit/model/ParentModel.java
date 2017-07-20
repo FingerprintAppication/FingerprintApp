@@ -3,7 +3,9 @@ package com.example.i2ichest_.fingerprintit.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class ParentModel extends PersonModel{
+import java.io.Serializable;
+
+public class ParentModel extends PersonModel implements Serializable{
     private Parent parent;
     Gson gson = new GsonBuilder().create();
 
@@ -24,7 +26,7 @@ public class ParentModel extends PersonModel{
     }
 
 
-    public class Parent extends Person {
+    public class Parent extends Person implements Serializable {
         private String phoneNo;
         private String email;
 
