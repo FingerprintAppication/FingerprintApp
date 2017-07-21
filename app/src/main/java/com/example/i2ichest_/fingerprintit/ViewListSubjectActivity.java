@@ -11,6 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.util.Attributes;
+import com.example.i2ichest_.fingerprintit.adapter.ListViewAdapter;
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.FacultyModel;
 import com.example.i2ichest_.fingerprintit.model.LoginModel;
@@ -29,6 +32,7 @@ import java.util.List;
 public class ViewListSubjectActivity extends AppCompatActivity implements Serializable {
     private GlobalClass gb;
     WSManager wsManager;
+    ListViewAdapter lva;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,14 +105,19 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                         listSubjectName.add(subjectNumber + " " + subjectName);
                     }
                         Log.d("TEST LIST SUBJECT " , listSubject.toString());
+                    lva = new ListViewAdapter(getApplicationContext(),listSubjectName,ViewListSubjectActivity.this);
+                    lva.setCountView(listSubjectName.size());
 
-                    ListView listView = (ListView) findViewById(R.id.listViewSubject);
+
+                    final ListView listView = (ListView) findViewById(R.id.listViewSubject);
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewListSubjectActivity.this,android.R.layout.simple_selectable_list_item,listSubjectName);
-                    listView.setAdapter(adapter);
+                   lva.setMode(Attributes.Mode.Single);
+                    listView.setAdapter(lva);
 
                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                        @Override
                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                            Intent intent = new Intent(ViewListSubjectActivity.this,PeriodActivity.class);
                            intent.putExtra("subjectID", listSubject.get(i).getSubject().getSubjectID());
                            intent.putExtra("subjectNumber", listSubject.get(i).getSubject().getSubjectNumber());
@@ -116,6 +125,14 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                            startActivity(intent);
                        }
                    });
+
+                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            ((SwipeLayout) (listView.getChildAt(i - listView.getFirstVisiblePosition()))).open(true);
+                            return false;
+                        }
+                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();
