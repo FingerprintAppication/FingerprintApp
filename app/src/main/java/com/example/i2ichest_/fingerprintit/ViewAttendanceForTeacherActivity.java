@@ -61,32 +61,32 @@ public class ViewAttendanceForTeacherActivity extends AppCompatActivity {
                 }
                 /***sort enrollment by studentID***/
                 sortEnrollmentByStudentId(listEnrollment);
-                LinearLayout linearLayout = (LinearLayout)findViewById(R.id.listAttendance);
-                List<String> addString = new ArrayList<String>();
-                TextView subject = (TextView)findViewById(R.id.subject);
-                TextView totalStudent = (TextView)findViewById(R.id.totalStudent);
-                subject.setText(subjectName);
-                totalStudent.setText(listEnrollment.size()+" คน");
-                for(EnrollmentModel.Enrollment en :listEnrollment){
-                        List<Integer> status =  Attendance(en.getAttendanceList());
-                        View view = (View) getLayoutInflater().inflate(R.layout.show_attendance_teacher, null);
-                        TableLayout table = (TableLayout) view.findViewById(R.id.attendaceTable);
-                        TableRow row = (TableRow) table.getChildAt(1);
-                        TextView come = (TextView) row.findViewById(R.id.came);
-                        TextView late = (TextView) row.findViewById(R.id.late);
-                        TextView absence = (TextView) row.findViewById(R.id.absence);
-                        TextView inform = (TextView) row.findViewById(R.id.inform);
-                        TextView total = (TextView) row.findViewById(R.id.score);
-                        TextView student = (TextView)view.findViewById(R.id.studentName);
-                        /***set data into TableLayout***/
-                        come.setText(status.get(0).toString());
-                        late.setText(status.get(1).toString());
-                        absence.setText(status.get(2).toString());
-                        inform.setText(status.get(3).toString());
-                        total.setText(status.get(4).toString());
-                        student.setText(en.getStudent().getStudentID()+" "+en.getStudent().getTitle()+en.getStudent().getFirstName()+" "+en.getStudent().getLastName());
-                        linearLayout.addView(view);
-                }
+//                asdasd LinearLayout linearLayout = (LinearLayout)findViewById(R.id.listAttendance);
+//                List<String> addString = new ArrayList<String>();
+//                TextView subject = (TextView)findViewById(R.id.subject);
+//                TextView totalStudent = (TextView)findViewById(R.id.totalStudent);
+//                subject.setText(subjectName);
+//                totalStudent.setText(listEnrollment.size()+" คน");
+//                for(EnrollmentModel.Enrollment en :listEnrollment){
+//                        List<Integer> status =  Attendance(en.getAttendanceList());
+//                        View view = (View) getLayoutInflater().inflate(R.layout.show_attendance_teacher, null);
+//                        TableLayout table = (TableLayout) view.findViewById(R.id.attendaceTable);
+//                        TableRow row = (TableRow) table.getChildAt(1);
+//                        TextView come = (TextView) row.findViewById(R.id.came);
+//                        TextView late = (TextView) row.findViewById(R.id.late);
+//                        TextView absence = (TextView) row.findViewById(R.id.absence);
+//                        TextView inform = (TextView) row.findViewById(R.id.inform);
+//                        TextView total = (TextView) row.findViewById(R.id.score);
+//                        TextView student = (TextView)view.findViewById(R.id.studentName);
+//                        /***set data into TableLayout***/
+//                        come.setText(status.get(0).toString());
+//                        late.setText(status.get(1).toString());
+//                        absence.setText(status.get(2).toString());
+//                        inform.setText(status.get(3).toString());
+//                        total.setText(status.get(4).toString());
+//                        student.setText(en.getStudent().getStudentID()+" "+en.getStudent().getTitle()+en.getStudent().getFirstName()+" "+en.getStudent().getLastName());
+//                        linearLayout.addView(view);
+//                }
             }
 
             @Override
