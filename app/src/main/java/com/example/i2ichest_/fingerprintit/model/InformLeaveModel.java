@@ -28,7 +28,7 @@ public class InformLeaveModel {
     }
 
     public class InformLeave {
-        private int informLeaveID;
+        private long informLeaveID;
         private String informType;
         private String supportDocument;
         private String status;
@@ -47,11 +47,11 @@ public class InformLeaveModel {
             this.caseDetail = caseDetail;
         }
 
-        public int getInformLeaveID() {
+        public long getInformLeaveID() {
             return informLeaveID;
         }
 
-        public void setInformLeaveID(int informLeaveID) {
+        public void setInformLeaveID(long informLeaveID) {
             this.informLeaveID = informLeaveID;
         }
 

@@ -11,6 +11,7 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
+import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
 import com.example.i2ichest_.fingerprintit.model.BuildingModel;
 import com.example.i2ichest_.fingerprintit.model.PeriodModel;
 import com.example.i2ichest_.fingerprintit.model.RoomModel;
@@ -36,9 +37,9 @@ public class PeriodActivity extends AppCompatActivity {
 
     public void showPeriod(){
         Intent intent = getIntent();
-        long subjectID = intent.getLongExtra("subjectID",1L);
+        final long subjectID = intent.getLongExtra("subjectID",1L);
         final String subjectNumber = intent.getStringExtra("subjectNumber");
-        String subjectName = intent.getStringExtra("subjectName");
+        final String subjectName = intent.getStringExtra("subjectName");
         subjectDetail[0] = subjectNumber;
         subjectDetail[1] = subjectName;
 
@@ -65,7 +66,7 @@ public class PeriodActivity extends AppCompatActivity {
                     JSONObject jsonSection = new JSONObject(jsonArray.get(0).toString());
                     /*section ID here*/
                     final String sectionID = jsonSection.getString("sectionID");
-                    String sectionNumber = jsonSection.getString("sectionNumber");
+                    final String sectionNumber = jsonSection.getString("sectionNumber");
                     int semester = jsonSection.getInt("semester");
                     int schoolYear = jsonSection.getInt("schoolYear");
                     textViewSectionTitle.setText("กลุ่มเรียน " + sectionNumber + " : ภาคเรียนที่ " + semester + " : ปีการศึกษา " + schoolYear);
@@ -133,6 +134,25 @@ public class PeriodActivity extends AppCompatActivity {
                         txtType.setText("ประเภท : " + listPeriod.get(g).getStudyType());
                         txtRoom.setText("ห้อง : " + listPeriod.get(g).getRoom().getRoomName());
                         txtBuild.setText("ตึก : " +listPeriod.get(g).getRoom().getBuilding().getBuildingName());
+
+                        if(gb.getTypeUser().equals("teacher")){
+                            Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
+                            btn.setText("ประกาศข่าว");
+
+                            final int finalG = g;
+                            btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(PeriodActivity.this, AnnouceNewsActivity.class);
+                                    intent.putExtra("periodID",listPeriod.get(finalG).getPeriodID());
+                                    intent.putExtra("subjectNumber",subjectNumber);
+                                    intent.putExtra("subjectName",subjectName);
+                                    intent.putExtra("subjectType",listPeriod.get(finalG).getStudyType());
+                                    intent.putExtra("subjectDay",listPeriod.get(finalG).getDayOfWeek());
+                                    startActivity(intent);
+                                }
+                            });
+                        }
 
                         final Long periodForAttendance = listPeriod.get(g).getPeriodID();
                         final String time = listPeriod.get(g).getPeriodStartTime() + " - " + listPeriod.get(g).getPeriodEndTime();

@@ -139,6 +139,30 @@ public class WSManager {
         taskPost.execute("/viewListSubject/period",subjectModel.toJSONString());
     }
 
+    public void doSearchScheduleDate(Object object,final WSManagerListener listener){
+        if(!(object instanceof PeriodModel)){
+            return;
+        }
+
+        PeriodModel periodModel = (PeriodModel) object;
+        periodModel.toJSONString();
+
+        WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                listener.onComplete(response);
+                Log.d("ScheduleDateComplete" ,  response.toString());
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+                Log.d("ScheduleDateError" , err.toString());
+            }
+        });
+        taskPost.execute("/annouceNews",periodModel.toJSONString());
+    }
+
 
 
     public void verifyParent(Object object,final WSManagerListener listener){
