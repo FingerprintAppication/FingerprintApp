@@ -35,8 +35,7 @@
         android:id="@+id/buttonAddNews"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="45dp"
-        android:onClick="onClickAddAnnouceNews" />
+        android:layout_marginBottom="45dp" />
 
     <Spinner
         android:layout_width="200dp"
@@ -58,7 +57,7 @@
     <EditText
         android:layout_width="match_parent"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/editTextNewsDetail"
         android:hint="รายละเอียด"
         android:layout_height="100dp"
         android:fontFamily="sans-serif"
@@ -149,7 +148,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewNewsDetail"
         android:textSize="16sp"
-        android:layout_above="@+id/editText"
+        android:layout_above="@+id/editTextNewsDetail"
         android:layout_alignStart="@+id/textViewSub4"
         android:textColor="@color/colorPrimary" />
 
