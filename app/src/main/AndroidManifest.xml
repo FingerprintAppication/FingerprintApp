@@ -4,7 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- alarm here -->
-
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -41,9 +42,15 @@
         <activity android:name=".PeriodActivity" />
         <activity android:name=".ViewAttendanceForTeacherActivity" />
         <activity android:name=".SelectStudentParentActivity" />
+<<<<<<< HEAD
 
         <activity android:name=".InformLeaveActivity" />
         <activity android:name=".AnnouceNewsActivity"></activity>
+=======
+        <activity android:name=".InformLeaveActivity" />
+        <activity android:name=".AnnouceNewsActivity"></activity>
+
+>>>>>>> 7991026667c00e630b537920f4956e93a42d3fc7
     </application>
 
 </manifest>

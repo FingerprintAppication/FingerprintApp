@@ -34,12 +34,12 @@ public class AnnouceNewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_annouce_news);
+        //setContentView(R.layout.activity_annouce_news);
         gb = (GlobalClass) this.getApplicationContext();
-        showInformLeave();
+        //showInformLeave();
     }
 
-    public void showInformLeave(){
+   /* public void showInformLeave(){
         Intent intent = getIntent();
         final long periodID = intent.getLongExtra("periodID",1L);
 
@@ -98,6 +98,10 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                 progress.dismiss();
             }
         });
+<<<<<<< HEAD
+    }*/
+=======
+>>>>>>> 25476b2c52e5cce582165afa17bc2cc4266903fb
 
         Button btn = (Button) findViewById(R.id.buttonAddNews);
         btn.setOnClickListener(new View.OnClickListener() {
