@@ -41,8 +41,11 @@
         <activity android:name=".PeriodActivity" />
         <activity android:name=".ViewAttendanceForTeacherActivity" />
         <activity android:name=".SelectStudentParentActivity" />
+<<<<<<< HEAD
+=======
         <activity android:name=".InformLeaveActivity" />
         <activity android:name=".AnnouceNewsActivity"></activity>
+>>>>>>> 8ac12f6689ad5f445f6ab5065704a8ddb4cb2a46
     </application>
 
 </manifest>

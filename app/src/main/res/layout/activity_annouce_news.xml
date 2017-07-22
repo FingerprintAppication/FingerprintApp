@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_annouce_news"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.i2ichest_.fingerprintit.AnnouceNewsActivity">
+
+    <TextView
+        android:text="แบบฟอร์มประกาศข่าว"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/AnnounceNewsTitle"
+        android:textSize="18sp"
+        android:textColor="@color/colorAccent" />
+
+    <Button
+        android:text="ยกเลิก"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonCancelNews"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="ประกาศข่าว"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonAddNews"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="45dp"
+        android:onClick="onClickAddAnnouceNews" />
+
+    <Spinner
+        android:layout_width="200dp"
+        android:id="@+id/spinnerNewsType"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@+id/textViewNewsType"
+        android:layout_alignParentEnd="true"
+        android:spinnerMode="dialog" />
+
+    <Spinner
+        android:layout_width="200dp"
+
+        android:id="@+id/spinnerNewsDate"
+        android:layout_height="20dp"
+        android:layout_alignTop="@+id/textViewNewsDate"
+        android:layout_alignParentEnd="true"
+        android:spinnerMode="dialog" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:hint="รายละเอียด"
+        android:layout_height="100dp"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
+        android:inputType="textAutoComplete|textMultiLine"
+        android:layout_above="@+id/buttonAddNews"
+        android:layout_alignStart="@+id/textViewNewsDetail" />
+
+    <TextView
+        android:text="ประเภท"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewSubName"
+        android:layout_alignStart="@+id/textViewSubName"
+        android:layout_marginTop="15dp"
+        android:id="@+id/textViewSubType"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="วันที่สอน"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewSubDay"
+        android:layout_below="@+id/textViewSubType"
+        android:layout_alignStart="@+id/textViewSubType"
+        android:layout_marginTop="15dp"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="ชื่อวิชา"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewSubName"
+        android:textSize="16sp"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/textViewSubID"
+        android:layout_alignStart="@+id/textViewSubID" />
+
+    <TextView
+        android:text="วันที่ประกาศ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewNewsDate"
+        android:textSize="16sp"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/textViewNewsDetail"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:text="รหัสวิชา"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewSubID"
+        android:layout_alignStart="@+id/textViewNewsType"
+        android:id="@+id/textViewSub1"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="ประเภท"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewSubType"
+        android:layout_alignStart="@+id/textViewSub1"
+        android:id="@+id/textViewSub3"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="วันที่สอน"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewSubDay"
+        android:layout_alignStart="@+id/textViewSub3"
+        android:id="@+id/textViewSub4"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="ชื่อวิชา"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewSub2"
+        android:layout_alignTop="@+id/textViewSubName"
+        android:layout_alignStart="@+id/textViewSub1"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="รายละเอียด"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewNewsDetail"
+        android:textSize="16sp"
+        android:layout_above="@+id/editText"
+        android:layout_alignStart="@+id/textViewSub4"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:text="รหัสวิชา"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewSubID"
+        android:textSize="16sp"
+        android:layout_marginTop="13dp"
+        android:layout_below="@+id/spinnerNewsType"
+        android:layout_toEndOf="@+id/textViewNewsDate" />
+
+    <TextView
+        android:text="ประเภทข่าว"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewNewsType"
+        android:textSize="16sp"
+        android:layout_marginTop="14dp"
+        android:layout_width="150dp"
+        android:layout_below="@+id/AnnounceNewsTitle"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/colorPrimary" />
+
+</RelativeLayout>
