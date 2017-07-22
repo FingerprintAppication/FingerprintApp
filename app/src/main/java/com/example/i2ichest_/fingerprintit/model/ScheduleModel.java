@@ -3,6 +3,7 @@ package com.example.i2ichest_.fingerprintit.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ScheduleModel {
     public class Schedule {
         private long scheduleID;
         private int scheduleNumber;
-        private Date scheduleDate;
+        private String scheduleDate;
         private Time ddd;
         List<PostponeModel.Postpone> postponeList;
         PeriodModel.Period period;
@@ -37,7 +38,7 @@ public class ScheduleModel {
         public Schedule() {
         }
 
-        public Schedule(long scheduleID, int scheduleNumber, Date scheduleDate, Time ddd) {
+        public Schedule(long scheduleID, int scheduleNumber, String scheduleDate, Time ddd) {
             this.scheduleID = scheduleID;
             this.scheduleNumber = scheduleNumber;
             this.scheduleDate = scheduleDate;
@@ -76,11 +77,11 @@ public class ScheduleModel {
             this.scheduleNumber = scheduleNumber;
         }
 
-        public Date getScheduleDate() {
+        public String getScheduleDate() {
             return scheduleDate;
         }
 
-        public void setScheduleDate(Date scheduleDate) {
+        public void setScheduleDate(String scheduleDate) {
             this.scheduleDate = scheduleDate;
         }
 

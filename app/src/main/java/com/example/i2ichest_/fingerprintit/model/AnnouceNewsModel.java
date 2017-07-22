@@ -3,6 +3,8 @@ package com.example.i2ichest_.fingerprintit.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.Date;
+
 public class AnnouceNewsModel {
     private AnnouceNews annouceNews;
     Gson gson = new GsonBuilder().create();
@@ -15,7 +17,7 @@ public class AnnouceNewsModel {
         annouceNews = gson.fromJson(jsonResponse,AnnouceNews.class);
     }
 
-    public AnnouceNews getEnrollment(){
+    public AnnouceNews getAnnouceNews(){
         return annouceNews;
     }
 
