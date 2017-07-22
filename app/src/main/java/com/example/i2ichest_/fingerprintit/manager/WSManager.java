@@ -3,6 +3,7 @@ package com.example.i2ichest_.fingerprintit.manager;
 import android.content.Context;
 import android.util.Log;
 import com.example.i2ichest_.fingerprintit.R;
+import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
 import com.example.i2ichest_.fingerprintit.model.AttendanceModel;
 import com.example.i2ichest_.fingerprintit.model.EnrollmentModel;
 import com.example.i2ichest_.fingerprintit.model.LoginModel;
@@ -160,7 +161,31 @@ public class WSManager {
                 Log.d("ScheduleDateError" , err.toString());
             }
         });
-        taskPost.execute("/annouceNews",periodModel.toJSONString());
+        taskPost.execute("/annouceNews/searchDate",periodModel.toJSONString());
+    }
+
+    public void doAddAnnouceNews(Object object,final WSManagerListener listener){
+        if(!(object instanceof AnnouceNewsModel)){
+            return;
+        }
+
+        AnnouceNewsModel annouceNewsModel = (AnnouceNewsModel) object;
+        annouceNewsModel.toJSONString();
+
+        WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                listener.onComplete(response);
+                Log.d("AddNewsComplete" ,  response.toString());
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+                Log.d("AddNewsError" , err.toString());
+            }
+        });
+        taskPost.execute("/annouceNews",annouceNewsModel.toJSONString());
     }
 
 

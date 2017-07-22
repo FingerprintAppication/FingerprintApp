@@ -6,17 +6,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
+import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
 import com.example.i2ichest_.fingerprintit.model.PeriodModel;
+import com.example.i2ichest_.fingerprintit.model.ScheduleModel;
+import com.example.i2ichest_.fingerprintit.model.TeacherModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AnnouceNewsActivity extends AppCompatActivity {
@@ -33,7 +41,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
 
    /* public void showInformLeave(){
         Intent intent = getIntent();
-        long periodID = intent.getLongExtra("periodID",1L);
+        final long periodID = intent.getLongExtra("periodID",1L);
 
         String subjectName = intent.getStringExtra("subjectName");
         String subjectNumber = intent.getStringExtra("subjectNumber");
@@ -50,7 +58,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
         txtSubType.setText(subjectType);
         txtSubDay.setText(subjectDay);
 
-        Spinner spType = (Spinner) findViewById(R.id.spinnerNewsType);
+        final Spinner spType = (Spinner) findViewById(R.id.spinnerNewsType);
         String[] type = {"ทั่วไป", "งด"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AnnouceNewsActivity.this,android.R.layout.simple_list_item_1,type);
         spType.setAdapter(adapter);
@@ -58,13 +66,13 @@ public class AnnouceNewsActivity extends AppCompatActivity {
         final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this,"Please Wait...","Please wait...",true);
         wsManager = WSManager.getWsManager(this);
 
-        PeriodModel periodModel = new PeriodModel();
+        final PeriodModel periodModel = new PeriodModel();
         periodModel.getPeriod().setPeriodID(periodID);
+        final Spinner spDate = (Spinner) findViewById(R.id.spinnerNewsDate);
         wsManager.doSearchScheduleDate(periodModel, new WSManager.WSManagerListener() {
             @Override
             public void onComplete(Object response) {
                 progress.dismiss();
-                Spinner spDate = (Spinner) findViewById(R.id.spinnerNewsDate);
                 List<String> listDate = new ArrayList<String>();
 
                 try {
@@ -90,9 +98,50 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                 progress.dismiss();
             }
         });
+<<<<<<< HEAD
     }*/
+=======
+>>>>>>> 25476b2c52e5cce582165afa17bc2cc4266903fb
 
-    public void onClickAddAnnouceNews(View view){
-        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
+        Button btn = (Button) findViewById(R.id.buttonAddNews);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText editText = (EditText) findViewById(R.id.editTextNewsDetail);
+
+                AnnouceNewsModel annouceNewsModel = new AnnouceNewsModel();
+                annouceNewsModel.getAnnouceNews().setAnnouceNewsType(spType.getSelectedItem().toString());
+                annouceNewsModel.getAnnouceNews().setDetail(editText.getText().toString());
+
+                TeacherModel teacherModel = new TeacherModel();
+
+                teacherModel.getTeacher().setPersonID(gb.getLoginModel().getLogin().getPerson().getPersonID());
+                annouceNewsModel.getAnnouceNews().setTeacher(teacherModel.getTeacher());
+
+                ScheduleModel scheduleModel = new ScheduleModel();
+                scheduleModel.getSchedule().setPeriod(periodModel.getPeriod());
+                String dateSelected = spDate.getSelectedItem().toString();
+
+                scheduleModel.getSchedule().setScheduleDate(dateSelected);
+                Toast.makeText(AnnouceNewsActivity.this, "Date select " + scheduleModel.getSchedule().getScheduleDate().toString(), Toast.LENGTH_SHORT).show();
+
+
+                final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this,"Please Wait...","Please wait...",true);
+                annouceNewsModel.getAnnouceNews().setSchedule(scheduleModel.getSchedule());
+                wsManager.doAddAnnouceNews(annouceNewsModel, new WSManager.WSManagerListener() {
+                    @Override
+                    public void onComplete(Object response) {
+                        progress.dismiss();
+                        Toast.makeText(AnnouceNewsActivity.this, "Result " +response.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        progress.dismiss();
+                    }
+                });
+
+            }
+        });
     }
 }
