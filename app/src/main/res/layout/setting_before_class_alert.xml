@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:weightSum="1"
     android:padding="20dp"
-    >
+    android:id="@+id/setting"
+    android:layout_height="450dp">
 
     <TimePicker
         android:layout_width="match_parent"
@@ -17,9 +17,9 @@
         android:layout_marginTop="15dp" />
 
     <Switch
-        android:text="Switch"
+        android:text="เปิด/ปิด การแจ้งเตือน"
         android:layout_height="wrap_content"
-        android:id="@+id/switch1"
+        android:id="@+id/onOff"
         android:layout_weight="0.09"
         android:textAlignment="center"
         android:layout_width="300dp"
@@ -27,22 +27,4 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp" />
 
-    <Button
-        android:text="บันทึก"
-        android:layout_height="wrap_content"
-        android:id="@+id/save"
-        android:layout_weight="0.09"
-        android:layout_marginTop="14dp"
-        android:layout_width="150dp"
-        android:layout_below="@+id/switch1"
-        android:layout_alignStart="@+id/switch1" />
-
-    <Button
-        android:text="ยกเลิก"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/button2"
-        android:layout_alignBaseline="@+id/save"
-        android:layout_alignBottom="@+id/save"
-        android:layout_alignParentEnd="true" />
 </RelativeLayout>

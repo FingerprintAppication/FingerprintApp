@@ -1,3 +1,4 @@
+/*
 package com.example.i2ichest_.fingerprintit;
 
 import android.support.v7.app.AppCompatActivity;
@@ -11,3 +12,4 @@ public class InformLeaveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inform_leave);
     }
 }
+*/

@@ -55,17 +55,15 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
         /* Set the alarm to start at 00:00 AM */
         Calendar Time = Calendar.getInstance();
         Time.set(Calendar.SECOND, 0);
-        Time.set(Calendar.MINUTE, 12);
-        Time.set(Calendar.HOUR_OF_DAY, 0);
+        Time.set(Calendar.MINUTE, 25);
+        Time.set(Calendar.HOUR_OF_DAY, 12);
         Log.d("current ",Time.getTime()+"");
         /* Repeating on every day minutes interval */
         Intent intent = new Intent(this, AlarmReceiver.class);
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 1253, intent, PendingIntent.FLAG_UPDATE_CURRENT|  Intent.FILL_IN_DATA);
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),pendingIntent );
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, Time.getTimeInMillis(),pendingIntent );
         Toast.makeText(this, "Alarm Set.", Toast.LENGTH_LONG).show();
         /*Notification*/
 

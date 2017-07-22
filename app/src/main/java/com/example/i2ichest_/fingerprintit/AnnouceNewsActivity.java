@@ -26,12 +26,12 @@ public class AnnouceNewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_annouce_news);
+        //setContentView(R.layout.activity_annouce_news);
         gb = (GlobalClass) this.getApplicationContext();
-        showInformLeave();
+        //showInformLeave();
     }
 
-    public void showInformLeave(){
+   /* public void showInformLeave(){
         Intent intent = getIntent();
         long periodID = intent.getLongExtra("periodID",1L);
 
@@ -90,7 +90,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                 progress.dismiss();
             }
         });
-    }
+    }*/
 
     public void onClickAddAnnouceNews(View view){
         Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
