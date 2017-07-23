@@ -34,14 +34,14 @@ public class AnnouceNewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_annouce_news);
+        setContentView(R.layout.activity_annouce_news);
         gb = (GlobalClass) this.getApplicationContext();
-        //showInformLeave();
+        showInformLeave();
     }
 
-   /* public void showInformLeave(){
-        Intent intent = getIntent();
-        final long periodID = intent.getLongExtra("periodID",1L);
+    public void showInformLeave() {
+        final Intent intent = getIntent();
+        final long periodID = intent.getLongExtra("periodID", 1L);
 
         String subjectName = intent.getStringExtra("subjectName");
         String subjectNumber = intent.getStringExtra("subjectNumber");
@@ -60,10 +60,10 @@ public class AnnouceNewsActivity extends AppCompatActivity {
 
         final Spinner spType = (Spinner) findViewById(R.id.spinnerNewsType);
         String[] type = {"ทั่วไป", "งด"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AnnouceNewsActivity.this,android.R.layout.simple_list_item_1,type);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AnnouceNewsActivity.this, android.R.layout.simple_list_item_1, type);
         spType.setAdapter(adapter);
 
-        final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this,"Please Wait...","Please wait...",true);
+        final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this, "Please Wait...", "Please wait...", true);
         wsManager = WSManager.getWsManager(this);
 
         final PeriodModel periodModel = new PeriodModel();
@@ -77,7 +77,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
 
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
-                    for(int i = 0 ; i < jsonArray.length() ; i++){
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         String[] sp = jsonArray.get(i).toString().split("-");
                         String year = sp[0];
                         String month = sp[1];
@@ -89,7 +89,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(AnnouceNewsActivity.this,android.R.layout.simple_list_item_1,listDate);
+                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(AnnouceNewsActivity.this, android.R.layout.simple_list_item_1, listDate);
                 spDate.setAdapter(adapter2);
             }
 
@@ -98,10 +98,6 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                 progress.dismiss();
             }
         });
-<<<<<<< HEAD
-    }*/
-=======
->>>>>>> 25476b2c52e5cce582165afa17bc2cc4266903fb
 
         Button btn = (Button) findViewById(R.id.buttonAddNews);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -123,16 +119,21 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                 String dateSelected = spDate.getSelectedItem().toString();
 
                 scheduleModel.getSchedule().setScheduleDate(dateSelected);
-                Toast.makeText(AnnouceNewsActivity.this, "Date select " + scheduleModel.getSchedule().getScheduleDate().toString(), Toast.LENGTH_SHORT).show();
 
-
-                final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this,"Please Wait...","Please wait...",true);
+                final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this, "Please Wait...", "Please wait...", true);
                 annouceNewsModel.getAnnouceNews().setSchedule(scheduleModel.getSchedule());
                 wsManager.doAddAnnouceNews(annouceNewsModel, new WSManager.WSManagerListener() {
                     @Override
                     public void onComplete(Object response) {
                         progress.dismiss();
-                        Toast.makeText(AnnouceNewsActivity.this, "Result " +response.toString(), Toast.LENGTH_SHORT).show();
+                        if(response.toString().equals("insert success")){
+                            Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเห็จ", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(AnnouceNewsActivity.this, "ข้อมูลผิดพลาด \nกรุณาตรวจสอบข้อมูลอีกครั้ง", Toast.LENGTH_SHORT).show();
+                        }
+                        Intent intent = new Intent(AnnouceNewsActivity.this,ViewListSubjectActivity.class);
+                        intent.putExtra("personID",gb.getLoginModel().getLogin().getPerson().getPersonID());
+                        startActivity(intent);
                     }
 
                     @Override
@@ -145,3 +146,4 @@ public class AnnouceNewsActivity extends AppCompatActivity {
         });
     }
 }
+

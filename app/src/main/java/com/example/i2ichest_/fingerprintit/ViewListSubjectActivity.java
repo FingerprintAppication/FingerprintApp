@@ -104,7 +104,8 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                         listSubject.add(subjectModel);
                         listSubjectName.add(subjectNumber + " " + subjectName);
                     }
-                        Log.d("TEST LIST SUBJECT " , listSubject.toString());
+                        //Log.d("TEST LIST SUBJECT " , listSubject.toString());
+                    Log.d("TEST *** " , listSubjectName.get(0).toString());
                     lva = new ListViewAdapter(getApplicationContext(),listSubjectName,ViewListSubjectActivity.this);
                     lva.setCountView(listSubjectName.size());
 
@@ -137,8 +138,6 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                Toast.makeText(ViewListSubjectActivity.this, "Search Success ", Toast.LENGTH_SHORT).show();
             }
 
             @Override
