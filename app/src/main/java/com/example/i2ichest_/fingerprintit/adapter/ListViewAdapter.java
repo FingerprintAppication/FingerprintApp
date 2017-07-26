@@ -111,10 +111,10 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                                             Switch onOff = (Switch)alertView.findViewById(R.id.onOff);
                                             TimePicker time = (TimePicker) alertView.findViewById(R.id.timePicker);
                                                 for(PeriodModel.Period period:section.getSection().getPeriodList()){
-                                                    intent = new Intent(parentActivity, AlarmReceiver.class);
-                                                    AlarmManager alm = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
+
                                                     Calendar calendar  = Calendar.getInstance();
                                                     int start = Integer.parseInt(period.getPeriodStartTime().split(":")[0]);
+                                                    final int tiemId = (int)(long)period.getPeriodID();
                                                     if(onOff.isChecked() == true) {
 
 
@@ -147,19 +147,24 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                                                             calendar.set(Calendar.MINUTE, time.getMinute());
                                                             Log.d("LESS THAN  ",start+" == "+time.getHour());
                                                         }
-                                                        final int tiemId = (int)(long)period.getPeriodID();
+                                                        intent = new Intent(parentActivity, AlarmReceiver.class);
+                                                        AlarmManager alm = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         intent.putExtra("study", splitSubject[1]);
                                                         intent.putExtra("period",period.getPeriodID());
-                                                        pendingIntent = PendingIntent.getBroadcast(parentActivity,tiemId, intent, PendingIntent.FLAG_ONE_SHOT | Intent.FILL_IN_DATA);
+                                                        pendingIntent = PendingIntent.getBroadcast(parentActivity,tiemId, intent, PendingIntent.FLAG_UPDATE_CURRENT | Intent.FILL_IN_DATA);
                                                         alm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000, pendingIntent);
-                                                        Toast.makeText(parentActivity, "SET TIME PERIOD ID + "+period.getPeriodID(), Toast.LENGTH_LONG).show();
-                                                        Toast.makeText(parentActivity, "SET TIME "+calendar.getTime(), Toast.LENGTH_LONG).show();
+                                                        //Toast.makeText(parentActivity, "SET TIME PERIOD ID + "+period.getPeriodID(), Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(parentActivity, "ตั้งเวลาการเตือน "+calendar.getTime(), Toast.LENGTH_LONG).show();
                                                         //Log.d("DATE ",calendar.getTime()+"");
                                                     }else{
-                                                        pendingIntent = PendingIntent.getActivity(parentActivity,(int)(long)period.getPeriodID(), intent,PendingIntent.FLAG_UPDATE_CURRENT| Intent.FILL_IN_DATA);
-                                                        pendingIntent.cancel();
-                                                        alm.cancel(pendingIntent);
+                                                        Intent in = new Intent(parentActivity, AlarmReceiver.class);
+                                                        in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        AlarmManager alarmCancel = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
+                                                        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(parentActivity,tiemId, in,PendingIntent.FLAG_UPDATE_CURRENT| Intent.FILL_IN_DATA);
+                                                        pendingIntentCancel.cancel();
+                                                        alarmCancel.cancel(pendingIntentCancel);
+                                                        Toast.makeText(parentActivity, "ยกเลิกการเตือน ", Toast.LENGTH_LONG).show();
                                                     }
                                                 }
                                     dialogInterface.cancel();

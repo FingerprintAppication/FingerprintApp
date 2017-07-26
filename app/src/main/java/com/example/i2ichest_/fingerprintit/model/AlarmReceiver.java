@@ -21,6 +21,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     int endAt = 6000;
     MediaPlayer mp;
 
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
