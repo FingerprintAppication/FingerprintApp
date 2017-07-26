@@ -194,8 +194,6 @@ public class ListViewAdapter extends BaseSwipeAdapter {
         TextView t = (TextView)convertView.findViewById(R.id.position);
         String splitSubject[] = this.list.get(position).split("=");
         t.setText(splitSubject[1]);
-        Log.d("setText",this.list.get(position).toString());
-        t.setText(this.list.get(position).toString());
     }
 
     @Override
