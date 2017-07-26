@@ -98,14 +98,6 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                 progress.dismiss();
             }
         });
-<<<<<<< HEAD
-<<<<<<< HEAD
-    }*/
-/*
-=======
->>>>>>> 25476b2c52e5cce582165afa17bc2cc4266903fb
-=======
->>>>>>> 35b51a2ae4936ee3e7ab747bc281893c7b5a4fdb
 
         Button btn = (Button) findViewById(R.id.buttonAddNews);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +144,6 @@ public class AnnouceNewsActivity extends AppCompatActivity {
 
             }
         });
-    }*/
+    }
 }
 

@@ -26,10 +26,6 @@
         android:layout_below="@+id/timePicker"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp" />
-<<<<<<< HEAD
-
 
 </RelativeLayout>
-=======
-    </RelativeLayout>
->>>>>>> 35b51a2ae4936ee3e7ab747bc281893c7b5a4fdb
+

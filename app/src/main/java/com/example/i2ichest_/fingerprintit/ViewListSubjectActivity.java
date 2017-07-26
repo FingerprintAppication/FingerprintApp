@@ -103,12 +103,7 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                     Log.d("TEST *** " , listSubjectName.get(0).toString());
                     lva = new ListViewAdapter(getApplicationContext(),listSubjectName,ViewListSubjectActivity.this);
                     lva.setCountView(listSubjectName.size());
-
                     final ListView listView = (ListView) findViewById(R.id.listViewSubject);
-<<<<<<< HEAD
-                    //ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewListSubjectActivity.this,android.R.layout.simple_selectable_list_item,listSubjectName);
-=======
->>>>>>> 35b51a2ae4936ee3e7ab747bc281893c7b5a4fdb
                     lva.setMode(Attributes.Mode.Single);
                     listView.setAdapter(lva);
 
