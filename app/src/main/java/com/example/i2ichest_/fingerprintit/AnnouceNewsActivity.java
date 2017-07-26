@@ -59,7 +59,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
         txtSubDay.setText(subjectDay);
 
         final Spinner spType = (Spinner) findViewById(R.id.spinnerNewsType);
-        String[] type = {"ทั่วไป", "งด"};
+        String[] type = {"ทั่วไป", "ยกเลิกคาบเรียน"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AnnouceNewsActivity.this, android.R.layout.simple_list_item_1, type);
         spType.setAdapter(adapter);
 
@@ -126,7 +126,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(Object response) {
                         progress.dismiss();
-                        if(response.toString().equals("insert success")){
+                        if(response.toString().equals("1")){
                             Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเร็จ", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(AnnouceNewsActivity.this, "ข้อมูลผิดพลาด \nกรุณาตรวจสอบข้อมูลอีกครั้ง", Toast.LENGTH_SHORT).show();

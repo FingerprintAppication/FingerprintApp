@@ -59,8 +59,8 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                 progress.dismiss();
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
-                    final List<SubjectModel> listSubject = new ArrayList<SubjectModel>();
-                    List<String> listSubjectName = new ArrayList<String>();
+                    final List<SubjectModel> listSubject = new ArrayList<>();
+                    List<String> listSubjectName = new ArrayList<>();
 
                     for (int i = 0 ; i < jsonArray.length() ; i++){
                         JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
