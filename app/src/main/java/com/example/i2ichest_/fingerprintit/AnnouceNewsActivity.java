@@ -36,10 +36,10 @@ public class AnnouceNewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annouce_news);
         gb = (GlobalClass) this.getApplicationContext();
-        showInformLeave();
+        showAnnouceNews();
     }
 
-    public void showInformLeave() {
+    public void showAnnouceNews() {
         final Intent intent = getIntent();
         final long periodID = intent.getLongExtra("periodID", 1L);
 
@@ -127,7 +127,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                     public void onComplete(Object response) {
                         progress.dismiss();
                         if(response.toString().equals("insert success")){
-                            Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเห็จ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเร็จ", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(AnnouceNewsActivity.this, "ข้อมูลผิดพลาด \nกรุณาตรวจสอบข้อมูลอีกครั้ง", Toast.LENGTH_SHORT).show();
                         }

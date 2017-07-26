@@ -42,20 +42,15 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
         showListSubject();
     }
 
-    public LoginModel.Login getUserData(){
-        return gb.getLoginModel().getLogin();
-    }
 
     public void showListSubject(){
-        Log.d("UserData", getUserData().toString());
-
         final ProgressDialog progress = ProgressDialog.show(ViewListSubjectActivity.this,"Please Wait...","Please wait...",true);
         wsManager = WSManager.getWsManager(this);
 
-        PersonModel personModel = new PersonModel();
-
         Intent intent = getIntent();
         Long pID = intent.getLongExtra("personID",1L);
+
+        PersonModel personModel = new PersonModel();
         personModel.getPerson().setPersonID(pID);
 
         wsManager.doSearchSubject(personModel, new WSManager.WSManagerListener() {
@@ -109,16 +104,13 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                     lva = new ListViewAdapter(getApplicationContext(),listSubjectName,ViewListSubjectActivity.this);
                     lva.setCountView(listSubjectName.size());
 
-
                     final ListView listView = (ListView) findViewById(R.id.listViewSubject);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewListSubjectActivity.this,android.R.layout.simple_selectable_list_item,listSubjectName);
                     lva.setMode(Attributes.Mode.Single);
                     listView.setAdapter(lva);
 
                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                        @Override
                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
                            Intent intent = new Intent(ViewListSubjectActivity.this,PeriodActivity.class);
                            intent.putExtra("subjectID", listSubject.get(i).getSubject().getSubjectID());
                            intent.putExtra("subjectNumber", listSubject.get(i).getSubject().getSubjectNumber());
