@@ -42,6 +42,7 @@
         <activity android:name=".PeriodActivity" />
         <activity android:name=".ViewAttendanceForTeacherActivity" />
         <activity android:name=".SelectStudentParentActivity" />
+
         <activity android:name=".InformLeaveActivity" />
         <activity android:name=".AnnouceNewsActivity"></activity>
 

@@ -192,8 +192,13 @@ public class ListViewAdapter extends BaseSwipeAdapter {
     @Override
     public void fillValues(int position, View convertView) {
         TextView t = (TextView)convertView.findViewById(R.id.position);
+<<<<<<< HEAD
         String splitSubject[] = this.list.get(position).split("=");
         t.setText(splitSubject[1]);
+=======
+        Log.d("setText",this.list.get(position).toString());
+        t.setText(this.list.get(position).toString());
+>>>>>>> 35b51a2ae4936ee3e7ab747bc281893c7b5a4fdb
     }
 
     @Override

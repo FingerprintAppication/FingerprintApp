@@ -57,7 +57,6 @@ public class PeriodActivity extends AppCompatActivity {
             @Override
             public void onComplete(final Object response) {
                 progress.dismiss();
-                Toast.makeText(PeriodActivity.this, "CONNECT SUCCESS", Toast.LENGTH_SHORT).show();
 
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
