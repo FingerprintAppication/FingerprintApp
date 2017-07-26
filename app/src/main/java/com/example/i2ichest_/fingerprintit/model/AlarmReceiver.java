@@ -31,7 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Handler handler = new Handler();
         handler.postDelayed(stopPlayerTask, endAt);
 
-        Toast.makeText(context, "ALARM", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "ALARM Period "+intent.getExtras().get("period"), Toast.LENGTH_LONG).show();
         Log.d("alarm alert!","Ok");
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         mBuilder.setContentTitle("เตือนวิชาเรียนวันนี้");

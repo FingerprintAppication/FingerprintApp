@@ -11,19 +11,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.example.i2ichest_.fingerprintit.R;
+import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.AlarmReceiver;
+import com.example.i2ichest_.fingerprintit.model.PeriodModel;
+import com.example.i2ichest_.fingerprintit.model.SectionModel;
+import com.example.i2ichest_.fingerprintit.model.SubjectModel;
 
-import java.sql.Time;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -32,6 +38,11 @@ public class ListViewAdapter extends BaseSwipeAdapter {
     private Context mContext;
     int countView = 0;
     private Activity parentActivity;
+    WSManager wsManager;
+    PendingIntent pendingIntent;
+    Intent intent;
+    List<String> showTimeSubject;
+    String showTimeToStudy;
 
     public ListViewAdapter(Context mContext,List<String> lists,Activity parentActivity) {
         this.mContext = mContext;
@@ -54,9 +65,9 @@ public class ListViewAdapter extends BaseSwipeAdapter {
 
     @Override
     public View generateView(int position, final ViewGroup parent) {
+        final String splitSubject[] = this.list.get(position).split("=");
         View v = LayoutInflater.from(mContext).inflate(R.layout.listview_item, null);
-        v.findViewById(R.id.setAlarm).setTag(list.get(position));
-
+        v.findViewById(R.id.setAlarm).setTag(splitSubject[0]);
         SwipeLayout swipeLayout = (SwipeLayout)v.findViewById(getSwipeLayoutResourceId(position));
         swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
@@ -70,61 +81,119 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                 Toast.makeText(mContext, "DoubleClick", Toast.LENGTH_SHORT).show();
             }
         });
+
         v.findViewById(R.id.setAlarm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String subject = view.getTag().toString();
-
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(parentActivity);
-                final View v = LayoutInflater.from(mContext).inflate(R.layout.setting_before_class_alert, null);
-                alertDialog.setPositiveButton("ยืนยัน", new DialogInterface.OnClickListener() {
+                final View alertView = LayoutInflater.from(mContext).inflate(R.layout.setting_before_class_alert, null);
+                wsManager = WSManager.getWsManager(parentActivity);
+                SubjectModel subjectModel = new SubjectModel();
+                subjectModel.getSubject().setSubjectID(Long.parseLong(subject));
+                wsManager.doSearchPeriod(subjectModel, new WSManager.WSManagerListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Switch onOff = (Switch)v.findViewById(R.id.onOff);
-                        TimePicker time = (TimePicker) v.findViewById(R.id.timePicker);
+                    public void onComplete(Object response) {
+                        try {
+                            showTimeToStudy="";
+                            JSONArray jsonArray = new JSONArray(response.toString());
+                            JSONObject jsonSection = new JSONObject(jsonArray.get(0).toString());
+                            final SectionModel section = new SectionModel(jsonSection.toString());
 
-                        Toast.makeText(mContext, "click time picker = "+time.getHour()+" "+time.getMinute()+" on/ off "+onOff.isChecked(), Toast.LENGTH_SHORT).show();
-                        Calendar calendar = Calendar.getInstance();
-                        //int days = Calendar.SUNDAY + (7 - calendar.get(Calendar.DAY_OF_WEEK));
-                        //calendar.add(Calendar.DATE,days);
-                        calendar.set(Calendar.DAY_OF_WEEK,3);
-                        calendar.set(Calendar.HOUR_OF_DAY,time.getHour());
-                        calendar.set(Calendar.MINUTE,time.getMinute());
-                        calendar.set(Calendar.MILLISECOND,0);
+                            for(PeriodModel.Period period:section.getSection().getPeriodList()){
+                                    showTimeToStudy += "วัน "+period.getDayOfWeek()+" "+period.getPeriodStartTime()+"-"+period.getPeriodEndTime()+"\n";
+                            }
 
-                        Intent intent = new Intent(parentActivity,AlarmReceiver.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("study",subject);
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(parentActivity, 0, intent, PendingIntent.FLAG_ONE_SHOT| Intent.FILL_IN_DATA);
-                        AlarmManager alm = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
-                        alm.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),1000,pendingIntent);
-                        Log.d("get in button","===========? "+calendar.getTimeInMillis());
+                            Toast.makeText(parentActivity,showTimeToStudy, Toast.LENGTH_LONG).show();
+                            alertDialog.setPositiveButton("ยืนยัน", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                            Switch onOff = (Switch)alertView.findViewById(R.id.onOff);
+                                            TimePicker time = (TimePicker) alertView.findViewById(R.id.timePicker);
+                                                for(PeriodModel.Period period:section.getSection().getPeriodList()){
+                                                    intent = new Intent(parentActivity, AlarmReceiver.class);
+                                                    AlarmManager alm = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
+                                                    Calendar calendar  = Calendar.getInstance();
+                                                    int start = Integer.parseInt(period.getPeriodStartTime().split(":")[0]);
+                                                    if(onOff.isChecked() == true) {
 
 
-                        dialogInterface.cancel();
+                                                        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+                                                        Log.d("Days of week   ",dayOfWeek+" == "+setDateSubject(period.getDayOfWeek())+" GET NUM OF WEEK "+Calendar.SUNDAY);
+                                                        if(dayOfWeek == setDateSubject(period.getDayOfWeek())){
+                                                            if(calendar.get(Calendar.HOUR_OF_DAY)<start){
+                                                                //calendar = Calendar.getInstance();
+                                                               // Log.d("start and getHour ",start+" == "+time.getHour());
+                                                                calendar.set(Calendar.HOUR_OF_DAY, start - time.getHour());
+                                                                calendar.set(Calendar.MINUTE, time.getMinute());
+                                                                Log.d("EQULAS  ",start+" == "+time.getHour());
+                                                            }else {
+                                                                //calendar = Calendar.getInstance();
+                                                                calendar.add(Calendar.DATE,7);
+                                                                calendar.set(Calendar.HOUR_OF_DAY, start - time.getHour());
+                                                                calendar.set(Calendar.MINUTE, time.getMinute());
+                                                            }
+                                                        }else if (dayOfWeek > setDateSubject(period.getDayOfWeek())){
+                                                            //calendar = Calendar.getInstance();
+                                                            calendar.add(Calendar.DATE,7-(dayOfWeek - setDateSubject(period.getDayOfWeek())));
+                                                            calendar.set(Calendar.HOUR_OF_DAY, start - time.getHour());
+                                                            calendar.set(Calendar.MINUTE, time.getMinute());
+                                                            Log.d("MORE THAN  ",start+" == "+time.getHour());
+
+                                                        }else if (dayOfWeek < setDateSubject(period.getDayOfWeek())) {
+                                                            //calendar = Calendar.getInstance();
+                                                            calendar.add(Calendar.DATE,(setDateSubject(period.getDayOfWeek())-dayOfWeek));
+                                                            calendar.set(Calendar.HOUR_OF_DAY, start - time.getHour());
+                                                            calendar.set(Calendar.MINUTE, time.getMinute());
+                                                            Log.d("LESS THAN  ",start+" == "+time.getHour());
+                                                        }
+                                                        final int tiemId = (int)(long)period.getPeriodID();
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        intent.putExtra("study", splitSubject[1]);
+                                                        intent.putExtra("period",period.getPeriodID());
+                                                        pendingIntent = PendingIntent.getBroadcast(parentActivity,tiemId, intent, PendingIntent.FLAG_ONE_SHOT | Intent.FILL_IN_DATA);
+                                                        alm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000, pendingIntent);
+                                                        Toast.makeText(parentActivity, "SET TIME PERIOD ID + "+period.getPeriodID(), Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(parentActivity, "SET TIME "+calendar.getTime(), Toast.LENGTH_LONG).show();
+                                                        //Log.d("DATE ",calendar.getTime()+"");
+                                                    }else{
+                                                        pendingIntent = PendingIntent.getActivity(parentActivity,(int)(long)period.getPeriodID(), intent,PendingIntent.FLAG_UPDATE_CURRENT| Intent.FILL_IN_DATA);
+                                                        pendingIntent.cancel();
+                                                        alm.cancel(pendingIntent);
+                                                    }
+                                                }
+                                    dialogInterface.cancel();
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        alertDialog.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                        alertDialog.setView(alertView);
+                        AlertDialog alert = alertDialog.create();
+                        alert.show();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
                     }
                 });
-                alertDialog.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                alertDialog.setView(v);
-                AlertDialog alert = alertDialog.create();
-                alert.show();
-               // Toast.makeText(mContext, "click alarm "+view.getTag().toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
         return v;
     }
 
     @Override
     public void fillValues(int position, View convertView) {
         TextView t = (TextView)convertView.findViewById(R.id.position);
-        t.setText(this.list.get(position));
+        String splitSubject[] = this.list.get(position).split("=");
+        t.setText(splitSubject[1]);
     }
 
     @Override
@@ -140,5 +209,24 @@ public class ListViewAdapter extends BaseSwipeAdapter {
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+
+    public int setDateSubject (String date) {
+        int numberDay = 1;
+        if("จันทร์".equals(date)){
+            numberDay = 2;
+        }else if ("อังคาร".equals(date)) {
+            numberDay = 3;
+        }else if ("พุธ".equals(date)) {
+            numberDay = 4;
+        }else if ("พฤหัสบดี".equals(date)) {
+            numberDay = 5;
+        }else if ("ศุกร์".equals(date)) {
+            numberDay = 6;
+        }else if ("เสาร์".equals(date)) {
+            numberDay = 7;
+        }
+        return numberDay;
     }
 }

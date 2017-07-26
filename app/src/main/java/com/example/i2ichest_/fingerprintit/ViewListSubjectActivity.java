@@ -102,7 +102,7 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                         subjectModel.getSubject().setMajor(majorModel.getMajor());
 
                         listSubject.add(subjectModel);
-                        listSubjectName.add(subjectNumber + " " + subjectName);
+                        listSubjectName.add(subjectID+"="+subjectNumber + " " + subjectName);
                     }
                         Log.d("TEST LIST SUBJECT " , listSubject.toString());
                     lva = new ListViewAdapter(getApplicationContext(),listSubjectName,ViewListSubjectActivity.this);
@@ -110,7 +110,7 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
 
 
                     final ListView listView = (ListView) findViewById(R.id.listViewSubject);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewListSubjectActivity.this,android.R.layout.simple_selectable_list_item,listSubjectName);
+                    //ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewListSubjectActivity.this,android.R.layout.simple_selectable_list_item,listSubjectName);
                     lva.setMode(Attributes.Mode.Single);
                     listView.setAdapter(lva);
 

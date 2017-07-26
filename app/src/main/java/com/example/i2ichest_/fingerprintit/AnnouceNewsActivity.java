@@ -100,6 +100,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
         });
 <<<<<<< HEAD
     }*/
+/*
 =======
 >>>>>>> 25476b2c52e5cce582165afa17bc2cc4266903fb
 
@@ -143,5 +144,6 @@ public class AnnouceNewsActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 }
+

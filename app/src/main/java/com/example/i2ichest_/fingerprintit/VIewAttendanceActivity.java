@@ -56,25 +56,8 @@ public class VIewAttendanceActivity extends AppCompatActivity {
             @Override
             public void onComplete(Object response) {
                 List<AttendanceModel.Attendance> listAttendance = (List<AttendanceModel.Attendance>) response;
-                Log.d("##SIZE ",listAttendance.size()+" $$$");
-                int come= 0;
-                int late =0;
-                int absence = 0;
-                int inform = 0;
-                int total;
-                for(AttendanceModel.Attendance att:listAttendance){
-                    if("มา".equals(att.getStatus())){
-                        come++;
-                    }else if("สาย".equals(att.getStatus())) {
-                        late++;
-                    }else if("ขาด".equals(att.getStatus())) {
-                        absence++;
-                    }else if("ลา".equals(att.getStatus())) {
-                        inform++;
-                    } else {
+                List<Integer> status = Attendance(listAttendance);
 
-                    }
-                }
 
                 TableLayout mTable = (TableLayout) findViewById(R.id.attendaceTable);
                 TableRow mRow = (TableRow) mTable.getChildAt(1);
@@ -83,10 +66,10 @@ public class VIewAttendanceActivity extends AppCompatActivity {
                 TextView absenceTxt = (TextView)mRow.getChildAt(2);
                 TextView informTxt = (TextView)mRow.getChildAt(3);
                 /*set attendance time*/
-                comeTxt.setText(come+"");
-                lateTxt.setText(late+"");
-                absenceTxt.setText(absence+"");
-                informTxt.setText(inform+"");
+                comeTxt.setText(status.get(0).toString());
+                lateTxt.setText(status.get(1).toString());
+                absenceTxt.setText(status.get(2).toString());
+                informTxt.setText(status.get(3).toString());
 
                 Bundle b = getIntent().getExtras();
                 String[] array=b.getStringArray("sub");
@@ -104,6 +87,35 @@ public class VIewAttendanceActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public List<Integer> Attendance (List<AttendanceModel.Attendance> listAttendance) {
+        int come= 0;
+        int late =0;
+        int absence = 0;
+        int inform = 0;
+        int total = 0;
+        List<Integer> list = new ArrayList<Integer>();
+        for(AttendanceModel.Attendance att:listAttendance) {
+            if ("มา".equals(att.getStatus())) {
+                come++;
+            } else if ("สาย".equals(att.getStatus())) {
+                late++;
+            } else if ("ขาด".equals(att.getStatus())) {
+                absence++;
+            } else if ("ลา".equals(att.getStatus())) {
+                inform++;
+            } else {
+
+            }
+        }
+        list.add(come);
+        list.add(late);
+        list.add(absence);
+        list.add(inform);
+        list.add(total);
+        return list;
+
     }
 
 }

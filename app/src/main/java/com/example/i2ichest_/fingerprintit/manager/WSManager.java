@@ -230,15 +230,9 @@ public class WSManager {
                     JSONArray c = jsonObj.getJSONArray("attendace");
                     for(int x=0;x<c.length();x++){
                         JSONObject obj = c.getJSONObject(x);
-                        AttendanceModel att = new AttendanceModel();
-                        Long attendanceID = Long.parseLong(obj.getString("attendanceID"));
-                        String status = obj.getString("status");
-                        String statusDescription = obj.getString("statusDescription");
-                        att.getAttendance().setAttendanceID(attendanceID);
-                        att.getAttendance().setStatus(status);
-                        att.getAttendance().setStatusDescription(statusDescription);
+                        AttendanceModel att = new AttendanceModel(obj.toString());
                         listAttendance.add(att.getAttendance());
-                        Log.d("Attendance status ###",status+" ####");
+                        Log.d("Attendance status ###",att.getAttendance().getStatus()+" ####");
                     }
 
 
