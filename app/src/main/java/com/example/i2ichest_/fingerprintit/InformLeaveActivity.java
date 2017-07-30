@@ -160,9 +160,9 @@ public class InformLeaveActivity extends AppCompatActivity {
                 boolean check = pattern.matcher(informLeaveModel.getInformLeave().getCaseDetail()).matches();
                 if(!check){
                     Toast.makeText(InformLeaveActivity.this,"โปรดกรอกคำอธิบาย 5 ตัวอักษรขึ้นไป",Toast.LENGTH_SHORT).show();
-                } else if(informLeaveModel.getInformLeave().getInformType().equals("ลาป่วย")&& informLeaveModel.getInformLeave().getSupportDocument()=="") {
+                } /*else if(informLeaveModel.getInformLeave().getInformType().equals("ลาป่วย")&& informLeaveModel.getInformLeave().getSupportDocument()=="") {
                     Toast.makeText(InformLeaveActivity.this,"โปรดเลือกรูปภาพ",Toast.LENGTH_SHORT).show();
-                }else{
+                }*/else{
                     final ProgressDialog progress = ProgressDialog.show(InformLeaveActivity.this,"Please Wait...","Please wait...",true);
                     wsManager.informLeave(informLeaveModel, new WSManager.WSManagerListener() {
                         @Override
