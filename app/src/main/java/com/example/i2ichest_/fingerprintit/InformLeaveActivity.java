@@ -1,6 +1,7 @@
 
 package com.example.i2ichest_.fingerprintit;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -167,7 +168,20 @@ public class InformLeaveActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(Object response) {
                             progress.dismiss();
-                            Toast.makeText(InformLeaveActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+                            AlertDialog alertDialog = new AlertDialog.Builder(InformLeaveActivity.this).create();
+                            //alertDialog.setView(alertView);
+                            if("ลาเรียนสำเร็จ".equals(response.toString())){
+                                alertDialog.setIcon(getResources().getDrawable(R.drawable.success));
+                                alertDialog.setTitle("ลาเรียน");
+                                alertDialog.setMessage(response.toString());
+                            }else {
+                                alertDialog.setIcon(getResources().getDrawable(R.drawable.duplicated));
+                                alertDialog.setTitle("ลาเรียน");
+                                alertDialog.setMessage(response.toString());
+                            }
+
+                            alertDialog.show();
+                            //Toast.makeText(InformLeaveActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
