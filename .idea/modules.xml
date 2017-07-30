@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FingerprintApp.iml" filepath="$PROJECT_DIR$/FingerprintApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PhotoUtil/PhotoUtil.iml" filepath="$PROJECT_DIR$/PhotoUtil/PhotoUtil.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sun.misc.BASE64Decoder/sun.misc.BASE64Decoder.iml" filepath="$PROJECT_DIR$/sun.misc.BASE64Decoder/sun.misc.BASE64Decoder.iml" />
     </modules>
   </component>
 </project>

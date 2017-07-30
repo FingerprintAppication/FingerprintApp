@@ -134,6 +134,13 @@ public class PeriodActivity extends AppCompatActivity {
                         txtRoom.setText("ห้อง : " + listPeriod.get(g).getRoom().getRoomName());
                         txtBuild.setText("ตึก : " +listPeriod.get(g).getRoom().getBuilding().getBuildingName());
 
+
+
+                        final Long periodForAttendance = listPeriod.get(g).getPeriodID();
+                        final String time = listPeriod.get(g).getPeriodStartTime() + " - " + listPeriod.get(g).getPeriodEndTime();
+                        final String type = listPeriod.get(g).getStudyType();
+                        final String room = listPeriod.get(g).getRoom().getRoomName();
+                        /****When we click inform leave button*****/
                         if(gb.getTypeUser().equals("teacher")){
                             Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
                             btn.setText("ประกาศข่าว");
@@ -151,12 +158,27 @@ public class PeriodActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             });
+                        }else if(gb.getTypeUser().equals("student")) {
+                            Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
+                            btn.setText("ลาเรียน");
+                            btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(PeriodActivity.this, InformLeaveActivity.class);
+                                    intent.putExtra("subject", subjectNumber);
+                                    intent.putExtra("periodId", periodForAttendance.toString());
+                                    intent.putExtra("studentID",gb.getLoginModel().getLogin().getUsername());
+                                    intent.putExtra("studentName",gb.getLoginModel().getLogin().getPerson().getTitle()+
+                                            gb.getLoginModel().getLogin().getPerson().getFirstName()+" "+
+                                            gb.getLoginModel().getLogin().getPerson().getLastName());
+                                    startActivity(intent);
+                                }
+                            });
+                        }else {
+                            Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
+                            btn.setVisibility(View.INVISIBLE);
                         }
 
-                        final Long periodForAttendance = listPeriod.get(g).getPeriodID();
-                        final String time = listPeriod.get(g).getPeriodStartTime() + " - " + listPeriod.get(g).getPeriodEndTime();
-                        final String type = listPeriod.get(g).getStudyType();
-                        final String room = listPeriod.get(g).getRoom().getRoomName();
 
                         /*receive data and send to ws*/
                         viewAttendance.setOnClickListener(new View.OnClickListener() {
@@ -215,4 +237,6 @@ public class PeriodActivity extends AppCompatActivity {
 
 
     }
+
+
 }

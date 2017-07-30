@@ -6,6 +6,7 @@ import com.example.i2ichest_.fingerprintit.R;
 import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
 import com.example.i2ichest_.fingerprintit.model.AttendanceModel;
 import com.example.i2ichest_.fingerprintit.model.EnrollmentModel;
+import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
 import com.example.i2ichest_.fingerprintit.model.LoginModel;
 import com.example.i2ichest_.fingerprintit.model.ParentModel;
 import com.example.i2ichest_.fingerprintit.model.PeriodModel;
@@ -290,6 +291,32 @@ public class WSManager {
             }
         });
         task.execute("/attendanceTeacher?section="+splitReceive[0]+"&period="+splitReceive[1],"##");
+    }
+
+
+    public void informLeave(Object object,final WSManagerListener listener){
+        if(!(object instanceof InformLeaveModel)){
+            return;
+        }
+        InformLeaveModel informLeaveModel = (InformLeaveModel)object;
+        Log.d("informJSON ",informLeaveModel.toJSONString()+"");
+        WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+
+
+
+                listener.onComplete(response);
+
+
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+            }
+        });
+        task.execute(context.getString(R.string.informleave),informLeaveModel.toJSONString());
     }
 
 }

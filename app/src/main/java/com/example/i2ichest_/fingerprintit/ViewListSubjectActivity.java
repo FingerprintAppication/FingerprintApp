@@ -99,8 +99,8 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                         listSubject.add(subjectModel);
                         listSubjectName.add(subjectID+"="+subjectNumber + " " + subjectName);
                     }
-                        //Log.d("TEST LIST SUBJECT " , listSubject.toString());
-                    Log.d("TEST *** " , listSubjectName.get(0).toString());
+                    //Log.d("TEST LIST SUBJECT " , listSubject.toString());
+                    //Log.d("TEST *** " , listSubjectName.get(0).toString());
                     lva = new ListViewAdapter(getApplicationContext(),listSubjectName,ViewListSubjectActivity.this);
                     lva.setCountView(listSubjectName.size());
                     final ListView listView = (ListView) findViewById(R.id.listViewSubject);

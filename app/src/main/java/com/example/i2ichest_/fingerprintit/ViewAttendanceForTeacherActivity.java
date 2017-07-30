@@ -1,5 +1,6 @@
 package com.example.i2ichest_.fingerprintit;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,9 +38,11 @@ public class ViewAttendanceForTeacherActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String subjectName = intent.getExtras().getString("subjectName");
         receiveSectionPeriod = intent.getExtras().getString("sectionPeriod");
+        final ProgressDialog progress = ProgressDialog.show(this,"Please Wait...","Please wait...",true);
         wsManager.studentAttendaceForTeacher(receiveSectionPeriod, new WSManager.WSManagerListener() {
             @Override
             public void onComplete(Object response) {
+                progress.dismiss();
                 /****map json data from Ws***/
                 listEnrollment = new ArrayList<EnrollmentModel.Enrollment>();
                 Log.d("all Attendance ",response.toString());
@@ -70,7 +73,7 @@ public class ViewAttendanceForTeacherActivity extends AppCompatActivity {
                         TextView absence = (TextView) row.findViewById(R.id.absence);
                         TextView inform = (TextView) row.findViewById(R.id.inform);
                         TextView total = (TextView) row.findViewById(R.id.score);
-                        TextView student = (TextView)view.findViewById(R.id.studentName);
+                        TextView student = (TextView)view.findViewById(R.id.studentNameTxt);
                         /***set data into TableLayout***/
                         come.setText(status.get(0).toString());
                         late.setText(status.get(1).toString());

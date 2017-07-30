@@ -107,7 +107,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/studentName"
+        android:id="@+id/studentNameTxt"
         android:textSize="20dp"
         android:textStyle="normal|bold"
         android:textAlignment="center" />
