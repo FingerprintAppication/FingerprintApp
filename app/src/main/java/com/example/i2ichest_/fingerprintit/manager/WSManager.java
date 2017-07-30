@@ -228,7 +228,7 @@ public class WSManager {
                 try {
                     JSONObject jsonObj = new JSONObject(response);
                     JSONArray c = jsonObj.getJSONArray("attendace");
-                    for(int x=0;x<c.length();x++){
+                    for(int x = 0 ; x<c.length() ; x++){
                         JSONObject obj = c.getJSONObject(x);
                         AttendanceModel att = new AttendanceModel(obj.toString());
                         listAttendance.add(att.getAttendance());
@@ -259,9 +259,6 @@ public class WSManager {
     }
 
     public void findTeacher(Object object,final WSManagerListener listener){
-
-
-
         WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
             @Override
             public void onComplete(String response) {

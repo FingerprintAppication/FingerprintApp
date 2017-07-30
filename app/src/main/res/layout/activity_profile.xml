@@ -89,30 +89,39 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
+    <ImageView
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/imageProfile"
+        android:layout_height="100dp"
+        android:layout_width="100dp"
+        android:layout_below="@+id/textProfile"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:id="@+id/textProfileTitle"
+        android:text="ชื่อ-สกุล"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/imageProfile"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="ประวัติการลา"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonViewInform"
+        android:layout_above="@+id/buttonLogout"
+        android:layout_alignParentStart="true" />
+
     <Button
         android:text="รายชื่อวิชา"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/buttonViewListSubject"
         android:onClick="onClickBtnViewListSubject"
-        android:layout_above="@+id/buttonLogout"
+        android:layout_above="@+id/buttonViewInform"
         android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:id="@+id/textProfileTitle"
-        android:text="ชื่อ-สกุล"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
-
-    <ImageView
-        app:srcCompat="@mipmap/ic_launcher"
-        android:id="@+id/imageProfile"
-        android:layout_height="150dp"
-        android:layout_width="150dp"
-        android:layout_below="@+id/textProfile"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp" />
 </RelativeLayout>
