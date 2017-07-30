@@ -1,5 +1,6 @@
 package com.example.i2ichest_.fingerprintit;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,12 +11,7 @@ import android.widget.TextView;
 
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.AttendanceModel;
-import com.example.i2ichest_.fingerprintit.model.EnrollmentModel;
 import com.example.i2ichest_.fingerprintit.model.PeriodModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +27,7 @@ public class VIewAttendanceActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         gb = (GlobalClass) this.getApplicationContext();
 
-        TextView studentName = (TextView)findViewById(R.id.studentName);
+        TextView studentName = (TextView)findViewById(R.id.studentNameTxt);
         String title = null;
         String name = null;
         if(gb.getTypeUser().equals("parent")){
@@ -51,10 +47,12 @@ public class VIewAttendanceActivity extends AppCompatActivity {
         period.getPeriod().setStudyType(Long.toString(gb.getLoginModel().getLogin().getPerson().getPersonID()));
         /*this line below this is setting subjectNumber*/
         period.getPeriod().setComingTime(forAttendances[2]);
+        final ProgressDialog progress = ProgressDialog.show(this,"Please Wait...","Please wait...",true);
         wsManager.getEnrollment(period, new WSManager.WSManagerListener() {
 
             @Override
             public void onComplete(Object response) {
+                progress.dismiss();
                 List<AttendanceModel.Attendance> listAttendance = (List<AttendanceModel.Attendance>) response;
                 List<Integer> status = Attendance(listAttendance);
 

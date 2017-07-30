@@ -13,6 +13,10 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <!-- To permission access storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".GlobalClass"
         android:allowBackup="true"
@@ -43,7 +47,9 @@
         <activity android:name=".ViewAttendanceForTeacherActivity" />
         <activity android:name=".SelectStudentParentActivity" />
 
-        <activity android:name=".InformLeaveActivity" />
+        <activity android:name=".InformLeaveActivity" >
+
+        </activity>
         <activity android:name=".AnnouceNewsActivity"></activity>
 
     </application>

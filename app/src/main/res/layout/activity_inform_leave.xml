@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_inform_leave"
     android:layout_width="match_parent"
@@ -9,5 +10,163 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.i2ichest_.fingerprintit.InformLeaveActivity">
+
+    <TextView
+        android:text="ประเภทการลา"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:id="@+id/textView4" />
+
+    <Spinner
+        android:layout_height="wrap_content"
+        android:id="@+id/typeOfInform"
+        android:layout_width="200dp"
+        android:layout_alignTop="@+id/textView4"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="38dp"
+        android:entries="@array/inform" />
+
+    <TextView
+        android:text="ชื่อ-สกุล"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/typeOfInform"
+        android:layout_alignStart="@+id/textView4" />
+
+    <TextView
+        android:text="รหัส"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:id="@+id/studentId"
+        android:layout_below="@+id/studentNameTxt"
+        android:layout_alignStart="@+id/textView5" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/studentNameTxt"
+        android:layout_marginStart="10dp"
+        android:layout_alignBaseline="@+id/textView5"
+        android:layout_alignBottom="@+id/textView5"
+        android:layout_alignStart="@+id/typeOfInform" />
+
+    <TextView
+        android:text="วิชา"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/studentIdTxt"
+        android:layout_alignStart="@+id/studentId"
+        android:layout_marginTop="24dp"
+        android:id="@+id/textView21" />
+
+    <TextView
+        android:text="วันที่ลา"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/textView21"
+        android:id="@+id/textView22" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView22"
+        android:layout_alignStart="@+id/subjectTxt"
+        android:id="@+id/dateOfInform" />
+
+    <TextView
+        android:text="คำอธิบาย"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateOfInform"
+        android:layout_alignStart="@+id/textView22"
+        android:layout_marginTop="30dp"
+        android:id="@+id/textView23" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:layout_alignTop="@+id/textView23"
+        android:layout_alignEnd="@+id/subjectTxt"
+        android:id="@+id/description"
+        android:layout_height="60dp" />
+
+    <TextView
+        android:text="รูปภาพ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description"
+        android:layout_alignStart="@+id/textView23"
+        android:layout_marginTop="23dp"
+        android:id="@+id/imageTitle" />
+
+    <ImageButton
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@android:drawable/ic_menu_upload_you_tube"
+        android:layout_marginEnd="14dp"
+        android:id="@+id/imageButton"
+        android:layout_alignTop="@+id/imageTitle"
+        android:layout_alignEnd="@+id/typeOfInform" />
+
+    <Button
+        android:text="ยืนยัน"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:id="@+id/informSubmit"
+        android:layout_below="@+id/imageButton"
+        android:layout_toEndOf="@+id/textView22" />
+
+    <Button
+        android:text="ยกเลิก"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:layout_alignBaseline="@+id/informSubmit"
+        android:layout_alignBottom="@+id/informSubmit"
+        android:layout_toStartOf="@+id/imageButton" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/subjectTxt"
+        android:layout_alignBaseline="@+id/textView21"
+        android:layout_alignBottom="@+id/textView21"
+        android:layout_alignStart="@+id/studentIdTxt" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/studentIdTxt"
+        android:layout_alignBaseline="@+id/studentId"
+        android:layout_alignBottom="@+id/studentId"
+        android:layout_alignStart="@+id/studentNameTxt" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:id="@+id/imageName"
+        android:layout_alignBaseline="@+id/imageTitle"
+        android:layout_alignBottom="@+id/imageTitle"
+        android:layout_toEndOf="@+id/textView23"
+        android:layout_width="200dp"
+        android:text="ชื่อรูปภาพ" />
 
 </RelativeLayout>
