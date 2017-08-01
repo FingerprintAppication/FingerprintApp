@@ -1,5 +1,6 @@
 package com.example.i2ichest_.fingerprintit;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,7 +37,8 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
     public void showInformLeave () {
         wsManager = WSManager.getWsManager(this);
         Intent intent = getIntent();
-        String personId = "8";
+        String personId = intent.getStringExtra("personId");
+        final ProgressDialog progress = ProgressDialog.show(this,"Please Wait...","Please wait...",true);
         wsManager.searchInformLeaveForTeacher(personId, new WSManager.WSManagerListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -54,12 +56,13 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
                     i.getSchedule().setScheduleDate(car.get(java.util.Calendar.YEAR)+"-"
                             +(car.get(java.util.Calendar.MONTH)+1)
                             +"-"+car.get(java.util.Calendar.DAY_OF_MONTH));
-                    string.add(i.getStudent().getStudentID()+" "+i.getSchedule().getPeriod().getSection().getSubject().getSubjectNumber()+
-                            " "+i.getSchedule().getScheduleDate());
+                    string.add(i.getStudent().getStudentID()+" "+
+                            " "+i.getSchedule().getScheduleDate()+" "+i.getSchedule().getPeriod().getSection().getSubject().getSubjectNumber());
 
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewListInformLeaveActivity.this,android.R.layout.simple_list_item_1, string);
                 view.setAdapter(adapter);
+                progress.dismiss();
                 view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

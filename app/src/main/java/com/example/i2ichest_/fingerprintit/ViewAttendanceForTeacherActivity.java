@@ -42,7 +42,7 @@ public class ViewAttendanceForTeacherActivity extends AppCompatActivity {
         wsManager.studentAttendaceForTeacher(receiveSectionPeriod, new WSManager.WSManagerListener() {
             @Override
             public void onComplete(Object response) {
-                progress.dismiss();
+
                 /****map json data from Ws***/
                 listEnrollment = new ArrayList<EnrollmentModel.Enrollment>();
                 Log.d("all Attendance ",response.toString());
@@ -83,6 +83,7 @@ public class ViewAttendanceForTeacherActivity extends AppCompatActivity {
                         student.setText(en.getStudent().getStudentID()+" "+en.getStudent().getTitle()+en.getStudent().getFirstName()+" "+en.getStudent().getLastName());
                         linearLayout.addView(view);
                 }
+                progress.dismiss();
             }
 
             @Override

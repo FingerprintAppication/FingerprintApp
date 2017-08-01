@@ -166,4 +166,13 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     }
+
+    public void onClickListInformLeave (View view) {
+        if("teacher".equals(gb.getTypeUser().toString())) {
+            Intent intent = new Intent(this, ViewListInformLeaveActivity.class);
+            intent.putExtra("personId", gb.getLoginModel().getLogin().getPerson().getPersonID().toString());
+            startActivity(intent);
+        }
+
+    }
 }
