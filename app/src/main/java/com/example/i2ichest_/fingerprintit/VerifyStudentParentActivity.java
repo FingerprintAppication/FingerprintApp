@@ -1,29 +1,18 @@
 package com.example.i2ichest_.fingerprintit;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
-import com.example.i2ichest_.fingerprintit.model.AlarmReceiver;
 import com.example.i2ichest_.fingerprintit.model.ParentModel;
 import com.example.i2ichest_.fingerprintit.model.StudentModel;
-import com.example.i2ichest_.fingerprintit.task.WSTaskPost;
-
-import java.util.Calendar;
 
 public class VerifyStudentParentActivity extends AppCompatActivity {
-    String splitName[];
-    StudentModel studentModelResponse;
     Spinner title;
     EditText firstname;
     EditText lastname;
@@ -31,13 +20,6 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
     EditText phone;
     EditText email;
     WSManager manager;
-    TextView result;
-    String inputPhone;
-    String databasePhone;
-    String resultCheck;
-    ParentModel parentModel;
-    WSTaskPost wsPost;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,31 +27,6 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verify_student_parent);
 
     }
-    public void onStart(){
-        super.onStart();
-        Intent alarmIntent = new Intent(VerifyStudentParentActivity.this, AlarmReceiver.class);
-        PendingIntent pIntent = PendingIntent.getBroadcast(VerifyStudentParentActivity.this, 0, alarmIntent, 0);
-
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        /* Set the alarm to start at 00:00 AM */
-        Calendar Time = Calendar.getInstance();
-        Time.set(Calendar.SECOND, 0);
-        Time.set(Calendar.MINUTE, 25);
-        Time.set(Calendar.HOUR_OF_DAY, 12);
-        Log.d("current ",Time.getTime()+"");
-        /* Repeating on every day minutes interval */
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 1253, intent, PendingIntent.FLAG_UPDATE_CURRENT|  Intent.FILL_IN_DATA);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),pendingIntent );
-
-        Toast.makeText(this, "Alarm Set.", Toast.LENGTH_LONG).show();
-        /*Notification*/
-
-    }
-
-
 
     public void getPersonData(View view) throws Exception{
         title = (Spinner)findViewById(R.id.titleSpinner);
@@ -94,8 +51,10 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
             @Override
             public void onComplete(Object response) {
                 progress.dismiss();
-                result = (TextView) findViewById(R.id.resultVerify);
-                result.setText(response.toString());
+                AlertDialog alertDialog = new AlertDialog.Builder(VerifyStudentParentActivity.this).create();
+                alertDialog.setTitle("สถานะการลงทะเบียน");
+                alertDialog.setMessage(response.toString());
+                alertDialog.show();
             }
 
             @Override
