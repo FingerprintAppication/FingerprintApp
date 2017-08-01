@@ -319,4 +319,37 @@ public class WSManager {
         task.execute(context.getString(R.string.informleave),informLeaveModel.toJSONString());
     }
 
+    public void searchInformLeaveForTeacher(Object object,final WSManagerListener listener){
+
+
+
+        WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                List<InformLeaveModel.InformLeave> listInform = new ArrayList<>();
+
+                try {
+                    JSONArray informArray = new JSONArray(response.toString());
+
+                    for(int y=0;y<informArray.length();y++){
+                        JSONObject jsonSection = new JSONObject(informArray.get(y).toString());
+                        InformLeaveModel informLeaveModel = new InformLeaveModel(jsonSection.toString());
+                        listInform.add(informLeaveModel.getInformLeave());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Log.d("SIZE inform ",listInform.size()+" ");
+                listener.onComplete(listInform);
+            }
+
+            @Override
+            public void onError(String err) {listener.onError(err);
+
+            }
+        });
+        task.execute("/listinformleave?id="+object.toString(),"##");
+    }
+
 }

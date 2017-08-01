@@ -2,6 +2,8 @@ package com.example.i2ichest_.fingerprintit.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.Serializable;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,7 +29,7 @@ public class ScheduleModel {
         return gson.toJson(this.schedule);
     }
 
-    public class Schedule {
+    public class Schedule implements Serializable {
         private long scheduleID;
         private int scheduleNumber;
         private String scheduleDate;

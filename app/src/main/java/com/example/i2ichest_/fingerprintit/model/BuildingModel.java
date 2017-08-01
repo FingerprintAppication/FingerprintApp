@@ -3,6 +3,8 @@ package com.example.i2ichest_.fingerprintit.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.Serializable;
+
 public class BuildingModel {
     private Building building;
     Gson gson = new GsonBuilder().create();
@@ -23,7 +25,7 @@ public class BuildingModel {
         return gson.toJson(this.building);
     }
 
-    public class Building {
+    public class Building implements Serializable {
         private Long buildingID;
         private String buildingName;
 
