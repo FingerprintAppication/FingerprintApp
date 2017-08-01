@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
+import com.example.i2ichest_.fingerprintit.InformLeaveActivity;
 import com.example.i2ichest_.fingerprintit.R;
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.AlarmReceiver;
@@ -104,7 +105,7 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                                     showTimeToStudy += "วัน "+period.getDayOfWeek()+" "+period.getPeriodStartTime()+"-"+period.getPeriodEndTime()+"\n";
                             }
 
-                            Toast.makeText(parentActivity,showTimeToStudy, Toast.LENGTH_LONG).show();
+
                             alertDialog.setPositiveButton("ยืนยัน", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -182,6 +183,12 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                         alertDialog.setView(alertView);
                         AlertDialog alert = alertDialog.create();
                         alert.show();
+
+                        AlertDialog showTime = new AlertDialog.Builder(parentActivity).create();
+                        showTime.setTitle("เวลา");
+                        showTime.setIcon(R.drawable.clock);
+                        showTime.setMessage(showTimeToStudy);
+                        showTime.show();
                     }
 
                     @Override
