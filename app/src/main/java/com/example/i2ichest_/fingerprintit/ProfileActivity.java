@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
             stuID.setText("");
             fingerID.setText("");
+            Button btnViewInform = (Button) findViewById(R.id.buttonViewInform);
+            btnViewInform.setText("รายชื่อนักศึกษาที่ลา");
 
             TextView sid = (TextView) findViewById(R.id.textStudentID);
             TextView finger = (TextView) findViewById(R.id.textFingerID);
