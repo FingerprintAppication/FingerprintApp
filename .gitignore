@@ -88,7 +88,16 @@ app/src/main/AndroidManifest.xml
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
+<<<<<<< HEAD
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
+=======
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
+app/src/main/AndroidManifest.xml
+app/src/main/AndroidManifest.xml
+>>>>>>> 24a40c840c43e4252d90d7f71d88cff859105f9c
+app/src/main/AndroidManifest.xml
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
