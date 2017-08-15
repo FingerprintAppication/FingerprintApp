@@ -48,10 +48,8 @@
         <activity android:name=".SelectStudentParentActivity" />
         <activity android:name=".InformLeaveActivity" />
         <activity android:name=".AnnouceNewsActivity" />
-        <activity android:name=".ViewListInformLeaveActivity">
-
-        </activity>
-        <activity android:name=".ApproveLeaveActivity"></activity>
+        <activity android:name=".ViewListInformLeaveActivity"></activity>
+        <activity android:name=".ApproveLeaveActivity" />
     </application>
 
 </manifest>
