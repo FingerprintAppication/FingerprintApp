@@ -2,6 +2,8 @@ package com.example.i2ichest_.fingerprintit.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.Serializable;
 import java.util.List;
 
 public class PeriodModel {
@@ -24,7 +26,7 @@ public class PeriodModel {
         return gson.toJson(this.period);
     }
 
-    public class Period {
+    public class Period implements Serializable {
         private long periodID;
         private String dayOfWeek;
         private String studyType;

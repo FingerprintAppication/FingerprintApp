@@ -29,7 +29,7 @@ public class SubjectModel implements Serializable{
         return gson.toJson(this.subject);
     }
 
-    public class Subject {
+    public class Subject implements Serializable{
         private Long subjectID;
         private int credit;
         private String subjectName;

@@ -56,7 +56,6 @@ public class VIewAttendanceActivity extends AppCompatActivity {
                 List<AttendanceModel.Attendance> listAttendance = (List<AttendanceModel.Attendance>) response;
                 List<Integer> status = Attendance(listAttendance);
 
-
                 TableLayout mTable = (TableLayout) findViewById(R.id.attendaceTable);
                 TableRow mRow = (TableRow) mTable.getChildAt(1);
                 TextView comeTxt = (TextView)mRow.getChildAt(0);

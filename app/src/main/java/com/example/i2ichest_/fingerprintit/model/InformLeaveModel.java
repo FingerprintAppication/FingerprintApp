@@ -3,11 +3,13 @@ package com.example.i2ichest_.fingerprintit.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.Serializable;
+
 /**
  * Created by I2ichest_ on 7/6/2017.
  */
 
-public class InformLeaveModel {
+public class InformLeaveModel implements Serializable {
     private InformLeave informLeave;
     Gson gson = new GsonBuilder().create();
 
@@ -27,7 +29,7 @@ public class InformLeaveModel {
         return gson.toJson(this.informLeave);
     }
 
-    public class InformLeave {
+    public class InformLeave implements Serializable{
         private long informLeaveID;
         private String informType;
         private String supportDocument;

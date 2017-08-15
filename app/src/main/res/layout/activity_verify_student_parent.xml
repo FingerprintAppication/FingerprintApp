@@ -114,25 +114,6 @@
         android:layout_alignBottom="@+id/titleSpinner"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:text="ยกเลิก"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cancel"
-        android:layout_alignBaseline="@+id/onVerifyParent"
-        android:layout_alignBottom="@+id/onVerifyParent"
-        android:layout_toEndOf="@+id/resultVerify" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:id="@+id/resultVerify"
-        android:layout_below="@+id/emailTxt"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/holo_red_dark" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -160,7 +141,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/onVerifyParent"
         android:onClick="getPersonData"
-        android:layout_below="@+id/resultVerify"
-        android:layout_toStartOf="@+id/resultVerify"
-        android:layout_marginTop="42dp" />
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/emailTxt"
+        android:layout_toEndOf="@+id/lnTxt" />
+
+    <Button
+        android:text="ยกเลิก"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel"
+        android:layout_alignBaseline="@+id/onVerifyParent"
+        android:layout_alignBottom="@+id/onVerifyParent"
+        android:layout_toEndOf="@+id/onVerifyParent"
+        android:layout_marginStart="39dp" />
 </RelativeLayout>

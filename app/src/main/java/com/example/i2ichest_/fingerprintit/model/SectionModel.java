@@ -30,7 +30,7 @@ public class SectionModel implements Serializable {
         return gson.toJson(this.section);
     }
 
-    public class Section{
+    public class Section implements Serializable{
         private Long sectionID;
         private int schoolYear;
         private int sectionNumber;

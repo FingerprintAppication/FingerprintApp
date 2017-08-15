@@ -57,17 +57,16 @@ public class PeriodActivity extends AppCompatActivity {
             @Override
             public void onComplete(final Object response) {
                 progress.dismiss();
-
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
                     Log.d("SECTION @@@@ :",jsonArray.toString());
 
-                    JSONObject jsonSection = new JSONObject(jsonArray.get(0).toString());
+                    final JSONObject jsonSection = new JSONObject(jsonArray.get(0).toString());
                     /*section ID here*/
                     final String sectionID = jsonSection.getString("sectionID");
                     final String sectionNumber = jsonSection.getString("sectionNumber");
-                    int semester = jsonSection.getInt("semester");
-                    int schoolYear = jsonSection.getInt("schoolYear");
+                    final int semester = jsonSection.getInt("semester");
+                    final int schoolYear = jsonSection.getInt("schoolYear");
                     textViewSectionTitle.setText("กลุ่มเรียน " + sectionNumber + " : ภาคเรียนที่ " + semester + " : ปีการศึกษา " + schoolYear);
                     subjectDetail[5] = semester+"/"+schoolYear;
                     final List<PeriodModel.Period> listPeriod = new ArrayList<PeriodModel.Period>();
@@ -134,8 +133,6 @@ public class PeriodActivity extends AppCompatActivity {
                         txtRoom.setText("ห้อง : " + listPeriod.get(g).getRoom().getRoomName());
                         txtBuild.setText("ตึก : " +listPeriod.get(g).getRoom().getBuilding().getBuildingName());
 
-
-
                         final Long periodForAttendance = listPeriod.get(g).getPeriodID();
                         final String time = listPeriod.get(g).getPeriodStartTime() + " - " + listPeriod.get(g).getPeriodEndTime();
                         final String type = listPeriod.get(g).getStudyType();
@@ -158,7 +155,22 @@ public class PeriodActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             });
-                        }else if(gb.getTypeUser().equals("student")) {
+
+                            Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
+                            btnCal.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(PeriodActivity.this, CalculateClassScoreActivity.class);
+                                    intent.putExtra("sectionID",sectionID);
+                                    intent.putExtra("sectionNumber",sectionNumber);
+                                    intent.putExtra("semester",semester);
+                                    intent.putExtra("schoolYear",schoolYear);
+                                    intent.putExtra("subjectNumber",subjectNumber);
+                                    intent.putExtra("subjectName",subjectName);
+                                    startActivity(intent);
+                                }
+                            });
+                        } else if(gb.getTypeUser().equals("student")) {
                             Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
                             btn.setText("ลาเรียน");
                             btn.setOnClickListener(new View.OnClickListener() {
@@ -174,9 +186,11 @@ public class PeriodActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             });
-                        }else {
+                        } else if (gb.getTypeUser().equals("parent")) {
                             Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
                             btn.setVisibility(View.INVISIBLE);
+                            Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
+                            btnCal.setVisibility(View.INVISIBLE);
                         }
 
 
