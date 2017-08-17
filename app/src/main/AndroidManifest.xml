@@ -46,29 +46,15 @@
         <activity android:name=".PeriodActivity" />
         <activity android:name=".ViewAttendanceForTeacherActivity" />
         <activity android:name=".SelectStudentParentActivity" />
-<<<<<<< HEAD
-<<<<<<< HEAD
+
         <activity android:name=".InformLeaveActivity"></activity>
         <activity android:name=".AnnouceNewsActivity" />
         <activity android:name=".CalculateClassScoreActivity"></activity>
-=======
-=======
->>>>>>> 1f6ef79987fb976f69086d169a433aef23924fad
-        <activity android:name=".InformLeaveActivity" />
-        <activity android:name=".AnnouceNewsActivity" />
-<<<<<<< HEAD
+
         <activity android:name=".ViewListInformLeaveActivity"></activity>
         <activity android:name=".ApproveLeaveActivity" />
-=======
-        <activity android:name=".ViewListInformLeaveActivity">
 
-        </activity>
-        <activity android:name=".ApproveLeaveActivity"></activity>
-<<<<<<< HEAD
->>>>>>> 1f6ef79987fb976f69086d169a433aef23924fad
-=======
->>>>>>> 1f6ef79987fb976f69086d169a433aef23924fad
->>>>>>> 2b0d86c470ec59a8387e7b2eee9203483a7163b9
+
     </application>
 
 </manifest>
