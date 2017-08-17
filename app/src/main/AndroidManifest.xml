@@ -51,10 +51,17 @@
         <activity android:name=".AnnouceNewsActivity" />
         <activity android:name=".CalculateClassScoreActivity"></activity>
 
+<<<<<<< HEAD
         <activity android:name=".ViewListInformLeaveActivity"></activity>
         <activity android:name=".ApproveLeaveActivity" />
 
 
+=======
+
+        <activity android:name=".ViewListInformLeaveActivity"></activity>
+        <activity android:name=".ApproveLeaveActivity" />
+
+>>>>>>> e4618a2d35ab36584a110fffaa0ab807aa9ee2a7
     </application>
 
 </manifest>
