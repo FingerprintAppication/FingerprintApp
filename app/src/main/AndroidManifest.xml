@@ -43,10 +43,9 @@
         <activity android:name=".CalculateClassScoreActivity" />
         <activity android:name=".ViewListInformLeaveActivity" />
         <activity android:name=".ApproveLeaveActivity" />
-<<<<<<< HEAD
         <activity android:name=".ViewLeaveHistoryActivity" />
         <activity android:name=".ViewListLeaveHistoryActivity" />
-=======
+
         <activity android:name=".ViewAnnounceNews"></activity>
         <!--Alarm Service-->
         <receiver android:name=".model.AlarmReceiver">
@@ -67,8 +66,6 @@
             </intent-filter>
         </service>
 
-
->>>>>>> 9a0d6ba8704ba71e058748dd9ad2a63030b04e67
     </application>
 
 </manifest>
