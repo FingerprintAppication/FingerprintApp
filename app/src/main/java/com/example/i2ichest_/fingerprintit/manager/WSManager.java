@@ -23,6 +23,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 public class WSManager {
     private static WSManager wsManager;
     private Context context;
@@ -300,7 +302,12 @@ public class WSManager {
         WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                listener.onComplete(response);
+                try{
+                    listener.onComplete(response);
+                }catch(Exception s){
+                    Log.d(TAG, "onComplete: "+s.getMessage());
+                }
+
             }
 
             @Override
@@ -316,7 +323,7 @@ public class WSManager {
         WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                List<InformLeaveModel.InformLeave> listInform = new ArrayList<>();
+                List<InformLeaveModel> listInform = new ArrayList<>();
 
                 try {
                     JSONArray informArray = new JSONArray(response.toString());
@@ -324,7 +331,7 @@ public class WSManager {
                     for(int y=0;y<informArray.length();y++){
                         JSONObject jsonSection = new JSONObject(informArray.get(y).toString());
                         InformLeaveModel informLeaveModel = new InformLeaveModel(jsonSection.toString());
-                        listInform.add(informLeaveModel.getInformLeave());
+                        listInform.add(informLeaveModel);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -342,6 +349,7 @@ public class WSManager {
         task.execute("/listinformleave?id="+object.toString(),"##");
     }
 
+<<<<<<< HEAD
     public void doSearchLeaveHistory (Object object, final WSManagerListener listener){
         if(!(object instanceof PersonModel)){
             return;
@@ -369,15 +377,62 @@ public class WSManager {
 
                 Log.d("SIZE inform ",listInform.size()+" ");
                 listener.onComplete(listInform);
+=======
+    public void getAnnounceNewsFromStudentId(Object object,final WSManagerListener listener){
+        WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                List<AnnouceNewsModel.AnnouceNews> listAnnounce = new ArrayList<AnnouceNewsModel.AnnouceNews>();
+                try {
+                    JSONArray announce = new JSONArray(response.toString());
+                    for (int i = 0; i < announce.length(); i++) {
+                        JSONObject json = new JSONObject(announce.get(i).toString());
+                        AnnouceNewsModel an = new AnnouceNewsModel(json.toString());
+                        listAnnounce.add(an.getAnnouceNews());
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d(TAG, "onComplete: "+response.toString());
+                listener.onComplete(listAnnounce);
+            }
+
+            @Override
+            public void onError(String err) {listener.onError(err);
+
+            }
+        });
+        task.execute("/viewAnnouceNews?studentId="+object.toString(),"##");
+    }
+
+    public void updateAttendanceStatus(Object object,final WSManagerListener listener){
+        if(!(object instanceof InformLeaveModel.InformLeave)){
+            return;
+        }
+        InformLeaveModel inform =  new InformLeaveModel();
+        inform.setInformLeave((InformLeaveModel.InformLeave)object);
+
+        WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                listener.onComplete(response);
+>>>>>>> 9a0d6ba8704ba71e058748dd9ad2a63030b04e67
             }
 
             @Override
             public void onError(String err) {
                 listener.onError(err);
+<<<<<<< HEAD
                 Log.d("searchHistory Error" , err.toString());
             }
         });
         taskPost.execute("/leaveHistory",personModel.toJSONString());
+=======
+            }
+        });
+        task.execute("/updateInformStatus",inform.toJSONString());
+>>>>>>> 9a0d6ba8704ba71e058748dd9ad2a63030b04e67
     }
 
 }

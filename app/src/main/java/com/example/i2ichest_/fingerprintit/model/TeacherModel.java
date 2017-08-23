@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.Serializable;
 
-public class TeacherModel extends PersonModel{
+public class TeacherModel extends PersonModel implements Serializable{
     private Teacher teacher;
     Gson gson = new GsonBuilder().create();
 

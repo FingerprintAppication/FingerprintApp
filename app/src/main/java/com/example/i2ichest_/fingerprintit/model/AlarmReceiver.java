@@ -13,10 +13,12 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.i2ichest_.fingerprintit.R;
+
+import java.io.Serializable;
 import java.sql.Time;
 
 
-public class AlarmReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver implements Serializable {
     int startFrom = 6000;
     int endAt = 6000;
     MediaPlayer mp;

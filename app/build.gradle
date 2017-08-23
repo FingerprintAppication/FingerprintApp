@@ -34,6 +34,8 @@ dependencies {
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile project(':PhotoUtil')
     compile project(':sun.misc.BASE64Decoder')
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    apply plugin: 'com.google.gms.google-services'
 }
 
 

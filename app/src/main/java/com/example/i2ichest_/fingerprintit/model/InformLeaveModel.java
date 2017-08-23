@@ -10,15 +10,19 @@ public class InformLeaveModel implements Serializable {
     Gson gson = new GsonBuilder().create();
 
     public InformLeaveModel(){
-        informLeave = new InformLeave();
+        this.informLeave = new InformLeave();
     }
 
     public InformLeaveModel(String jsonResponse){
-        informLeave = gson.fromJson(jsonResponse,InformLeave.class);
+        this.informLeave = gson.fromJson(jsonResponse,InformLeave.class);
     }
 
     public InformLeave getInformLeave(){
-        return informLeave;
+        return this.informLeave;
+    }
+
+    public void setInformLeave(InformLeave informLeave) {
+        this.informLeave = informLeave;
     }
 
     public String toJSONString(){
@@ -38,12 +42,13 @@ public class InformLeaveModel implements Serializable {
         public InformLeave() {
         }
 
-        public InformLeave(int informLeaveID, String informType, String supportDocument, String status, String caseDetail) {
+        public InformLeave(long informLeaveID, String informType, String supportDocument, String status, String caseDetail) {
             this.informLeaveID = informLeaveID;
             this.informType = informType;
             this.supportDocument = supportDocument;
             this.status = status;
             this.caseDetail = caseDetail;
+
         }
 
         public long getInformLeaveID() {
@@ -108,6 +113,14 @@ public class InformLeaveModel implements Serializable {
 
         public void setStudent(StudentModel.Student student) {
             this.student = student;
+        }
+
+        public String getDetail() {
+            return detail;
+        }
+
+        public void setDetail(String detail) {
+            this.detail = detail;
         }
     }
 }

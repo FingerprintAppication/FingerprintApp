@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class ScheduleModel {
+public class ScheduleModel implements Serializable{
     private Schedule schedule;
     Gson gson = new GsonBuilder().create();
 

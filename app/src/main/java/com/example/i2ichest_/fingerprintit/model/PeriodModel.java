@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.io.Serializable;
 import java.util.List;
 
-public class PeriodModel {
+public class PeriodModel implements Serializable{
     private Period period;
     Gson gson = new GsonBuilder().create();
 

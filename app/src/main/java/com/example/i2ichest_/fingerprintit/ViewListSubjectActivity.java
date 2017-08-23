@@ -114,6 +114,7 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                            intent.putExtra("subjectID", listSubject.get(i).getSubject().getSubjectID());
                            intent.putExtra("subjectNumber", listSubject.get(i).getSubject().getSubjectNumber());
                            intent.putExtra("subjectName", listSubject.get(i).getSubject().getSubjectName());
+
                            startActivity(intent);
                        }
                    });

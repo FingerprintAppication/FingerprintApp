@@ -41,7 +41,7 @@ public class InformLeaveActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_PERMISSION = 786;
     int GALLERY_REQUEST = 1234;
     GalleryPhoto galleryPhoto;
-    final InformLeaveModel informLeaveModel = new InformLeaveModel();
+    InformLeaveModel informLeaveModel ;
     WSManager wsManager;
 
     @Override
@@ -52,12 +52,14 @@ public class InformLeaveActivity extends AppCompatActivity {
     }
 
     public void setInformLeaveData () {
+        informLeaveModel = new InformLeaveModel();
         wsManager = WSManager.getWsManager(this);
         galleryPhoto = new GalleryPhoto(getApplicationContext());
         ImageButton but = (ImageButton)findViewById(R.id.imageButton);
         Button informButton = (Button)findViewById(R.id.informSubmit);
         /********get intent data from periodActivity**********/
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
+        Log.d("TAG", "##############################################3: "+intent.getLongExtra("subjectID",1L));
         final String studentID = intent.getStringExtra("studentID");
         final String studentName = intent.getStringExtra("studentName");
         final String subject = intent.getStringExtra("subject");
@@ -153,11 +155,11 @@ public class InformLeaveActivity extends AppCompatActivity {
                 studentModel.getStudent().setStudentID(Long.parseLong(StudentId.getText().toString()));
                 scheduleModel.getSchedule().setPeriod(periodModel.getPeriod());
                 informLeaveModel.getInformLeave().setStudent(studentModel.getStudent());
-                informLeaveModel.getInformLeave().setCaseDetail(description.getText().toString());
+                informLeaveModel.getInformLeave().setDetail(description.getText().toString());
                 informLeaveModel.getInformLeave().setSchedule(scheduleModel.getSchedule());
                 informLeaveModel.getInformLeave().setStatus("รอ");
                 Pattern pattern = Pattern.compile("^([ก-์a-zA-Z]){1}([ก-์a-zA-Z\\ ]){4,200}$");
-                boolean check = pattern.matcher(informLeaveModel.getInformLeave().getCaseDetail()).matches();
+                boolean check = pattern.matcher(informLeaveModel.getInformLeave().getDetail()).matches();
                 if(!check){
                     Toast.makeText(InformLeaveActivity.this,"โปรดกรอกคำอธิบาย 5 ตัวอักษรขึ้นไป",Toast.LENGTH_SHORT).show();
                 } /*else if(informLeaveModel.getInformLeave().getInformType().equals("ลาป่วย")&& informLeaveModel.getInformLeave().getSupportDocument()=="") {
@@ -168,20 +170,16 @@ public class InformLeaveActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(Object response) {
                             progress.dismiss();
-                            AlertDialog alertDialog = new AlertDialog.Builder(InformLeaveActivity.this).create();
-                            //alertDialog.setView(alertView);
-                            if("ลาเรียนสำเร็จ".equals(response.toString())){
-                                alertDialog.setIcon(getResources().getDrawable(R.drawable.success));
-                                alertDialog.setTitle("ลาเรียน");
-                                alertDialog.setMessage(response.toString());
-                            }else {
-                                alertDialog.setIcon(getResources().getDrawable(R.drawable.duplicated));
-                                alertDialog.setTitle("ลาเรียน");
-                                alertDialog.setMessage(response.toString());
-                            }
+                            /*Intent intentStart = new Intent(InformLeaveActivity.this,PeriodActivity.class);
+                            intentStart.putExtra("subjectID", intent.getLongExtra("subjectID",1L));
+                            intentStart.putExtra("subjectNumber", subject);
+                            intentStart.putExtra("subjectName",intent.getStringExtra("subjectName") );
+                            intentStart.putExtra("resultInform",response.toString());
 
-                            alertDialog.show();
-                            //Toast.makeText(InformLeaveActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(InformLeaveActivity.this, "GETINTENT !"+intent.getStringExtra("subjectNumber")+" "+intent.getStringExtra("subjectName"), Toast.LENGTH_LONG).show();
+                            finish();
+                            startActivity(intentStart);*/
+                            Toast.makeText(InformLeaveActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

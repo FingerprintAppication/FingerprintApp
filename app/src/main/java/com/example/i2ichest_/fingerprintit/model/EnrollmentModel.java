@@ -2,9 +2,11 @@ package com.example.i2ichest_.fingerprintit.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class EnrollmentModel {
+public class EnrollmentModel implements Serializable{
     private Enrollment enrollment;
     Gson gson = new GsonBuilder().create();
 
@@ -24,7 +26,7 @@ public class EnrollmentModel {
         return gson.toJson(this.enrollment);
     }
 
-    public class Enrollment {
+    public class Enrollment implements Serializable {
         private Long enrollmentID;
         private String status;
         StudentModel.Student student;
