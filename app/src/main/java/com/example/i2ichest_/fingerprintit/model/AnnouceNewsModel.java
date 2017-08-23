@@ -3,9 +3,10 @@ package com.example.i2ichest_.fingerprintit.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class AnnouceNewsModel {
+public class AnnouceNewsModel implements Serializable {
     private AnnouceNews annouceNews;
     Gson gson = new GsonBuilder().create();
 
@@ -25,7 +26,7 @@ public class AnnouceNewsModel {
         return gson.toJson(this.annouceNews);
     }
 
-    public class AnnouceNews {
+    public class AnnouceNews implements Serializable{
         private int annouceNewsID;
         private String annouceNewsType;
         private String detail;

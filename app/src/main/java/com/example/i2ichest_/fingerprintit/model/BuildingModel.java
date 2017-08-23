@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.Serializable;
 
-public class BuildingModel {
+public class BuildingModel implements Serializable{
     private Building building;
     Gson gson = new GsonBuilder().create();
 

@@ -39,7 +39,10 @@
     <string-array name="inform">
         <item>ลากิจ</item>
         <item>ลาป่วย</item>
-
     </string-array>
-
+    <!--array approve-->
+    <string-array name="approve">
+        <item>ไม่อนุมัติ</item>
+        <item>อนุมัติ</item>
+    </string-array>
 </resources>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "84023859720",
+    "firebase_url": "https://announcenews-226aa.firebaseio.com",
+    "project_id": "announcenews-226aa",
+    "storage_bucket": "announcenews-226aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84023859720:android:865bf07991c5531e",
+        "android_client_info": {
+          "package_name": "com.example.i2ichest_.fingerprintit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84023859720-rd06l49s2p4e5cgdrn8vodpmg8bqv4e7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwfnnBkwp7c8-Gnn4BNVBwghxZe14o8e0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

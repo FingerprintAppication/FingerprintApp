@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by I2ichest_ on 7/6/2017.
  */
 
-public class RoomModel {
+public class RoomModel implements Serializable{
     private Room room;
     Gson gson = new GsonBuilder().create();
 

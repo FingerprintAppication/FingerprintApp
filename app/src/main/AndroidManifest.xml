@@ -31,14 +31,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <receiver android:name=".model.AlarmReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
         <activity android:name=".VerifyStudentParentActivity" />
         <activity android:name=".ViewListSubjectActivity" />
         <activity android:name=".ProfileActivity" />
@@ -46,22 +38,32 @@
         <activity android:name=".PeriodActivity" />
         <activity android:name=".ViewAttendanceForTeacherActivity" />
         <activity android:name=".SelectStudentParentActivity" />
-
-        <activity android:name=".InformLeaveActivity"></activity>
+        <activity android:name=".InformLeaveActivity" />
         <activity android:name=".AnnouceNewsActivity" />
-        <activity android:name=".CalculateClassScoreActivity"></activity>
-
-<<<<<<< HEAD
-        <activity android:name=".ViewListInformLeaveActivity"></activity>
+        <activity android:name=".CalculateClassScoreActivity" />
+        <activity android:name=".ViewListInformLeaveActivity" />
         <activity android:name=".ApproveLeaveActivity" />
+        <activity android:name=".ViewAnnounceNews"></activity>
+        <!--Alarm Service-->
+        <receiver android:name=".model.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <!-- FCM SERVICES -->
+        <service android:name=".FCM.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".FCM.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
 
 
-=======
-
-        <activity android:name=".ViewListInformLeaveActivity"></activity>
-        <activity android:name=".ApproveLeaveActivity" />
-
->>>>>>> e4618a2d35ab36584a110fffaa0ab807aa9ee2a7
     </application>
 
 </manifest>

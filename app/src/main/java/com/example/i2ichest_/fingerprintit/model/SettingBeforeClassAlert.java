@@ -1,6 +1,8 @@
 package com.example.i2ichest_.fingerprintit.model;
 
-public class SettingBeforeClassAlert {
+import java.io.Serializable;
+
+public class SettingBeforeClassAlert implements Serializable {
     private String hour;
     private String minutes;
     private boolean onOff;

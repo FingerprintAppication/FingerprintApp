@@ -31,7 +31,7 @@ public class LoginModel implements Serializable{
         return gson.toJson(this.login);
     }
 
-    public class Login {
+    public class Login implements Serializable{
         private Long loginID;
         private String username;
         private String password;

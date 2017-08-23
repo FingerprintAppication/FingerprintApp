@@ -1,5 +1,6 @@
 package com.example.i2ichest_.fingerprintit;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ public class PeriodActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_period);
+
         gb = (GlobalClass) this.getApplicationContext();
         showPeriod();
     }
@@ -40,17 +42,31 @@ public class PeriodActivity extends AppCompatActivity {
         final long subjectID = intent.getLongExtra("subjectID",1L);
         final String subjectNumber = intent.getStringExtra("subjectNumber");
         final String subjectName = intent.getStringExtra("subjectName");
+
+        String resultInform = intent.getStringExtra("resultInform");
+        Log.d("TAG", "##############################################: "+subjectID);
+        if(resultInform!= null) {
+            AlertDialog alertDialog = new AlertDialog.Builder(PeriodActivity.this).create();
+            alertDialog.setTitle("ลาเรียน");
+            Log.d("TAG", "ลาเข้าล้ะ: ");
+            if ("ลาเรียนสำเร็จ".equals(resultInform)) {
+
+                alertDialog.setIcon(getResources().getDrawable(R.drawable.success));
+                alertDialog.setMessage(resultInform);
+            } else {
+                alertDialog.setIcon(getResources().getDrawable(R.drawable.duplicated));
+                alertDialog.setMessage(resultInform);
+            }
+            alertDialog.show();
+        }
+
         subjectDetail[0] = subjectNumber;
         subjectDetail[1] = subjectName;
-
         TextView textViewSubjectName = (TextView) findViewById(R.id.textViewSubjectName);
         final TextView textViewSectionTitle = (TextView) findViewById(R.id.textViewSectionTitle);
-
         textViewSubjectName.setText(subjectNumber + " : " + subjectName);
-
         final ProgressDialog progress = ProgressDialog.show(PeriodActivity.this,"Please Wait...","Please wait...",true);
         wsManager = WSManager.getWsManager(this);
-
         SubjectModel subjectModel = new SubjectModel();
         subjectModel.getSubject().setSubjectID(subjectID);
         wsManager.doSearchPeriod(subjectModel, new WSManager.WSManagerListener() {
@@ -156,7 +172,7 @@ public class PeriodActivity extends AppCompatActivity {
                                 }
                             });
 
-                            Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
+                            /*Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
                             btnCal.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -169,21 +185,24 @@ public class PeriodActivity extends AppCompatActivity {
                                     intent.putExtra("subjectName",subjectName);
                                     startActivity(intent);
                                 }
-                            });
+                            });*/
                         } else if(gb.getTypeUser().equals("student")) {
                             Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
                             btn.setText("ลาเรียน");
                             btn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent = new Intent(PeriodActivity.this, InformLeaveActivity.class);
-                                    intent.putExtra("subject", subjectNumber);
-                                    intent.putExtra("periodId", periodForAttendance.toString());
-                                    intent.putExtra("studentID",gb.getLoginModel().getLogin().getUsername());
-                                    intent.putExtra("studentName",gb.getLoginModel().getLogin().getPerson().getTitle()+
+                                    Intent intents = new Intent(PeriodActivity.this, InformLeaveActivity.class);
+                                    intents.putExtra("subject", subjectNumber);
+                                    intents.putExtra("periodId", periodForAttendance.toString());
+                                    intents.putExtra("studentID",gb.getLoginModel().getLogin().getUsername());
+                                    intents.putExtra("studentName",gb.getLoginModel().getLogin().getPerson().getTitle()+
                                             gb.getLoginModel().getLogin().getPerson().getFirstName()+" "+
                                             gb.getLoginModel().getLogin().getPerson().getLastName());
-                                    startActivity(intent);
+                                    intents.putExtra("subjectID", subjectID);
+                                    Log.d("TAG", "##############################################2: "+subjectID);
+                                    intents.putExtra("subjectName", subjectName);
+                                    startActivity(intents);
                                 }
                             });
                         } else if (gb.getTypeUser().equals("parent")) {
