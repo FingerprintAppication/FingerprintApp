@@ -36,7 +36,11 @@ public class WSTaskPost extends AsyncTask<String,String,String> {
     protected String doInBackground(String... params) {
         RequestBody body = RequestBody.create(JSON, params[1]);
 
+<<<<<<< HEAD
+        Request request = new Request.Builder().url("http://192.168.1.78:8080".concat(params[0])).post(body).build();
+=======
         Request request = new Request.Builder().url("http://10.0.0.78:8080".concat(params[0])).post(body).build();
+>>>>>>> 9a0d6ba8704ba71e058748dd9ad2a63030b04e67
 
         try{
             Response response = client.newCall(request).execute();

@@ -5,10 +5,6 @@ import com.google.gson.GsonBuilder;
 
 import java.io.Serializable;
 
-/**
- * Created by I2ichest_ on 7/6/2017.
- */
-
 public class InformLeaveModel implements Serializable {
     private InformLeave informLeave;
     Gson gson = new GsonBuilder().create();
@@ -93,6 +89,14 @@ public class InformLeaveModel implements Serializable {
 
         public void setCaseDetail(String caseDetail) {
             this.caseDetail = caseDetail;
+        }
+
+        public String getDetail() {
+            return detail;
+        }
+
+        public void setDetail(String detail) {
+            this.detail = detail;
         }
 
         public ScheduleModel.Schedule getSchedule() {

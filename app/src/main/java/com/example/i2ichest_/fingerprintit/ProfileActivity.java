@@ -176,7 +176,12 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ViewListInformLeaveActivity.class);
             intent.putExtra("personId", gb.getLoginModel().getLogin().getPerson().getPersonID().toString());
             startActivity(intent);
+        } else  if ("student".equals(gb.getTypeUser().toString())){
+            Intent intent = new Intent(this,ViewListLeaveHistoryActivity.class);
+            intent.putExtra("personId", gb.getLoginModel().getLogin().getPerson().getPersonID());
+            startActivity(intent);
         }
 
+        Log.d("PERSON IDD " , gb.getLoginModel().getLogin().getPerson().getPersonID().toString());
     }
 }

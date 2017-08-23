@@ -33,8 +33,12 @@ public class WSTask extends AsyncTask<String,String,String> {
     protected String doInBackground(String... params) {
         Request.Builder builder = new Request.Builder();
 
+<<<<<<< HEAD
+        Request request = builder.url("http://192.168.1.78:8080".concat(params[0])).build();
+=======
         Request request = builder.url("http://10.0.0.78:8080".concat(params[0])).build();
 
+>>>>>>> 9a0d6ba8704ba71e058748dd9ad2a63030b04e67
 
         try {
             Response response = client.newCall(request).execute();
