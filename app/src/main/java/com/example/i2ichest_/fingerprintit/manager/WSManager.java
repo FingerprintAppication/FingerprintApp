@@ -442,8 +442,5 @@ public class WSManager {
         });
         task.execute("/updateInformStatus",inform.toJSONString());
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 18fc3de2f715eac46209ce2679bcad10204a4108
+
