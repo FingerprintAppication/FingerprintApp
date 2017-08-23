@@ -16,6 +16,8 @@ import com.example.i2ichest_.fingerprintit.model.FacultyModel;
 import com.example.i2ichest_.fingerprintit.model.MajorModel;
 import com.example.i2ichest_.fingerprintit.model.PersonModel;
 import com.example.i2ichest_.fingerprintit.model.StudentModel;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +34,8 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("test_subject");
+        FirebaseMessaging.getInstance().subscribeToTopic("Network_Administration");
         gb = (GlobalClass) this.getApplicationContext();
         setTextProfile();
     }

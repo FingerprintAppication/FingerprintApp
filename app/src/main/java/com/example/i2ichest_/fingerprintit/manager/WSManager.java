@@ -58,7 +58,11 @@ public class WSManager {
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                listener.onComplete(response);
+                try{
+                    listener.onComplete(response);
+                }catch(Exception s){
+                    Log.d(TAG, "onComplete: "+s.getMessage());
+                }
                 Log.d("onLoginComplete " , response.toString());
             }
 
