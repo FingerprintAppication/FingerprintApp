@@ -46,15 +46,13 @@
         <activity android:name=".PeriodActivity" />
         <activity android:name=".ViewAttendanceForTeacherActivity" />
         <activity android:name=".SelectStudentParentActivity" />
-
-        <activity android:name=".InformLeaveActivity"></activity>
+        <activity android:name=".InformLeaveActivity" />
         <activity android:name=".AnnouceNewsActivity" />
-        <activity android:name=".CalculateClassScoreActivity"></activity>
-
-
-        <activity android:name=".ViewListInformLeaveActivity"></activity>
+        <activity android:name=".CalculateClassScoreActivity" />
+        <activity android:name=".ViewListInformLeaveActivity" />
         <activity android:name=".ApproveLeaveActivity" />
-
+        <activity android:name=".ViewLeaveHistoryActivity" />
+        <activity android:name=".ViewListLeaveHistoryActivity" />
     </application>
 
 </manifest>

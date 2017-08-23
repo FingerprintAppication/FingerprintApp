@@ -50,6 +50,7 @@ public class ApproveLeaveActivity extends AppCompatActivity {
         TableRow mRow3 = (TableRow) table.getChildAt(2);
         TextView cases = (TextView)mRow3.findViewById(R.id.caseApprove);
         cases.setText(inform.getCaseDetail());
+
         if("ลาป่วย".equals(inform.getInformType())){
              if(!"".equals(inform.getSupportDocument())){
                  TableRow mRow4 = (TableRow) table.getChildAt(3);
