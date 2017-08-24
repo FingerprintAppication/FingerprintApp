@@ -170,7 +170,7 @@ public class InformLeaveActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(Object response) {
                             progress.dismiss();
-                            /*Intent intentStart = new Intent(InformLeaveActivity.this,PeriodActivity.class);
+                            Intent intentStart = new Intent(InformLeaveActivity.this,PeriodActivity.class);
                             intentStart.putExtra("subjectID", intent.getLongExtra("subjectID",1L));
                             intentStart.putExtra("subjectNumber", subject);
                             intentStart.putExtra("subjectName",intent.getStringExtra("subjectName") );
@@ -178,7 +178,7 @@ public class InformLeaveActivity extends AppCompatActivity {
 
                             Toast.makeText(InformLeaveActivity.this, "GETINTENT !"+intent.getStringExtra("subjectNumber")+" "+intent.getStringExtra("subjectName"), Toast.LENGTH_LONG).show();
                             finish();
-                            startActivity(intentStart);*/
+                            startActivity(intentStart);
                             Toast.makeText(InformLeaveActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
                         }
 

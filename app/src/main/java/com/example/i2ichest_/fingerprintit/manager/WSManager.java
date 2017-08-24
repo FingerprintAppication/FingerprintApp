@@ -58,7 +58,11 @@ public class WSManager {
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                listener.onComplete(response);
+                try{
+                    listener.onComplete(response);
+                }catch(Exception s){
+                    Log.d(TAG, "onComplete: "+s.getMessage());
+                }
                 Log.d("onLoginComplete " , response.toString());
             }
 
@@ -349,9 +353,14 @@ public class WSManager {
         task.execute("/listinformleave?id="+object.toString(),"##");
     }
 
+<<<<<<< HEAD
 
     public void doSearchLeaveHistory (Object object, final WSManagerListener listener){
         if(!(object instanceof PersonModel)){
+=======
+    public void doSearchLeaveHistory (Object object, final WSManagerListener listener) {
+        if (!(object instanceof PersonModel)) {
+>>>>>>> fc243d0467b88de1700cb492cc65a5898f3c7dc3
             return;
         }
 
@@ -377,14 +386,26 @@ public class WSManager {
 
                 Log.d("SIZE inform ", listInform.size() + " ");
                 listener.onComplete(listInform);
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> fc243d0467b88de1700cb492cc65a5898f3c7dc3
             }
 
             @Override
             public void onError(String err) {
                 listener.onError(err);
+<<<<<<< HEAD
             }
         });
         task.execute("/leaveHistory",personModel.toJSONString());
+=======
+
+            }
+        });
+        taskPost.execute("/leaveHistory", personModel.toJSONString());
+>>>>>>> fc243d0467b88de1700cb492cc65a5898f3c7dc3
     }
 
     public void getAnnounceNewsFromStudentId(Object object,final WSManagerListener listener){
@@ -409,7 +430,8 @@ public class WSManager {
 
             @Override
             public void onError(String err) {listener.onError(err);
-
+                listener.onError(err);
+                Log.d("searchHistory Error" , err.toString());
             }
         });
         task.execute("/viewAnnouceNews?studentId="+object.toString(),"##");
@@ -426,17 +448,22 @@ public class WSManager {
             @Override
             public void onComplete(String response) {
                 listener.onComplete(response);
+<<<<<<< HEAD
 
+=======
+>>>>>>> fc243d0467b88de1700cb492cc65a5898f3c7dc3
             }
-
             @Override
             public void onError(String err) {
                 listener.onError(err);
+<<<<<<< HEAD
 
+=======
+>>>>>>> fc243d0467b88de1700cb492cc65a5898f3c7dc3
                 Log.d("searchHistory Error" , err.toString());
             }
         });
         task.execute("/updateInformStatus",inform.toJSONString());
     }
-
 }
+
