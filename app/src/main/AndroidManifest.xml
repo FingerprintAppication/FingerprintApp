@@ -43,10 +43,7 @@
         <activity android:name=".CalculateClassScoreActivity" />
         <activity android:name=".ViewListInformLeaveActivity" />
         <activity android:name=".ApproveLeaveActivity" />
-<<<<<<< HEAD
 
-=======
->>>>>>> fc243d0467b88de1700cb492cc65a5898f3c7dc3
         <activity android:name=".ViewLeaveHistoryActivity" />
         <activity android:name=".ViewListLeaveHistoryActivity" />
 

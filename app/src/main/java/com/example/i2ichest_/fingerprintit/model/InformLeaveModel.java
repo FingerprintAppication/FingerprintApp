@@ -87,6 +87,14 @@ public class InformLeaveModel implements Serializable {
             return caseDetail;
         }
 
+        public String getDetail() {
+            return detail;
+        }
+
+        public void setDetail(String detail) {
+            this.detail = detail;
+        }
+
         public void setCaseDetail(String caseDetail) {
             this.caseDetail = caseDetail;
         }

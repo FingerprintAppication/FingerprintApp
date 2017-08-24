@@ -60,12 +60,9 @@ public class ApproveLeaveActivity extends AppCompatActivity {
         TextView type = (TextView) mRow2.findViewById(R.id.typeApprove);
         type.setText(inform.getInformType());
         TableRow mRow3 = (TableRow) table.getChildAt(2);
-<<<<<<< HEAD
         TextView cases = (TextView) mRow3.findViewById(R.id.caseApprove);
 
         cases.setText(inform.getCaseDetail());
-
-
         cases.setText(inform.getDetail());
 
         if ("ลาป่วย".equals(inform.getInformType())) {
@@ -87,31 +84,28 @@ public class ApproveLeaveActivity extends AppCompatActivity {
                 });
             }
         } else {
-=======
-        TextView cases = (TextView)mRow3.findViewById(R.id.caseApprove);
-        cases.setText(inform.getDetail());
-        if("ลาป่วย".equals(inform.getInformType())){
-             if(!"".equals(inform.getSupportDocument())){
-                 TableRow mRow4 = (TableRow) table.getChildAt(3);
-                 ImageView image = (ImageView)mRow4.findViewById(R.id.imageView);
-                 final Bitmap bb = decodeToImage(inform.getSupportDocument());
-                 image.setImageBitmap(bb);
-                 image.setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View view) {
-                         AlertDialog alertDialog = new AlertDialog.Builder(ApproveLeaveActivity.this).create();
-                         View alertView = LayoutInflater.from(ApproveLeaveActivity.this).inflate(R.layout.image_click, null);
-                         ImageView img = (ImageView) alertView.findViewById(R.id.imageView);
-                         img.setImageBitmap(bb);
-                         alertDialog.setView(alertView);
-                         alertDialog.show();
-                     }
-                 });
-             }
-        }else {
->>>>>>> fc243d0467b88de1700cb492cc65a5898f3c7dc3
-            TableRow mRow4 = (TableRow) table.getChildAt(3);
-            mRow4.setVisibility(View.INVISIBLE);
+            if ("ลาป่วย".equals(inform.getInformType())) {
+                if (!"".equals(inform.getSupportDocument())) {
+                    TableRow mRow4 = (TableRow) table.getChildAt(3);
+                    ImageView image = (ImageView) mRow4.findViewById(R.id.imageView);
+                    final Bitmap bb = decodeToImage(inform.getSupportDocument());
+                    image.setImageBitmap(bb);
+                    image.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(ApproveLeaveActivity.this).create();
+                            View alertView = LayoutInflater.from(ApproveLeaveActivity.this).inflate(R.layout.image_click, null);
+                            ImageView img = (ImageView) alertView.findViewById(R.id.imageView);
+                            img.setImageBitmap(bb);
+                            alertDialog.setView(alertView);
+                            alertDialog.show();
+                        }
+                    });
+                }
+            } else {
+                TableRow mRow4 = (TableRow) table.getChildAt(3);
+                mRow4.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
