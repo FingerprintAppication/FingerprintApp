@@ -53,7 +53,7 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
         detail.setText(inform.getDetail());
         cause.setText(inform.getCaseDetail());
 
-        if(inform.getCaseDetail().equals("")){
+        if(inform.getCaseDetail() == null){
             cause.setText("รอ");
         }
 
