@@ -45,51 +45,53 @@ public class ApproveLeaveActivity extends AppCompatActivity {
         ShowInformLeave();
     }
 
-    public void ShowInformLeave (){
+    public void ShowInformLeave () {
         Intent intent = getIntent();
-        final InformLeaveModel.InformLeave inform = (InformLeaveModel.InformLeave)intent.getExtras().getSerializable("informleave");
-        TextView studeId = (TextView)findViewById(R.id.studentIdTxt);
-        TextView studeName = (TextView)findViewById(R.id.studentNameTxt);
+        final InformLeaveModel.InformLeave inform = (InformLeaveModel.InformLeave) intent.getExtras().getSerializable("informleave");
+        TextView studeId = (TextView) findViewById(R.id.studentIdTxt);
+        TextView studeName = (TextView) findViewById(R.id.studentNameTxt);
         studeId.setText(inform.getStudent().getStudentID().toString());
-        studeName.setText(inform.getStudent().getTitle()+inform.getStudent().getFirstName()+" "+inform.getStudent().getLastName());
-        TableLayout table = (TableLayout)findViewById(R.id.tableApprove);
+        studeName.setText(inform.getStudent().getTitle() + inform.getStudent().getFirstName() + " " + inform.getStudent().getLastName());
+        TableLayout table = (TableLayout) findViewById(R.id.tableApprove);
         TableRow mRow = (TableRow) table.getChildAt(0);
-        TextView date = (TextView)mRow.findViewById(R.id.dateApprove);
+        TextView date = (TextView) mRow.findViewById(R.id.dateApprove);
         date.setText(inform.getSchedule().getScheduleDate());
         TableRow mRow2 = (TableRow) table.getChildAt(1);
-        TextView type = (TextView)mRow2.findViewById(R.id.typeApprove);
+        TextView type = (TextView) mRow2.findViewById(R.id.typeApprove);
         type.setText(inform.getInformType());
         TableRow mRow3 = (TableRow) table.getChildAt(2);
-        TextView cases = (TextView)mRow3.findViewById(R.id.caseApprove);
-<<<<<<< HEAD
+        TextView cases = (TextView) mRow3.findViewById(R.id.caseApprove);
+
         cases.setText(inform.getCaseDetail());
 
-=======
+
         cases.setText(inform.getDetail());
->>>>>>> 9a0d6ba8704ba71e058748dd9ad2a63030b04e67
-        if("ลาป่วย".equals(inform.getInformType())){
-             if(!"".equals(inform.getSupportDocument())){
-                 TableRow mRow4 = (TableRow) table.getChildAt(3);
-                 ImageView image = (ImageView)mRow4.findViewById(R.id.imageView);
-                 final Bitmap bb = decodeToImage(inform.getSupportDocument());
-                 image.setImageBitmap(bb);
-                 image.setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View view) {
-                         AlertDialog alertDialog = new AlertDialog.Builder(ApproveLeaveActivity.this).create();
-                         View alertView = LayoutInflater.from(ApproveLeaveActivity.this).inflate(R.layout.image_click, null);
-                         ImageView img = (ImageView) alertView.findViewById(R.id.imageView);
-                         img.setImageBitmap(bb);
-                         alertDialog.setView(alertView);
-                         alertDialog.show();
-                     }
-                 });
-             }
-        }else {
+
+        if ("ลาป่วย".equals(inform.getInformType())) {
+            if (!"".equals(inform.getSupportDocument())) {
+                TableRow mRow4 = (TableRow) table.getChildAt(3);
+                ImageView image = (ImageView) mRow4.findViewById(R.id.imageView);
+                final Bitmap bb = decodeToImage(inform.getSupportDocument());
+                image.setImageBitmap(bb);
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(ApproveLeaveActivity.this).create();
+                        View alertView = LayoutInflater.from(ApproveLeaveActivity.this).inflate(R.layout.image_click, null);
+                        ImageView img = (ImageView) alertView.findViewById(R.id.imageView);
+                        img.setImageBitmap(bb);
+                        alertDialog.setView(alertView);
+                        alertDialog.show();
+                    }
+                });
+            }
+        } else {
             TableRow mRow4 = (TableRow) table.getChildAt(3);
             mRow4.setVisibility(View.INVISIBLE);
         }
-        Button approve = (Button)findViewById(R.id.approve);
+    }
+
+       /* Button approve = (Button)findViewById(R.id.approve);
         approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,6 +167,7 @@ public class ApproveLeaveActivity extends AppCompatActivity {
             }
         });
     }
+    */
 
     public Bitmap decodeToImage(String imageString) {
         byte[] imageByte;

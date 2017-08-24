@@ -349,7 +349,7 @@ public class WSManager {
         task.execute("/listinformleave?id="+object.toString(),"##");
     }
 
-<<<<<<< HEAD
+
     public void doSearchLeaveHistory (Object object, final WSManagerListener listener){
         if(!(object instanceof PersonModel)){
             return;
@@ -358,7 +358,7 @@ public class WSManager {
         PersonModel personModel = (PersonModel) object;
         personModel.toJSONString();
 
-        WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+        WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
                 List<InformLeaveModel.InformLeave> listInform = new ArrayList<>();
@@ -366,7 +366,7 @@ public class WSManager {
                 try {
                     JSONArray informArray = new JSONArray(response.toString());
 
-                    for(int y=0;y<informArray.length();y++){
+                    for (int y = 0; y < informArray.length(); y++) {
                         JSONObject jsonSection = new JSONObject(informArray.get(y).toString());
                         InformLeaveModel informLeaveModel = new InformLeaveModel(jsonSection.toString());
                         listInform.add(informLeaveModel.getInformLeave());
@@ -375,9 +375,18 @@ public class WSManager {
                     e.printStackTrace();
                 }
 
-                Log.d("SIZE inform ",listInform.size()+" ");
+                Log.d("SIZE inform ", listInform.size() + " ");
                 listener.onComplete(listInform);
-=======
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+            }
+        });
+        task.execute("/leaveHistory",personModel.toJSONString());
+    }
+
     public void getAnnounceNewsFromStudentId(Object object,final WSManagerListener listener){
         WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
             @Override
@@ -417,22 +426,17 @@ public class WSManager {
             @Override
             public void onComplete(String response) {
                 listener.onComplete(response);
->>>>>>> 9a0d6ba8704ba71e058748dd9ad2a63030b04e67
+
             }
 
             @Override
             public void onError(String err) {
                 listener.onError(err);
-<<<<<<< HEAD
+
                 Log.d("searchHistory Error" , err.toString());
             }
         });
-        taskPost.execute("/leaveHistory",personModel.toJSONString());
-=======
-            }
-        });
         task.execute("/updateInformStatus",inform.toJSONString());
->>>>>>> 9a0d6ba8704ba71e058748dd9ad2a63030b04e67
     }
 
 }

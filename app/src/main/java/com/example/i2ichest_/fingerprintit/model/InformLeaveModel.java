@@ -91,14 +91,6 @@ public class InformLeaveModel implements Serializable {
             this.caseDetail = caseDetail;
         }
 
-        public String getDetail() {
-            return detail;
-        }
-
-        public void setDetail(String detail) {
-            this.detail = detail;
-        }
-
         public ScheduleModel.Schedule getSchedule() {
             return schedule;
         }
