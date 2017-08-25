@@ -6,4 +6,6 @@
     <color name="grey">#AEAEBB</color>
     <color name="grey_unread">#E0E0E0</color>
     <color name="red">#FF0000</color>
+    <color name="white">#FFFFFF</color>
+
 </resources>

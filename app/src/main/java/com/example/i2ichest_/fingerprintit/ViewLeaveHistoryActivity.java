@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -60,8 +61,20 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
         ImageView image = (ImageView) findViewById(R.id.imageDoc);
 
         if (inform.getSupportDocument()!= null) {
-            Bitmap bb = decodeToImage(inform.getSupportDocument());
+            Log.d("TAG", "showDetail: "+inform.getSupportDocument());
+            final Bitmap bb = decodeToImage(inform.getSupportDocument());
             image.setImageBitmap(bb);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(ViewLeaveHistoryActivity.this).create();
+                    View alertView = LayoutInflater.from(ViewLeaveHistoryActivity.this).inflate(R.layout.image_click, null);
+                    ImageView img = (ImageView) alertView.findViewById(R.id.imageView);
+                    img.setImageBitmap(bb);
+                    alertDialog.setView(alertView);
+                    alertDialog.show();
+                }
+            });
         }
 
         final Button btn = (Button) findViewById(R.id.btnAddDoc);
@@ -91,4 +104,6 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
         }
         return bitmap;
     }
+
+
 }

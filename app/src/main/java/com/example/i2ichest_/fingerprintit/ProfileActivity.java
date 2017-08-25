@@ -34,9 +34,15 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("test_subject");
-        FirebaseMessaging.getInstance().subscribeToTopic("Network_Administration");
         gb = (GlobalClass) this.getApplicationContext();
+        //FirebaseMessaging.getInstance().unsubscribeFromTopic("test_subject");
+        //FirebaseMessaging.getInstance().subscribeToTopic("Network_Administration");
+        if(gb.getTypeUser().equals("student")){
+            for (String s : gb.getAllSubject()) {
+                FirebaseMessaging.getInstance().subscribeToTopic(s);
+                Log.d("TAG", "subscribeTopic "+s);
+            }
+        }
         setTextProfile();
     }
 
@@ -53,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         name.setText(sumStr);
 
-        String typeUser = gb.getTypeUser();ิ
+        String typeUser = gb.getTypeUser();
         if (!typeUser.equals("parent")){
             major.setText(gb.getLoginModel().getLogin().getPerson().getMajor().getMajorName());
         }
@@ -184,4 +190,16 @@ public class ProfileActivity extends AppCompatActivity {
 
         Log.d("PERSON IDD " , gb.getLoginModel().getLogin().getPerson().getPersonID().toString());
     }
+
+    public void logOut (View view) {
+        for (String s : gb.getAllSubject()) {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(s);
+            Log.d("TAG", "UnsubscribeTopic "+s);
+        }
+        gb = new GlobalClass();
+        Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
+        finish();
+        startActivity(intent);
+    }
+
 }
