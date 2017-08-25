@@ -53,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         name.setText(sumStr);
 
-        String typeUser = gb.getTypeUser();
+        String typeUser = gb.getTypeUser();ิ
         if (!typeUser.equals("parent")){
             major.setText(gb.getLoginModel().getLogin().getPerson().getMajor().getMajorName());
         }
