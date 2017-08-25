@@ -5,7 +5,6 @@ import android.util.Log;
 import com.example.i2ichest_.fingerprintit.R;
 import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
 import com.example.i2ichest_.fingerprintit.model.AttendanceModel;
-import com.example.i2ichest_.fingerprintit.model.EnrollmentModel;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
 import com.example.i2ichest_.fingerprintit.model.LoginModel;
 import com.example.i2ichest_.fingerprintit.model.ParentModel;
@@ -21,7 +20,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -58,12 +59,35 @@ public class WSManager {
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                try{
-                    listener.onComplete(response);
-                }catch(Exception s){
-                    Log.d(TAG, "onComplete: "+s.getMessage());
+                Map<String,List<String>> map = new HashMap<String,List<String>>();
+                Log.d("response Login", response.toString());
+
+                List<String> listSubject = new ArrayList<>();
+                List<String> listLogin = new ArrayList<>();
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response.toString());
+
+                    JSONArray jsonSubject = jsonObject.getJSONArray("subject");
+                    for ( int i = 0 ; i < jsonSubject.length() ; i++){
+                        listSubject.add(jsonSubject.get(i).toString());
+                    }
+
+                    JSONArray jsonLogin = jsonObject.getJSONArray("login");
+                    for ( int i = 0 ; i < jsonLogin.length() ; i++){
+                        listLogin.add(jsonLogin.get(i).toString());
+                    }
+
+                    map.put("subject",listSubject);
+                    map.put("login",listLogin);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                Log.d("onLoginComplete " , response.toString());
+
+                Log.d("Login Complete ", map.toString());
+                listener.onComplete(map);
+
             }
 
             @Override
@@ -353,6 +377,7 @@ public class WSManager {
         task.execute("/listinformleave?id="+object.toString(),"##");
     }
 
+
     public void doSearchLeaveHistory (Object object, final WSManagerListener listener) {
         if (!(object instanceof PersonModel)) {
             return;
@@ -361,7 +386,7 @@ public class WSManager {
         PersonModel personModel = (PersonModel) object;
         personModel.toJSONString();
 
-        WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+        WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
                 List<InformLeaveModel.InformLeave> listInform = new ArrayList<>();
@@ -381,7 +406,6 @@ public class WSManager {
                 Log.d("SIZE inform ", listInform.size() + " ");
                 listener.onComplete(listInform);
 
-
             }
 
             @Override
@@ -390,7 +414,7 @@ public class WSManager {
 
             }
         });
-        taskPost.execute("/leaveHistory", personModel.toJSONString());
+        task.execute("/leaveHistory",personModel.toJSONString());
     }
 
     public void getAnnounceNewsFromStudentId(Object object,final WSManagerListener listener){
@@ -433,6 +457,7 @@ public class WSManager {
             @Override
             public void onComplete(String response) {
                 listener.onComplete(response);
+
             }
             @Override
             public void onError(String err) {

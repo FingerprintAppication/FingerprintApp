@@ -110,5 +110,11 @@ app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
 =======
 app/src/main/AndroidManifest.xml
 >>>>>>> 9a0d6ba8704ba71e058748dd9ad2a63030b04e67
+<<<<<<< HEAD
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
+=======
 *.java
 *.java
+>>>>>>> fc243d0467b88de1700cb492cc65a5898f3c7dc3

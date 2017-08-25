@@ -19,6 +19,11 @@ import com.example.i2ichest_.fingerprintit.model.PersonModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
     private GlobalClass gb;
     WSManager wsManager;
@@ -33,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onClickLogin(View view){
         final ProgressDialog progress = ProgressDialog.show(LoginActivity.this,"Please Wait...","Please wait...",true);
         wsManager = WSManager.getWsManager(this);
-        LoginModel loginModel = new LoginModel();
+        final LoginModel loginModel = new LoginModel();
 
         final EditText username = (EditText) findViewById(R.id.editTextUsername);
         EditText password = (EditText) findViewById(R.id.editTextPassword);
@@ -46,97 +51,50 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(Object response) {
                 progress.dismiss();
 
-                try {
-                    JSONObject jsonObject = new JSONObject(response.toString());
+                Map<String,List<String>> map = (Map<String, List<String>>) response;
 
-                    if (jsonObject.getString("username").equals("null") || jsonObject.getJSONObject("person").equals("null")) {
-                        Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
-                    } else if (!jsonObject.getJSONObject("person").equals("null")) {
-                        JSONObject jsonPerson = jsonObject.getJSONObject("person");
-                        if (jsonPerson.getString("firstName").equals("Admin")) {
-                            Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
-                        } else {
+                if (!map.isEmpty()) {
+                    Log.d("Map<LOGIN> @@ : ", map.get("login").toString());
+                    List<String> login = map.get("login");
 
-                            /************** set Login ************/
-                            long loginID = jsonObject.getLong("loginID");
-                            String username = jsonObject.getString("username");
-                            String password = jsonObject.getString("password");
+                    gb.getLoginModel().getLogin().setUsername(login.get(0));
+                    gb.getLoginModel().getLogin().setPassword(login.get(1));
 
-                            /************** set Person ************/
-                            long personID = jsonPerson.getLong("personID");
-                            String title = jsonPerson.getString("title");
-                            String firstName = jsonPerson.getString("firstName");
-                            String lastName = jsonPerson.getString("lastName");
+                    PersonModel personModel = new PersonModel();
+                    personModel.getPerson().setTitle(login.get(2));
+                    personModel.getPerson().setFirstName(login.get(3));
+                    personModel.getPerson().setLastName(login.get(4));
+                    personModel.getPerson().setPersonID(Long.valueOf(login.get(5)));
 
-                            PersonModel person = new PersonModel();
-                            person.getPerson().setPersonID(personID);
-                            person.getPerson().setTitle(title);
-                            person.getPerson().setFirstName(firstName);
-                            person.getPerson().setLastName(lastName);
-
-
-                            if(!jsonPerson.getString("major").equals("null")) {
-                                gb.setTypeUser("teacher");
-                                /************** set Major ************/
-                                JSONObject jsonMajor = jsonPerson.getJSONObject("major");
-                                long majorID = jsonMajor.getLong("majorID");
-                                String secondaryMajorID = jsonMajor.getString("secondaryMajorID");
-                                String majorName = jsonMajor.getString("majorName");
-                                MajorModel major = new MajorModel();
-
-                                major.getMajor().setMajorID(majorID);
-                                major.getMajor().setScondaryMajorID(secondaryMajorID);
-                                major.getMajor().setMajorName(majorName);
-
-                                /************** set Faculty ************/
-                                JSONObject jsonFaculty = jsonMajor.getJSONObject("faculty");
-                                long facultyID = jsonFaculty.getLong("facultyID");
-                                String facultyName = jsonFaculty.getString("facultyName");
-
-                                FacultyModel faculty = new FacultyModel();
-                                faculty.getFaculty().setFacultyID(facultyID);
-                                faculty.getFaculty().setFacultyName(facultyName);
-
-                                /************** Finish Add to Person ************/
-                                major.getMajor().setFaculty(faculty.getFaculty());
-                                person.getPerson().setMajor(major.getMajor());
-
-                                /************** set fingerData ************/
-                                if (!jsonPerson.getString("fingerprintData").equals("null")) {
-                                    gb.setTypeUser("student");
-                                    JSONObject jsonFingerData = jsonPerson.getJSONObject("fingerprintData");
-                                    String fingerData = jsonFingerData.getString("fingerprintNumber");
-                                    person.getPerson().setFingerprintData(fingerData);
-                                }
-                            } else if (jsonPerson.getString("fingerprintData").equals("null") && jsonPerson.getString("major").equals("null")){
-                                gb.setTypeUser("parent");
-                            }
-
-                            /************** set Global Class or LoginModel ************/
-                            gb.getLoginModel().getLogin().setLoginID(loginID);
-                            gb.getLoginModel().getLogin().setUsername(username);
-                            gb.getLoginModel().getLogin().setPassword(password);
-                            gb.getLoginModel().getLogin().setPerson(person.getPerson());
-
-                            Log.d("GB : ", gb.getLoginModel().getLogin().toString());
-                            Log.d("Type User :" , gb.getTypeUser());
-
-                            Toast.makeText(LoginActivity.this, "สวัสดี " + title + " " + firstName + " " + lastName, Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                            startActivity(intent);
+                    if (login.get(8).equals("student") || login.get(8).equals("teacher")) {
+                        if (login.get(8).equals("student")) {
+                            personModel.getPerson().setFingerprintData(login.get(9));
                         }
+
+                        MajorModel majorModel = new MajorModel();
+                        majorModel.getMajor().setMajorName(login.get(6));
+
+                        FacultyModel facultyModel = new FacultyModel();
+                        facultyModel.getFaculty().setFacultyName(login.get(7));
+
+                        majorModel.getMajor().setFaculty(facultyModel.getFaculty());
+                        personModel.getPerson().setMajor(majorModel.getMajor());
                     }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    gb.getLoginModel().getLogin().setPerson(personModel.getPerson());
+                    gb.setTypeUser(login.get(8));
 
+                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onError(String error) {
                 progress.dismiss();
-                Toast.makeText(LoginActivity.this, "Error " + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "ผิดพลาด " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
