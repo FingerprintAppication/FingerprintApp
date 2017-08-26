@@ -175,11 +175,8 @@ public class InformLeaveActivity extends AppCompatActivity {
                             intentStart.putExtra("subjectNumber", subject);
                             intentStart.putExtra("subjectName",intent.getStringExtra("subjectName") );
                             intentStart.putExtra("resultInform",response.toString());
-
-                            Toast.makeText(InformLeaveActivity.this, "GETINTENT !"+intent.getStringExtra("subjectNumber")+" "+intent.getStringExtra("subjectName"), Toast.LENGTH_LONG).show();
                             finish();
                             startActivity(intentStart);
-                            Toast.makeText(InformLeaveActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
