@@ -87,7 +87,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/buttonLogout"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="logOut" />
 
     <ImageView
         app:srcCompat="@mipmap/ic_launcher"

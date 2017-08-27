@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,7 +21,10 @@ public class WSTask extends AsyncTask<String,String,String> {
     }
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    private OkHttpClient client = new OkHttpClient();
+    private OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .build();;
     private WSTaskListener listener;
     private Context context;
 
@@ -33,10 +38,16 @@ public class WSTask extends AsyncTask<String,String,String> {
     protected String doInBackground(String... params) {
         Request.Builder builder = new Request.Builder();
 
+<<<<<<< HEAD
         Request request = builder.url("http://192.168.1.23:8080".concat(params[0])).build();
+=======
+        Request request = builder.url("http://10.0.0.78:8080".concat(params[0])).build();
+>>>>>>> 8d5ed89f6ba248df174b828f9b4eaa0dd8b2ba4f
 
         try {
+            client.readTimeoutMillis();
             Response response = client.newCall(request).execute();
+
             if (response.isSuccessful()) {
                 return response.body().string();
             } else {

@@ -83,6 +83,8 @@ public class LoginActivity extends AppCompatActivity {
 
                     gb.getLoginModel().getLogin().setPerson(personModel.getPerson());
                     gb.setTypeUser(login.get(8));
+                    List<String> allSub = map.get("subject");
+                    gb.setAllSubject(allSub);
 
                     Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                     startActivity(intent);
