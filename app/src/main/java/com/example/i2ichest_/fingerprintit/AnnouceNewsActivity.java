@@ -73,22 +73,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
             @Override
             public void onComplete(Object response) {
                 progress.dismiss();
-                List<String> listDate = new ArrayList<String>();
-
-                try {
-                    JSONArray jsonArray = new JSONArray(response.toString());
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        String[] sp = jsonArray.get(i).toString().split("-");
-                        String year = sp[0];
-                        String month = sp[1];
-                        String day = sp[2];
-                        listDate.add(day + "-" + month + "-" + year);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                List<String> listDate = (List<String>) response;
                 ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(AnnouceNewsActivity.this, android.R.layout.simple_list_item_1, listDate);
                 spDate.setAdapter(adapter2);
             }
@@ -110,14 +95,12 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                 annouceNewsModel.getAnnouceNews().setDetail(editText.getText().toString());
 
                 TeacherModel teacherModel = new TeacherModel();
-
                 teacherModel.getTeacher().setPersonID(gb.getLoginModel().getLogin().getPerson().getPersonID());
                 annouceNewsModel.getAnnouceNews().setTeacher(teacherModel.getTeacher());
 
                 ScheduleModel scheduleModel = new ScheduleModel();
                 scheduleModel.getSchedule().setPeriod(periodModel.getPeriod());
                 String dateSelected = spDate.getSelectedItem().toString();
-
                 scheduleModel.getSchedule().setScheduleDate(dateSelected);
 
                 final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this, "Please Wait...", "Please wait...", true);
