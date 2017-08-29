@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -29,10 +30,13 @@ import com.example.i2ichest_.fingerprintit.model.SubjectModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class ListViewAdapter extends BaseSwipeAdapter {
     List<String> list;
@@ -89,6 +93,28 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                 final String subject = view.getTag().toString();
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(parentActivity);
                 final View alertView = LayoutInflater.from(mContext).inflate(R.layout.setting_before_class_alert, null);
+                final NumberPicker hr = (NumberPicker)alertView.findViewById(R.id.hour);
+                final NumberPicker mit = (NumberPicker)alertView.findViewById(R.id.minutes);
+                hr.setMinValue(0);
+                hr.setMaxValue(23);
+                mit.setMinValue(0);
+                mit.setMaxValue(59);
+                hr.setWrapSelectorWheel(true);
+                /*hr.setOnValueChangedListener(( new NumberPicker.
+                        OnValueChangeListener() {
+                    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                        Log.i("value is",""+newVal);
+                    }
+                }));*/
+                mit.setWrapSelectorWheel(true);
+               /* mit.setOnValueChangedListener(( new NumberPicker.
+                        OnValueChangeListener() {
+                    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                        Log.i("value is",""+newVal);
+                    }
+                }));*/
+
+
                 wsManager = WSManager.getWsManager(parentActivity);
                 SubjectModel subjectModel = new SubjectModel();
                 subjectModel.getSubject().setSubjectID(Long.parseLong(subject));
@@ -96,21 +122,21 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                     @Override
                     public void onComplete(Object response) {
                         try {
-                            showTimeToStudy="";
+                            String showTimeToStudy = "";
                             JSONArray jsonArray = new JSONArray(response.toString());
                             JSONObject jsonSection = new JSONObject(jsonArray.get(0).toString());
                             final SectionModel section = new SectionModel(jsonSection.toString());
 
                             for(PeriodModel.Period period:section.getSection().getPeriodList()){
-                                    showTimeToStudy += "วัน "+period.getDayOfWeek()+" "+period.getPeriodStartTime()+"-"+period.getPeriodEndTime()+"\n";
+                                showTimeToStudy+= "วัน "+period.getDayOfWeek()+" "+period.getPeriodStartTime()+"-"+period.getPeriodEndTime()+"\n";
                             }
+                            TextView periodOne = (TextView)alertView.findViewById(R.id.periodSubect);
 
-
+                            periodOne.setText(showTimeToStudy);
                             alertDialog.setPositiveButton("ยืนยัน", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                             Switch onOff = (Switch)alertView.findViewById(R.id.onOff);
-                                            TimePicker time = (TimePicker) alertView.findViewById(R.id.timePicker);
                                                 for(PeriodModel.Period period:section.getSection().getPeriodList()){
 
                                                     Calendar calendar  = Calendar.getInstance();
@@ -125,28 +151,28 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                                                             if(calendar.get(Calendar.HOUR_OF_DAY)<start){
                                                                 //calendar = Calendar.getInstance();
                                                                // Log.d("start and getHour ",start+" == "+time.getHour());
-                                                                calendar.set(Calendar.HOUR_OF_DAY, start - time.getHour());
-                                                                calendar.set(Calendar.MINUTE, time.getMinute());
-                                                                Log.d("EQULAS  ",start+" == "+time.getHour());
+                                                                calendar.set(Calendar.HOUR_OF_DAY, start -  hr.getValue());
+                                                                calendar.set(Calendar.MINUTE, mit.getValue());
+                                                                Log.d("EQULAS  ",start+" == "+ hr.getValue());
                                                             }else {
                                                                 //calendar = Calendar.getInstance();
                                                                 calendar.add(Calendar.DATE,7);
-                                                                calendar.set(Calendar.HOUR_OF_DAY, start - time.getHour());
-                                                                calendar.set(Calendar.MINUTE, time.getMinute());
+                                                                calendar.set(Calendar.HOUR_OF_DAY, start -  hr.getValue());
+                                                                calendar.set(Calendar.MINUTE, mit.getValue());
                                                             }
                                                         }else if (dayOfWeek > setDateSubject(period.getDayOfWeek())){
                                                             //calendar = Calendar.getInstance();
                                                             calendar.add(Calendar.DATE,7-(dayOfWeek - setDateSubject(period.getDayOfWeek())));
-                                                            calendar.set(Calendar.HOUR_OF_DAY, start - time.getHour());
-                                                            calendar.set(Calendar.MINUTE, time.getMinute());
-                                                            Log.d("MORE THAN  ",start+" == "+time.getHour());
+                                                            calendar.set(Calendar.HOUR_OF_DAY, start -  hr.getValue());
+                                                            calendar.set(Calendar.MINUTE, mit.getValue());
+                                                            Log.d("MORE THAN  ",start+" == "+ hr.getValue());
 
                                                         }else if (dayOfWeek < setDateSubject(period.getDayOfWeek())) {
                                                             //calendar = Calendar.getInstance();
                                                             calendar.add(Calendar.DATE,(setDateSubject(period.getDayOfWeek())-dayOfWeek));
-                                                            calendar.set(Calendar.HOUR_OF_DAY, start - time.getHour());
-                                                            calendar.set(Calendar.MINUTE, time.getMinute());
-                                                            Log.d("LESS THAN  ",start+" == "+time.getHour());
+                                                            calendar.set(Calendar.HOUR_OF_DAY, start -  hr.getValue());
+                                                            calendar.set(Calendar.MINUTE, mit.getValue());
+                                                            Log.d("LESS THAN  ",start+" == "+ hr.getValue());
                                                         }
                                                         intent = new Intent(parentActivity, AlarmReceiver.class);
                                                         AlarmManager alm = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
@@ -184,11 +210,11 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                         AlertDialog alert = alertDialog.create();
                         alert.show();
 
-                        AlertDialog showTime = new AlertDialog.Builder(parentActivity).create();
+                       /* AlertDialog showTime = new AlertDialog.Builder(parentActivity).create();
                         showTime.setTitle("เวลา");
                         showTime.setIcon(R.drawable.clock);
                         showTime.setMessage(showTimeToStudy);
-                        showTime.show();
+                        showTime.show();*/
                     }
 
                     @Override

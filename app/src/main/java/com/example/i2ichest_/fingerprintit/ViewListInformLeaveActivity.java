@@ -33,8 +33,6 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_view_list_inform_leave);
         showInformLeave ();
     }
@@ -57,7 +55,7 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
         if(result != null){
             AlertDialog alertDialog = new AlertDialog.Builder(ViewListInformLeaveActivity.this).create();
             alertDialog.setTitle("สถานะการยืนยันการลาเรียน");
-            alertDialog.setIcon(getResources().getDrawable(R.drawable.success));
+            alertDialog.setIcon(getDrawable(R.drawable.success));
             alertDialog.setMessage(result);
             alertDialog.show();
         }
@@ -73,27 +71,27 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
                 ListView view = (ListView) findViewById(R.id.listInform);
                 Map<String,String> unRead = new HashMap<String, String>();
                 unRead = myDb.getAllInformLeave();
-                List<String> setColor = new ArrayList<String>();
-                if(!list.isEmpty()) {
-                    view.clearAnimation();
-                    List<String> string = new ArrayList<String>();
-                    for (InformLeaveModel i : list) {
-                        Calendar car = Calendar.getInstance();
-                        car.clear();
-                        Date date = new Date();
-                        Long setDate = Long.parseLong(i.getInformLeave().getSchedule().getScheduleDate());
-                        date.setTime(setDate);
-                        car.setTime(date);
-                        i.getInformLeave().getSchedule().setScheduleDate(car.get(java.util.Calendar.YEAR) + "-"
-                                + (car.get(java.util.Calendar.MONTH) + 1)
-                                + "-" + car.get(java.util.Calendar.DAY_OF_MONTH));
-                        string.add(i.getInformLeave().getStudent().getStudentID() + " " +
-                                " " + i.getInformLeave().getSchedule().getScheduleDate() + " " + i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectNumber());
-                        if(unRead.get(i.getInformLeave().getInformLeaveID()+"") == null){
-                            setColor.add("set");
+                            List<String> setColor = new ArrayList<String>();
+                            if(!list.isEmpty()) {
+                                view.clearAnimation();
+                                List<String> string = new ArrayList<String>();
+                                for (InformLeaveModel i : list) {
+                                    Calendar car = Calendar.getInstance();
+                                    car.clear();
+                                    Date date = new Date();
+                                    Long setDate = Long.parseLong(i.getInformLeave().getSchedule().getScheduleDate());
+                                    date.setTime(setDate);
+                                    car.setTime(date);
+                                    i.getInformLeave().getSchedule().setScheduleDate(car.get(java.util.Calendar.YEAR) + "-"
+                                            + (car.get(java.util.Calendar.MONTH) + 1)
+                                            + "-" + car.get(java.util.Calendar.DAY_OF_MONTH));
+                                    string.add(i.getInformLeave().getStudent().getStudentID() + " " +
+                                            " " + i.getInformLeave().getSchedule().getScheduleDate() + " " + i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectNumber());
+                                    if(unRead.get(i.getInformLeave().getInformLeaveID()+"") == null){
+                                        setColor.add("set");
 
-                        }else {
-                            setColor.add("off");
+                                    }else {
+                                        setColor.add("off");
                         }
                     }
                     InformViewAdapter informViewAdapter = new InformViewAdapter(ViewListInformLeaveActivity.this,string,setColor,string.size());
