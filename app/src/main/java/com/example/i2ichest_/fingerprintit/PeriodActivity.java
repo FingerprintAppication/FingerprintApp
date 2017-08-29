@@ -16,6 +16,7 @@ import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
 import com.example.i2ichest_.fingerprintit.model.BuildingModel;
 import com.example.i2ichest_.fingerprintit.model.PeriodModel;
 import com.example.i2ichest_.fingerprintit.model.RoomModel;
+import com.example.i2ichest_.fingerprintit.model.SectionModel;
 import com.example.i2ichest_.fingerprintit.model.SubjectModel;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +33,6 @@ public class PeriodActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_period);
-
         gb = (GlobalClass) this.getApplicationContext();
         showPeriod();
     }
@@ -50,7 +50,6 @@ public class PeriodActivity extends AppCompatActivity {
             alertDialog.setTitle("ลาเรียน");
             Log.d("TAG", "ลาเข้าล้ะ: ");
             if ("ลาเรียนสำเร็จ".equals(resultInform)) {
-
                 alertDialog.setIcon(getResources().getDrawable(R.drawable.success));
                 alertDialog.setMessage(resultInform);
             } else {
@@ -62,79 +61,41 @@ public class PeriodActivity extends AppCompatActivity {
 
         subjectDetail[0] = subjectNumber;
         subjectDetail[1] = subjectName;
+
         TextView textViewSubjectName = (TextView) findViewById(R.id.textViewSubjectName);
+        textViewSubjectName.setText(subjectName);
+
         final TextView textViewSectionTitle = (TextView) findViewById(R.id.textViewSectionTitle);
-        textViewSubjectName.setText(subjectNumber + " : " + subjectName);
         final ProgressDialog progress = ProgressDialog.show(PeriodActivity.this,"Please Wait...","Please wait...",true);
         wsManager = WSManager.getWsManager(this);
+
         SubjectModel subjectModel = new SubjectModel();
         subjectModel.getSubject().setSubjectID(subjectID);
-        wsManager.doSearchPeriod(subjectModel, new WSManager.WSManagerListener() {
+        wsManager.doSearchSection(subjectModel, new WSManager.WSManagerListener() {
             @Override
             public void onComplete(final Object response) {
                 progress.dismiss();
-                try {
-                    JSONArray jsonArray = new JSONArray(response.toString());
-                    Log.d("SECTION @@@@ :",jsonArray.toString());
+                final SectionModel.Section section = (SectionModel.Section) response;
 
-                    final JSONObject jsonSection = new JSONObject(jsonArray.get(0).toString());
                     /*section ID here*/
-                    final String sectionID = jsonSection.getString("sectionID");
-                    final String sectionNumber = jsonSection.getString("sectionNumber");
-                    final int semester = jsonSection.getInt("semester");
-                    final int schoolYear = jsonSection.getInt("schoolYear");
+                    final String sectionID = section.getSectionID().toString();
+                    final String sectionNumber = String.valueOf(section.getSectionNumber());
+                    final int semester = section.getSemester();
+                    final int schoolYear = section.getSchoolYear();
+
                     textViewSectionTitle.setText("กลุ่มเรียน " + sectionNumber + " : ภาคเรียนที่ " + semester + " : ปีการศึกษา " + schoolYear);
                     subjectDetail[5] = semester+"/"+schoolYear;
-                    final List<PeriodModel.Period> listPeriod = new ArrayList<PeriodModel.Period>();
-                    JSONArray jsonPeriod = new JSONArray(jsonSection.getJSONArray("periodList").toString());
-                    Log.d("jsonPeriod @@@@ :",jsonPeriod.toString());
-                    for ( int k = 0; k < jsonPeriod.length() ; k++ ) {
-                        JSONObject jsonObject = new JSONObject(jsonPeriod.get(k).toString());
 
-                        long periodID = jsonObject.getLong("periodID");
-                        String dayOfWeek = jsonObject.getString("dayOfWeek");
-                        String studyType = jsonObject.getString("studyType");
-                        String periodStart = jsonObject.getString("periodStartTime");
-                        String periodEnd = jsonObject.getString("periodEndTime");
-                        PeriodModel periodModel = new PeriodModel();
-                        periodModel.getPeriod().setPeriodID(periodID);
-                        periodModel.getPeriod().setDayOfWeek(dayOfWeek);
-                        periodModel.getPeriod().setStudyType(studyType);
-                        periodModel.getPeriod().setPeriodStartTime(periodStart);
-                        periodModel.getPeriod().setPeriodEndTime(periodEnd);
-
-                        JSONObject jsonRoom = jsonObject.getJSONObject("room");
-                        long roomId = jsonRoom.getLong("roomID");
-                        String roomName = jsonRoom.getString("roomName");
-                        RoomModel roomModel = new RoomModel();
-                        roomModel.getRoom().setRoomID(roomId);
-                        roomModel.getRoom().setRoomName(roomName);
-
-                        JSONObject jsonBuilding = jsonRoom.getJSONObject("building");
-                        long buildingID = jsonBuilding.getLong("buildingID");
-                        String buildingName = jsonBuilding.getString("buildingName");
-                        BuildingModel buildingModel = new BuildingModel();
-                        buildingModel.getBuilding().setBuildingID(buildingID);
-                        buildingModel.getBuilding().setBuildingName(buildingName);
-
-                        roomModel.getRoom().setBuilding(buildingModel.getBuilding());
-                        periodModel.getPeriod().setRoom(roomModel.getRoom());
-
-                        listPeriod.add(periodModel.getPeriod());
-                    }
-                    /*get teahcer to attendance*/
-                    JSONArray jsonteacher = new JSONArray(jsonSection.getJSONArray("teacherList").toString());
                     subjectDetail[6] = "";
-                    for ( int k = 0; k < jsonteacher.length() ; k++ ) {
-                        JSONObject jsonObject = new JSONObject(jsonteacher.get(k).toString());
-                        subjectDetail[6] += jsonObject.getString("title")+" "+jsonObject.getString("firstName")+" "+jsonObject.getString("lastName")+"\n";
+                    for (int k = 0; k < section.getTeacherList().size(); k++) {
+                        subjectDetail[6] += section.getTeacherList().get(k).getTitle()
+                                + " " + section.getTeacherList().get(k).getFirstName()
+                                + " " + section.getTeacherList().get(k).getLastName() + "\n";
 
                     }
-
-                    Log.d("LIST PERIOD :: " , listPeriod.toString());
 
                     GridLayout gridLayout = (GridLayout) findViewById(R.id.period_gridlayout);
-                    for ( int g = 0 ; g < listPeriod.size() ; g++){
+                    for ( int g = 0 ; g < section.getPeriodList().size() ; g++){
                         View view = getLayoutInflater().inflate(R.layout.period_layout,null);
 
                         TextView txtDay = (TextView) view.findViewById(R.id.textViewPeriodDay);
@@ -143,18 +104,23 @@ public class PeriodActivity extends AppCompatActivity {
                         TextView txtRoom = (TextView)  view.findViewById(R.id.textViewPeriodRoom);
                         TextView txtBuild = (TextView) view.findViewById(R.id.textViewPeriodBuild);
                         Button viewAttendance = (Button) view.findViewById(R.id.buttonViewAttendance);
-                        txtDay.setText("วันที่เรียน : " +listPeriod.get(g).getDayOfWeek());
-                        txtTime.setText("เวลา : " + listPeriod.get(g).getPeriodStartTime() + " - " + listPeriod.get(g).getPeriodEndTime());
-                        txtType.setText("ประเภท : " + listPeriod.get(g).getStudyType());
-                        txtRoom.setText("ห้อง : " + listPeriod.get(g).getRoom().getRoomName());
-                        txtBuild.setText("ตึก : " +listPeriod.get(g).getRoom().getBuilding().getBuildingName());
 
-                        final Long periodForAttendance = listPeriod.get(g).getPeriodID();
-                        final String time = listPeriod.get(g).getPeriodStartTime() + " - " + listPeriod.get(g).getPeriodEndTime();
-                        final String type = listPeriod.get(g).getStudyType();
-                        final String room = listPeriod.get(g).getRoom().getRoomName();
+                        txtDay.setText("วันที่เรียน : " + section.getPeriodList().get(g).getDayOfWeek());
+                        txtTime.setText("เวลา : " +  section.getPeriodList().get(g).getPeriodStartTime() + " - " + section.getPeriodList().get(g).getPeriodEndTime());
+                        txtType.setText("ประเภท : " + section.getPeriodList().get(g).getStudyType());
+                        txtRoom.setText("ห้อง : " +  section.getPeriodList().get(g).getRoom().getRoomName());
+                        txtBuild.setText("ตึก : " + section.getPeriodList().get(g).getRoom().getBuilding().getBuildingName());
+
+                        final Long periodForAttendance = section.getPeriodList().get(g).getPeriodID();
+                        final String time = section.getPeriodList().get(g).getPeriodStartTime() + " - " + section.getPeriodList().get(g).getPeriodEndTime();
+                        final String type = section.getPeriodList().get(g).getStudyType();
+                        final String room = section.getPeriodList().get(g).getRoom().getRoomName();
                         /****When we click inform leave button*****/
                         if(gb.getTypeUser().equals("teacher")){
+
+                            /*get teahcer to attendance*/
+
+
                             Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
                             btn.setText("ประกาศข่าว");
 
@@ -163,16 +129,16 @@ public class PeriodActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(PeriodActivity.this, AnnouceNewsActivity.class);
-                                    intent.putExtra("periodID",listPeriod.get(finalG).getPeriodID());
+                                    intent.putExtra("periodID",section.getPeriodList().get(finalG).getPeriodID());
                                     intent.putExtra("subjectNumber",subjectNumber);
                                     intent.putExtra("subjectName",subjectName);
-                                    intent.putExtra("subjectType",listPeriod.get(finalG).getStudyType());
-                                    intent.putExtra("subjectDay",listPeriod.get(finalG).getDayOfWeek());
+                                    intent.putExtra("subjectType",section.getPeriodList().get(finalG).getStudyType());
+                                    intent.putExtra("subjectDay",section.getPeriodList().get(finalG).getDayOfWeek());
                                     startActivity(intent);
                                 }
                             });
 
-                            /*Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
+                            Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
                             btnCal.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -185,8 +151,10 @@ public class PeriodActivity extends AppCompatActivity {
                                     intent.putExtra("subjectName",subjectName);
                                     startActivity(intent);
                                 }
-                            });*/
+                            });
                         } else if(gb.getTypeUser().equals("student")) {
+                            Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
+                            btnCal.setVisibility(View.INVISIBLE);
                             Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
                             btn.setText("ลาเรียน");
                             btn.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +185,6 @@ public class PeriodActivity extends AppCompatActivity {
                         viewAttendance.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
                             wsManager.findTeacher(gb.getLoginModel().getLogin().getPerson().getPersonID(), new WSManager.WSManagerListener() {
                                 @Override
                                 public void onComplete(Object response) {
@@ -255,11 +222,6 @@ public class PeriodActivity extends AppCompatActivity {
 
                         gridLayout.addView(view);
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
             }
 
             @Override

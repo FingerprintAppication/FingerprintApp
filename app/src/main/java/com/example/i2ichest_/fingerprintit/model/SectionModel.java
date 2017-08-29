@@ -37,7 +37,7 @@ public class SectionModel implements Serializable {
         private int semester;
         SubjectModel.Subject subject;
         List<PeriodModel.Period> periodList;
-        TeacherModel.Teacher teacher;
+        List<TeacherModel.Teacher> teacherList;
 
         public Section(){}
 
@@ -61,12 +61,12 @@ public class SectionModel implements Serializable {
             this.periodList = periodList;
         }
 
-        public TeacherModel.Teacher getTeacher() {
-            return teacher;
+        public List<TeacherModel.Teacher> getTeacherList() {
+            return teacherList;
         }
 
-        public void setTeacher(TeacherModel.Teacher teacher) {
-            this.teacher = teacher;
+        public void setTeacherList(List<TeacherModel.Teacher> teacherList) {
+            this.teacherList = teacherList;
         }
 
         public void setSubject(SubjectModel.Subject subject) {

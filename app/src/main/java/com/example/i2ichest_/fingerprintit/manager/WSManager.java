@@ -5,11 +5,16 @@ import android.util.Log;
 import com.example.i2ichest_.fingerprintit.R;
 import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
 import com.example.i2ichest_.fingerprintit.model.AttendanceModel;
+import com.example.i2ichest_.fingerprintit.model.BuildingModel;
+import com.example.i2ichest_.fingerprintit.model.FacultyModel;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
 import com.example.i2ichest_.fingerprintit.model.LoginModel;
+import com.example.i2ichest_.fingerprintit.model.MajorModel;
 import com.example.i2ichest_.fingerprintit.model.ParentModel;
 import com.example.i2ichest_.fingerprintit.model.PeriodModel;
 import com.example.i2ichest_.fingerprintit.model.PersonModel;
+import com.example.i2ichest_.fingerprintit.model.RoomModel;
+import com.example.i2ichest_.fingerprintit.model.SectionModel;
 import com.example.i2ichest_.fingerprintit.model.StudentModel;
 import com.example.i2ichest_.fingerprintit.model.SubjectModel;
 import com.example.i2ichest_.fingerprintit.task.WSTask;
@@ -134,8 +139,53 @@ public class WSManager {
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                listener.onComplete(response);
                 Log.d("onSearchSubjectComplete" , response.toString());
+                final List<SubjectModel> listSubject = new ArrayList<>();
+                try {
+                    JSONArray jsonArray = new JSONArray(response.toString());
+
+                    for (int i = 0 ; i < jsonArray.length() ; i++){
+                        JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
+
+                        long subjectID = jsonObject.getLong("subjectID");
+                        String subjectNumber = jsonObject.getString("subjectNumber");
+                        String subjectName = jsonObject.getString("subjectName");
+                        int credit = jsonObject.getInt("credit");
+
+                        JSONObject jsonMajor = jsonObject.getJSONObject("major");
+                        long majorID = jsonMajor.getLong("majorID");
+                        String secondaryMajorID = jsonMajor.getString("secondaryMajorID");
+                        String majorName = jsonMajor.getString("majorName");
+
+                        JSONObject jsonFaculty = jsonMajor.getJSONObject("faculty");
+                        long facultyID = jsonFaculty.getLong("facultyID");
+                        String facultyName = jsonFaculty.getString("facultyName");
+
+                        FacultyModel facultyModel = new FacultyModel();
+                        facultyModel.getFaculty().setFacultyID(facultyID);
+                        facultyModel.getFaculty().setFacultyName(facultyName);
+
+                        MajorModel majorModel = new MajorModel();
+                        majorModel.getMajor().setMajorID(majorID);
+                        majorModel.getMajor().setMajorName(majorName);
+                        majorModel.getMajor().setScondaryMajorID(secondaryMajorID);
+                        majorModel.getMajor().setFaculty(facultyModel.getFaculty());
+
+                        SubjectModel subjectModel = new SubjectModel();
+                        subjectModel.getSubject().setSubjectID(subjectID);
+                        subjectModel.getSubject().setSubjectNumber(subjectNumber);
+                        subjectModel.getSubject().setSubjectName(subjectName);
+                        subjectModel.getSubject().setCredit(credit);
+                        subjectModel.getSubject().setMajor(majorModel.getMajor());
+
+                        listSubject.add(subjectModel);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                listener.onComplete(listSubject);
             }
 
             @Override
@@ -145,6 +195,42 @@ public class WSManager {
             }
         });
         taskPost.execute("/viewListSubject",personModel.toJSONString());
+    }
+
+    public void doSearchSection(Object object,final WSManagerListener listener){
+        if(!(object instanceof SubjectModel)){
+            return;
+        }
+
+        SubjectModel subjectModel = (SubjectModel) object;
+        subjectModel.toJSONString();
+
+        WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                SectionModel sectionModel = new SectionModel();
+
+                try {
+                    JSONArray jsonArray = new JSONArray(response.toString());
+                    Log.d("SECTION @@@@ :",jsonArray.toString());
+
+                    sectionModel = new SectionModel(jsonArray.get(0).toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                listener.onComplete(sectionModel.getSection());
+                Log.d("onSearchSectionComplete" ,  sectionModel.toString());
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+                Log.d("onSearchSectionError" , err.toString());
+            }
+        });
+        taskPost.execute("/viewListSubject/section",subjectModel.toJSONString());
     }
 
     public void doSearchPeriod(Object object,final WSManagerListener listener){
@@ -168,7 +254,7 @@ public class WSManager {
                 Log.d("onSearchPeriodError" , err.toString());
             }
         });
-        taskPost.execute("/viewListSubject/period",subjectModel.toJSONString());
+        taskPost.execute("/viewListSubject/section",subjectModel.toJSONString());
     }
 
     public void doSearchScheduleDate(Object object,final WSManagerListener listener){
@@ -182,8 +268,24 @@ public class WSManager {
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                listener.onComplete(response);
+
+                List<String> listDate = new ArrayList<String>();
+                try {
+                    JSONArray jsonArray = new JSONArray(response.toString());
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        String[] sp = jsonArray.get(i).toString().split("-");
+                        String year = sp[0];
+                        String month = sp[1];
+                        String day = sp[2];
+                        listDate.add(day + "-" + month + "-" + year);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 Log.d("ScheduleDateComplete" ,  response.toString());
+                listener.onComplete(listDate);
             }
 
             @Override

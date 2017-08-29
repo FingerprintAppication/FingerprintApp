@@ -42,7 +42,6 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
         showListSubject();
     }
 
-
     public void showListSubject(){
         final ProgressDialog progress = ProgressDialog.show(ViewListSubjectActivity.this,"Please Wait...","Please wait...",true);
         wsManager = WSManager.getWsManager(this);
@@ -57,50 +56,16 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
             @Override
             public void onComplete(Object response) {
                 progress.dismiss();
-                try {
-                    JSONArray jsonArray = new JSONArray(response.toString());
-                    final List<SubjectModel> listSubject = new ArrayList<>();
+
+                    final List<SubjectModel> listSubject = (List<SubjectModel>) response;
                     List<String> listSubjectName = new ArrayList<>();
 
-                    for (int i = 0 ; i < jsonArray.length() ; i++){
-                        JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
-
-                        long subjectID = jsonObject.getLong("subjectID");
-                        String subjectNumber = jsonObject.getString("subjectNumber");
-                        String subjectName = jsonObject.getString("subjectName");
-                        int credit = jsonObject.getInt("credit");
-
-                        JSONObject jsonMajor = jsonObject.getJSONObject("major");
-                        long majorID = jsonMajor.getLong("majorID");
-                        String secondaryMajorID = jsonMajor.getString("secondaryMajorID");
-                        String majorName = jsonMajor.getString("majorName");
-
-                        JSONObject jsonFaculty = jsonMajor.getJSONObject("faculty");
-                        long facultyID = jsonFaculty.getLong("facultyID");
-                        String facultyName = jsonFaculty.getString("facultyName");
-
-                        FacultyModel facultyModel = new FacultyModel();
-                        facultyModel.getFaculty().setFacultyID(facultyID);
-                        facultyModel.getFaculty().setFacultyName(facultyName);
-
-                        MajorModel majorModel = new MajorModel();
-                        majorModel.getMajor().setMajorID(majorID);
-                        majorModel.getMajor().setMajorName(majorName);
-                        majorModel.getMajor().setScondaryMajorID(secondaryMajorID);
-                        majorModel.getMajor().setFaculty(facultyModel.getFaculty());
-
-                        SubjectModel subjectModel = new SubjectModel();
-                        subjectModel.getSubject().setSubjectID(subjectID);
-                        subjectModel.getSubject().setSubjectNumber(subjectNumber);
-                        subjectModel.getSubject().setSubjectName(subjectName);
-                        subjectModel.getSubject().setCredit(credit);
-                        subjectModel.getSubject().setMajor(majorModel.getMajor());
-
-                        listSubject.add(subjectModel);
-                        listSubjectName.add(subjectID+"="+subjectNumber + " " + subjectName);
+                    for (int i = 0 ; i < listSubject.size() ; i++){
+                        listSubjectName.add(listSubject.get(i).getSubject().getSubjectID()
+                                + "="+ listSubject.get(i).getSubject().getSubjectNumber()
+                                + " " + listSubject.get(i).getSubject().getSubjectName());
                     }
-                    //Log.d("TEST LIST SUBJECT " , listSubject.toString());
-                    //Log.d("TEST *** " , listSubjectName.get(0).toString());
+
                     lva = new ListViewAdapter(getApplicationContext(),listSubjectName,ViewListSubjectActivity.this);
                     lva.setCountView(listSubjectName.size());
                     final ListView listView = (ListView) findViewById(R.id.listViewSubject);
@@ -114,7 +79,6 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                            intent.putExtra("subjectID", listSubject.get(i).getSubject().getSubjectID());
                            intent.putExtra("subjectNumber", listSubject.get(i).getSubject().getSubjectNumber());
                            intent.putExtra("subjectName", listSubject.get(i).getSubject().getSubjectName());
-
                            startActivity(intent);
                        }
                    });
@@ -127,9 +91,6 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                         }
                     });
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
 
             @Override
