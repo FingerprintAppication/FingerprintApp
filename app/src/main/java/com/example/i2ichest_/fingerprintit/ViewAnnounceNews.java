@@ -2,6 +2,7 @@ package com.example.i2ichest_.fingerprintit;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,20 +58,30 @@ public class ViewAnnounceNews extends AppCompatActivity {
     }
 
     public void showListAnnounceNews (){
+        Intent intent = getIntent();
         myDb = new AnnounceSqlite(this);
+        myDb.dropTable();
         final ProgressDialog progress = ProgressDialog.show(this,"Please Wait...","Please wait...",true);
         wsManager.getAnnounceNewsFromStudentId("3433", new WSManager.WSManagerListener() {
             @Override
             public void onComplete(Object response) {
-                myDb.deleteAnnounce("29");
-                myDb.deleteAnnounce("30");
+                //myDb.deleteAnnounce("29");
+                //myDb.deleteAnnounce("30");
+
                 ListView view = (ListView) findViewById(R.id.listAnnounce);
                 final List<AnnouceNewsModel.AnnouceNews> listAnnounce =(List<AnnouceNewsModel.AnnouceNews>) response;
                 List<String> setColor = new ArrayList<String>();
-                Map<String,String> unRead = myDb.getAllAnnounces();
+                Map<String,String> unRead = new HashMap<String, String>();
+                try {
+                     unRead = myDb.getAllAnnounces();
+                }catch(Exception s){
+                    s.getMessage();
+                    myDb.createTable();
+                }
                 if(!listAnnounce.isEmpty()){
 
                     for (AnnouceNewsModel.AnnouceNews news : listAnnounce) {
+                        Log.d("OK", "newsID: "+news.getAnnouceNewsID());
                         if(unRead.get(news.getAnnouceNewsID()+"") == null){
                             setColor.add("set");
 
@@ -85,9 +97,10 @@ public class ViewAnnounceNews extends AppCompatActivity {
                     view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            //myDb.addAnnounceRead(listAnnounce.get(i));
+                            //index =i;
 
-                            myDb.addAnnounceRead(listAnnounce.get(i));
-                            index =i;
+
                         }
                     });
                 }else{

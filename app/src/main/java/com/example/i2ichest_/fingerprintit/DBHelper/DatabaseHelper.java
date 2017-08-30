@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
 
@@ -17,12 +18,17 @@ import java.util.HashMap;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_NAME = "informleave.db";
 
-    public DatabaseHelper(Context context) { super(context, DB_NAME, null, 1); }
+    public DatabaseHelper(Context context) {
+        super(context, DB_NAME, null, 1);
+    }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        this.getReadableDatabase();
         String sql = "Create Table IF NOT EXISTS Informleave (informID TEXT PRIMARY KEY, stuID TEXT)";
         sqLiteDatabase.execSQL(sql);
+        Log.d("SQLITE", "onCreate: CREATED!");
+
     }
 
     @Override
@@ -73,4 +79,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (result == -1) { return false; }else{ return true; }
     }
 
+    public boolean dropTable (){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("drop table Informleave");
+        db.close();
+        return true;
     }
+
+    public boolean createTable (){
+        SQLiteDatabase db = this.getWritableDatabase();
+        this.onCreate(db);
+        return true;
+    }
+
+}

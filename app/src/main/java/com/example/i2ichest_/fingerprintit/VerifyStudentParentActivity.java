@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -45,6 +46,7 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
         String patterns = "([ก-์a-zA-Z]){2,}";
         String patternStudent = "([0-9]){10}";
         String patternPhone = "([0]){1}([6-9]{1}([0-9]{8}))";
+        Pattern patternEmail = Patterns.EMAIL_ADDRESS;
 
         if(!firstname.getText().toString().matches(patterns)){
             firstname.setBackground(getDrawable(R.drawable.verify_border));
@@ -61,7 +63,7 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
             phone.setBackground(getDrawable(R.drawable.verify_border));
             studentID.setBackground(getDrawable(R.color.white));
             space = false;
-        }else if(!email.getText().toString().matches(patterns)){
+        }else if(!email.getText().toString().matches(patternEmail.toString())){
             email.setBackground(getDrawable(R.drawable.verify_border));
             phone.setBackground(getDrawable(R.color.white));
             space = false;
