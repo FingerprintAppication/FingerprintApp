@@ -143,42 +143,9 @@ public class WSManager {
                 final List<SubjectModel> listSubject = new ArrayList<>();
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
-
                     for (int i = 0 ; i < jsonArray.length() ; i++){
-                        JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
-
-                        long subjectID = jsonObject.getLong("subjectID");
-                        String subjectNumber = jsonObject.getString("subjectNumber");
-                        String subjectName = jsonObject.getString("subjectName");
-                        int credit = jsonObject.getInt("credit");
-
-                        JSONObject jsonMajor = jsonObject.getJSONObject("major");
-                        long majorID = jsonMajor.getLong("majorID");
-                        String secondaryMajorID = jsonMajor.getString("secondaryMajorID");
-                        String majorName = jsonMajor.getString("majorName");
-
-                        JSONObject jsonFaculty = jsonMajor.getJSONObject("faculty");
-                        long facultyID = jsonFaculty.getLong("facultyID");
-                        String facultyName = jsonFaculty.getString("facultyName");
-
-                        FacultyModel facultyModel = new FacultyModel();
-                        facultyModel.getFaculty().setFacultyID(facultyID);
-                        facultyModel.getFaculty().setFacultyName(facultyName);
-
-                        MajorModel majorModel = new MajorModel();
-                        majorModel.getMajor().setMajorID(majorID);
-                        majorModel.getMajor().setMajorName(majorName);
-                        majorModel.getMajor().setScondaryMajorID(secondaryMajorID);
-                        majorModel.getMajor().setFaculty(facultyModel.getFaculty());
-
-                        SubjectModel subjectModel = new SubjectModel();
-                        subjectModel.getSubject().setSubjectID(subjectID);
-                        subjectModel.getSubject().setSubjectNumber(subjectNumber);
-                        subjectModel.getSubject().setSubjectName(subjectName);
-                        subjectModel.getSubject().setCredit(credit);
-                        subjectModel.getSubject().setMajor(majorModel.getMajor());
-
-                        listSubject.add(subjectModel);
+                        SubjectModel subject = new SubjectModel(jsonArray.get(i).toString());
+                        listSubject.add(subject);
                     }
 
                 } catch (JSONException e) {
@@ -213,7 +180,6 @@ public class WSManager {
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
                     Log.d("SECTION @@@@ :",jsonArray.toString());
-
                     sectionModel = new SectionModel(jsonArray.get(0).toString());
 
                 } catch (JSONException e) {
