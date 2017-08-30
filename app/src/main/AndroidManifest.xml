@@ -43,12 +43,10 @@
         <activity android:name=".CalculateClassScoreActivity" />
         <activity android:name=".ViewListInformLeaveActivity" />
         <activity android:name=".ApproveLeaveActivity" />
-
         <activity android:name=".ViewLeaveHistoryActivity" />
         <activity android:name=".ViewListLeaveHistoryActivity" />
-
-        <activity android:name=".ViewAnnounceNews"></activity>
-        <!--Alarm Service-->
+        <activity android:name=".ViewAnnounceNews" />
+        <!-- Alarm Service -->
         <receiver android:name=".model.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -56,7 +54,7 @@
             </intent-filter>
         </receiver>
         <!-- FCM SERVICES -->
-               <service android:name=".FCM.MyFirebaseMessagingService">
+        <service android:name=".FCM.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -67,6 +65,7 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".ViewListAnnounceNews"></activity>
     </application>
 
 </manifest>

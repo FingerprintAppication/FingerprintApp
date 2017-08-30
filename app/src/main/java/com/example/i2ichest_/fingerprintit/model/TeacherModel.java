@@ -43,6 +43,10 @@ public class TeacherModel extends PersonModel implements Serializable{
         public void setTeacherID(String teacherID) {
             this.teacherID = teacherID;
         }
+
+        public String toString (){
+            return this.getTitle()+this.getFirstName()+" "+this.getLastName();
+        }
     }
 
 }

@@ -120,3 +120,6 @@ app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
 >>>>>>> fc243d0467b88de1700cb492cc65a5898f3c7dc3
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
+app/src/main/java/com/example/i2ichest_/fingerprintit/PeriodActivity.java

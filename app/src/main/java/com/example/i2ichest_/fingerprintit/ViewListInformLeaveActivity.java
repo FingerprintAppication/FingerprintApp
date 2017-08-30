@@ -89,7 +89,8 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
                                             + (car.get(java.util.Calendar.MONTH) + 1)
                                             + "-" + car.get(java.util.Calendar.DAY_OF_MONTH));
                                     string.add(i.getInformLeave().getStudent().getStudentID() + " วิชา: " + i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectNumber()
-                                    +" "+i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectName()+" วันที่ลา: " + i.getInformLeave().getSchedule().getScheduleDate());
+                                    +" "+i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectName()+" วันที่ลา: " + i.getInformLeave().getSchedule().getScheduleDate()+" สถานะ: ["+
+                                    i.getInformLeave().getStatus()+"]");
                                     if(unRead.get(i.getInformLeave().getInformLeaveID()+"") == null){
                                         setColor.add("set");
                                     }else {

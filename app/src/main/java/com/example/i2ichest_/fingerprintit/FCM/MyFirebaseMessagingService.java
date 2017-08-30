@@ -1,6 +1,5 @@
 package com.example.i2ichest_.fingerprintit.FCM;
 
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,13 +10,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
-
 import com.example.i2ichest_.fingerprintit.R;
-import com.example.i2ichest_.fingerprintit.ViewAnnounceNews;
+import com.example.i2ichest_.fingerprintit.ViewListAnnounceNews;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.kosalgeek.android.photoutil.MainActivity;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
@@ -51,7 +47,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
-        Intent intent = new Intent(this, ViewAnnounceNews.class);
+        Intent intent = new Intent(this, ViewListAnnounceNews.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -81,7 +77,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
         notificationBuilder.setLights(Color.YELLOW, 1000, 300);
-
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
     }

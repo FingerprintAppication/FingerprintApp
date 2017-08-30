@@ -24,7 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -495,6 +497,15 @@ public class WSManager {
                     for (int i = 0; i < announce.length(); i++) {
                         JSONObject json = new JSONObject(announce.get(i).toString());
                         AnnouceNewsModel an = new AnnouceNewsModel(json.toString());
+                        Calendar cal = Calendar.getInstance();
+                        long parseDate = Long.parseLong(an.getAnnouceNews().getSchedule().getScheduleDate());
+                        Date dd = new Date(parseDate);
+                        cal.setTime(dd);
+                        int year = cal.get(Calendar.YEAR);
+                        int month = cal.get(Calendar.MONTH) + 1;
+                        int day = cal.get(Calendar.DAY_OF_MONTH);
+                        String date = year  + "-" + month + "-" + day;
+                        an.getAnnouceNews().getSchedule().setScheduleDate(date);
                         listAnnounce.add(an.getAnnouceNews());
                     }
 
