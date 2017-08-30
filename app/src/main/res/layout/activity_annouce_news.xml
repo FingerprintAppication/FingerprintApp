@@ -47,7 +47,6 @@
 
     <Spinner
         android:layout_width="200dp"
-
         android:id="@+id/spinnerNewsDate"
         android:layout_height="20dp"
         android:layout_alignTop="@+id/textViewNewsDate"
@@ -72,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewSubName"
         android:layout_alignStart="@+id/textViewSubName"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/textViewSubType"
         android:textSize="16sp" />
 
@@ -83,7 +82,7 @@
         android:id="@+id/textViewSubDay"
         android:layout_below="@+id/textViewSubType"
         android:layout_alignStart="@+id/textViewSubType"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:textSize="16sp" />
 
     <TextView
@@ -92,19 +91,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewSubName"
         android:textSize="16sp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/textViewSubID"
         android:layout_alignStart="@+id/textViewSubID" />
-
-    <TextView
-        android:text="วันที่ประกาศ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewNewsDate"
-        android:textSize="16sp"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/textViewNewsDetail"
-        android:textColor="@color/colorPrimary" />
 
     <TextView
         android:text="รหัสวิชา"
@@ -158,7 +147,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewSubID"
         android:textSize="16sp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/spinnerNewsType"
         android:layout_toEndOf="@+id/textViewNewsDate" />
 
@@ -167,10 +156,39 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewNewsType"
         android:textSize="16sp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="10dp"
         android:layout_width="150dp"
         android:layout_below="@+id/AnnounceNewsTitle"
         android:layout_alignParentStart="true"
         android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:text="วันที่"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewDateNow"
+        android:layout_alignStart="@+id/textViewSubDay"
+        android:id="@+id/dateNow"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="วันที่ประกาศ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/textViewDateNow"
+        android:textSize="16sp"
+        android:layout_below="@+id/textViewSub4"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="คาบเรียนวันที่"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewNewsDate"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

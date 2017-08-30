@@ -13,9 +13,9 @@ public class ViewAnnounceNews extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_announce_news);
-        showAnnounceNewsDetail ();
+        //showAnnounceNewsDetail ();
     }
-
+/*
     public void showAnnounceNewsDetail (){
         Intent intent = getIntent();
         AnnouceNewsModel.AnnouceNews announce = (AnnouceNewsModel.AnnouceNews)intent.getSerializableExtra("announce");
@@ -29,5 +29,5 @@ public class ViewAnnounceNews extends AppCompatActivity {
         type.setText(announce.getAnnouceNewsType());
         teacher.setText(announce.getTeacher().toString());
         detail.setText(announce.getDetail());
-    }
+    }*/
 }

@@ -1,6 +1,8 @@
 package com.example.i2ichest_.fingerprintit;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,11 +54,16 @@ public class AnnouceNewsActivity extends AppCompatActivity {
         TextView txtSubName = (TextView) findViewById(R.id.textViewSubName);
         TextView txtSubType = (TextView) findViewById(R.id.textViewSubType);
         TextView txtSubDay = (TextView) findViewById(R.id.textViewSubDay);
+        final TextView txtDateNow = (TextView) findViewById(R.id.dateNow);
 
         txtSubID.setText(subjectNumber);
         txtSubName.setText(subjectName);
         txtSubType.setText(subjectType);
         txtSubDay.setText(subjectDay);
+
+        Date d = new Date();
+        final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        txtDateNow.setText("[ " + sdf.format(d) + " ]");
 
         final Spinner spType = (Spinner) findViewById(R.id.spinnerNewsType);
         String[] type = {"ทั่วไป", "ยกเลิกคาบเรียน"};
@@ -88,45 +95,58 @@ public class AnnouceNewsActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText editText = (EditText) findViewById(R.id.editTextNewsDetail);
+                final EditText editText = (EditText) findViewById(R.id.editTextNewsDetail);
 
                 if (editText.getText().toString().equals("")){
-                    Toast.makeText(AnnouceNewsActivity.this, "กรุณากรอกข้อมูลให้ถูกต้อง", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AnnouceNewsActivity.this, "กรุณากรอกรายละเอียด", Toast.LENGTH_SHORT).show();
                 } else {
-                    AnnouceNewsModel annouceNewsModel = new AnnouceNewsModel();
-                    annouceNewsModel.getAnnouceNews().setAnnouceNewsType(spType.getSelectedItem().toString());
-                    annouceNewsModel.getAnnouceNews().setDetail(editText.getText().toString());
-
-                    TeacherModel teacherModel = new TeacherModel();
-                    teacherModel.getTeacher().setPersonID(gb.getLoginModel().getLogin().getPerson().getPersonID());
-                    annouceNewsModel.getAnnouceNews().setTeacher(teacherModel.getTeacher());
-
-                    ScheduleModel scheduleModel = new ScheduleModel();
-                    scheduleModel.getSchedule().setPeriod(periodModel.getPeriod());
-                    String dateSelected = spDate.getSelectedItem().toString();
-                    scheduleModel.getSchedule().setScheduleDate(dateSelected);
-
-                    final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this, "Please Wait...", "Please wait...", true);
-                    annouceNewsModel.getAnnouceNews().setSchedule(scheduleModel.getSchedule());
-                    wsManager.doAddAnnouceNews(annouceNewsModel, new WSManager.WSManagerListener() {
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(AnnouceNewsActivity.this);
+                    alertDialog.setMessage("ยืนยันการประกาศข่าว");
+                    alertDialog.setNegativeButton("ตกลง", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onComplete(Object response) {
-                            progress.dismiss();
-                            if (response.toString().equals("1")) {
-                                Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเร็จ", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(AnnouceNewsActivity.this, "ข้อมูลผิดพลาด \nกรุณาตรวจสอบข้อมูลอีกครั้ง", Toast.LENGTH_SHORT).show();
-                            }
-                            Intent intent = new Intent(AnnouceNewsActivity.this, ViewListSubjectActivity.class);
-                            intent.putExtra("personID", gb.getLoginModel().getLogin().getPerson().getPersonID());
-                            startActivity(intent);
-                        }
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                        @Override
-                        public void onError(String error) {
-                            progress.dismiss();
+                            AnnouceNewsModel annouceNewsModel = new AnnouceNewsModel();
+                            annouceNewsModel.getAnnouceNews().setAnnouceNewsType(spType.getSelectedItem().toString());
+                            annouceNewsModel.getAnnouceNews().setDetail(editText.getText().toString());
+
+                            TeacherModel teacherModel = new TeacherModel();
+                            teacherModel.getTeacher().setPersonID(gb.getLoginModel().getLogin().getPerson().getPersonID());
+                            annouceNewsModel.getAnnouceNews().setTeacher(teacherModel.getTeacher());
+
+                            ScheduleModel scheduleModel = new ScheduleModel();
+                            scheduleModel.getSchedule().setPeriod(periodModel.getPeriod());
+                            String dateSelected = spDate.getSelectedItem().toString();
+                            scheduleModel.getSchedule().setScheduleDate(dateSelected);
+
+                            final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this, "Please Wait...", "Please wait...", true);
+                            annouceNewsModel.getAnnouceNews().setSchedule(scheduleModel.getSchedule());
+                            wsManager.doAddAnnouceNews(annouceNewsModel, new WSManager.WSManagerListener() {
+                                @Override
+                                public void onComplete(Object response) {
+                                    progress.dismiss();
+                                    if (response.toString().equals("1")) {
+                                        Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเร็จ", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(AnnouceNewsActivity.this, "ข้อมูลผิดพลาด \nกรุณาตรวจสอบข้อมูลอีกครั้ง", Toast.LENGTH_SHORT).show();
+                                    }
+                                    Intent intent = new Intent(AnnouceNewsActivity.this, ViewListSubjectActivity.class);
+                                    intent.putExtra("personID", gb.getLoginModel().getLogin().getPerson().getPersonID());
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onError(String error) {
+                                    progress.dismiss();
+                                }
+                            });
+
+
                         }
                     });
+
+                    alertDialog.show();
+
                 }
             }
         });

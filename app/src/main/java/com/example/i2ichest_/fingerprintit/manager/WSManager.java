@@ -117,8 +117,22 @@ public class WSManager {
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                listener.onComplete(response);
-                Log.d("searchStuParentComplete" , response.toString());
+                List<StudentModel.Student> listStudent = new ArrayList<>();
+                try {
+                    JSONArray jsonArray = new JSONArray(response.toString());
+
+                    for (int i = 0 ; i < jsonArray.length() ; i++){
+                        StudentModel studentModel = new StudentModel(jsonArray.get(i).toString());
+
+                        listStudent.add(studentModel.getStudent());
+                    }
+                    listener.onComplete(listStudent);
+                    Log.d("searchStuParentComplete" , response.toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             @Override
