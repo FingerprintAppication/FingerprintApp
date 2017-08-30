@@ -19,7 +19,9 @@ public class AnnounceSqlite extends SQLiteOpenHelper {
 
     private static String DB_NAME = "announce.db";
 
-    public AnnounceSqlite(Context context) { super(context, DB_NAME, null, 1); }
+    public AnnounceSqlite(Context context) {
+        super(context, DB_NAME, null, 1);
+    }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String sql = "Create Table IF NOT EXISTS Announce (announceId TEXT PRIMARY KEY, subject TEXT)";
@@ -28,7 +30,8 @@ public class AnnounceSqlite extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("Drop Table if exists Announce"); this.onCreate(sqLiteDatabase);
+        sqLiteDatabase.execSQL("Drop Table if exists Announce");
+        this.onCreate(sqLiteDatabase);
     }
 
     public boolean addAnnounceRead (AnnouceNewsModel.AnnouceNews announces) {
@@ -73,4 +76,16 @@ public class AnnounceSqlite extends SQLiteOpenHelper {
         if (result == -1) { return false; }else{ return true; }
     }
 
+    public boolean dropTable (){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("drop table Announce");
+        db.close();
+        return true;
+    }
+
+    public boolean createTable (){
+        SQLiteDatabase db = this.getWritableDatabase();
+        this.onCreate(db);
+        return true;
+    }
 }

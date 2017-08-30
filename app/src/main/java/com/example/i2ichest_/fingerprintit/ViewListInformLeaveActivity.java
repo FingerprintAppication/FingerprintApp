@@ -48,6 +48,7 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
 
     public void showInformLeave () {
         myDb = new DatabaseHelper(this);
+        //myDb.dropTable();
         wsManager = WSManager.getWsManager(this);
         Intent intent = getIntent();
         String personId = intent.getStringExtra("personId");
@@ -64,13 +65,15 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(Object response) {
-                myDb.deleteInformleave("96");
-                myDb.deleteInformleave("97");
-
                 final List<InformLeaveModel> list =(List<InformLeaveModel>) response;
                 ListView view = (ListView) findViewById(R.id.listInform);
                 Map<String,String> unRead = new HashMap<String, String>();
-                unRead = myDb.getAllInformLeave();
+                try {
+                    unRead = myDb.getAllInformLeave();
+                }catch(Exception s){
+                    s.getMessage();
+                    myDb.createTable();
+                }
                             List<String> setColor = new ArrayList<String>();
                             if(!list.isEmpty()) {
                                 view.clearAnimation();
@@ -85,11 +88,10 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
                                     i.getInformLeave().getSchedule().setScheduleDate(car.get(java.util.Calendar.YEAR) + "-"
                                             + (car.get(java.util.Calendar.MONTH) + 1)
                                             + "-" + car.get(java.util.Calendar.DAY_OF_MONTH));
-                                    string.add(i.getInformLeave().getStudent().getStudentID() + " " +
-                                            " " + i.getInformLeave().getSchedule().getScheduleDate() + " " + i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectNumber());
+                                    string.add(i.getInformLeave().getStudent().getStudentID() + " วิชา: " + i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectNumber()
+                                    +" "+i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectName()+" วันที่ลา: " + i.getInformLeave().getSchedule().getScheduleDate());
                                     if(unRead.get(i.getInformLeave().getInformLeaveID()+"") == null){
                                         setColor.add("set");
-
                                     }else {
                                         setColor.add("off");
                         }
@@ -109,9 +111,6 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
                             }catch(Exception s) {
                                 Log.d("TAG", "onItemClick: "+s.getMessage());
                             }
-
-
-
                         }
                     });
 

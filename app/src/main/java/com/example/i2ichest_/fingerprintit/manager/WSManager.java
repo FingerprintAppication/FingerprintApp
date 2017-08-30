@@ -535,5 +535,37 @@ public class WSManager {
         });
         task.execute("/updateInformStatus",inform.toJSONString());
     }
+
+    public void doSearchDateOfInformLeave(Object object,final WSManagerListener listener){
+        if(!(object instanceof PeriodModel)){
+            return;
+        }
+        PeriodModel periodModel = (PeriodModel) object;
+        WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                //Log.d("ScheduleDateComplete" ,  response.toString());
+                List<String> date = new ArrayList<String>();
+                try {
+                    JSONArray jsonArray = new JSONArray(response.toString());
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        date.add(jsonArray.get(i).toString());
+                    }
+
+                    listener.onComplete(date);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+                Log.d("ScheduleDateError" , err.toString());
+            }
+        });
+        task.execute("/informLeaveSearchDate?id="+periodModel.getPeriod().getPeriodID(),"##");
+    }
 }
 

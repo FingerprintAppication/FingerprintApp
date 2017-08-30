@@ -150,8 +150,14 @@ public class PeriodActivity extends AppCompatActivity {
                                 }
                             });
                         } else if(gb.getTypeUser().equals("student")) {
+<<<<<<< HEAD
                             Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
                             btnCal.setVisibility(View.GONE);
+=======
+                            /*มันโหลดหน้า PERIOD บ่อได้ถ้าบ่ปิด*/
+                            //Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
+                            //btnCal.setVisibility(View.INVISIBLE);
+>>>>>>> 0830ab9f723a8918141226e369560e8acea3a54d
                             Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
                             btn.setText("ลาเรียน");
                             btn.setOnClickListener(new View.OnClickListener() {

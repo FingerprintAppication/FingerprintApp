@@ -13,6 +13,7 @@ import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.i2ichest_.fingerprintit.R;
+import com.example.i2ichest_.fingerprintit.ViewAnnounceNews;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.kosalgeek.android.photoutil.MainActivity;
@@ -50,7 +51,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ViewAnnounceNews.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
