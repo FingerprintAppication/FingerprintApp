@@ -90,41 +90,44 @@ public class AnnouceNewsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText editText = (EditText) findViewById(R.id.editTextNewsDetail);
 
-                AnnouceNewsModel annouceNewsModel = new AnnouceNewsModel();
-                annouceNewsModel.getAnnouceNews().setAnnouceNewsType(spType.getSelectedItem().toString());
-                annouceNewsModel.getAnnouceNews().setDetail(editText.getText().toString());
+                if (editText.getText().toString().equals("")){
+                    Toast.makeText(AnnouceNewsActivity.this, "กรุณากรอกข้อมูลให้ถูกต้อง", Toast.LENGTH_SHORT).show();
+                } else {
+                    AnnouceNewsModel annouceNewsModel = new AnnouceNewsModel();
+                    annouceNewsModel.getAnnouceNews().setAnnouceNewsType(spType.getSelectedItem().toString());
+                    annouceNewsModel.getAnnouceNews().setDetail(editText.getText().toString());
 
-                TeacherModel teacherModel = new TeacherModel();
-                teacherModel.getTeacher().setPersonID(gb.getLoginModel().getLogin().getPerson().getPersonID());
-                annouceNewsModel.getAnnouceNews().setTeacher(teacherModel.getTeacher());
+                    TeacherModel teacherModel = new TeacherModel();
+                    teacherModel.getTeacher().setPersonID(gb.getLoginModel().getLogin().getPerson().getPersonID());
+                    annouceNewsModel.getAnnouceNews().setTeacher(teacherModel.getTeacher());
 
-                ScheduleModel scheduleModel = new ScheduleModel();
-                scheduleModel.getSchedule().setPeriod(periodModel.getPeriod());
-                String dateSelected = spDate.getSelectedItem().toString();
-                scheduleModel.getSchedule().setScheduleDate(dateSelected);
+                    ScheduleModel scheduleModel = new ScheduleModel();
+                    scheduleModel.getSchedule().setPeriod(periodModel.getPeriod());
+                    String dateSelected = spDate.getSelectedItem().toString();
+                    scheduleModel.getSchedule().setScheduleDate(dateSelected);
 
-                final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this, "Please Wait...", "Please wait...", true);
-                annouceNewsModel.getAnnouceNews().setSchedule(scheduleModel.getSchedule());
-                wsManager.doAddAnnouceNews(annouceNewsModel, new WSManager.WSManagerListener() {
-                    @Override
-                    public void onComplete(Object response) {
-                        progress.dismiss();
-                        if(response.toString().equals("1")){
-                            Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเร็จ", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(AnnouceNewsActivity.this, "ข้อมูลผิดพลาด \nกรุณาตรวจสอบข้อมูลอีกครั้ง", Toast.LENGTH_SHORT).show();
+                    final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this, "Please Wait...", "Please wait...", true);
+                    annouceNewsModel.getAnnouceNews().setSchedule(scheduleModel.getSchedule());
+                    wsManager.doAddAnnouceNews(annouceNewsModel, new WSManager.WSManagerListener() {
+                        @Override
+                        public void onComplete(Object response) {
+                            progress.dismiss();
+                            if (response.toString().equals("1")) {
+                                Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเร็จ", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(AnnouceNewsActivity.this, "ข้อมูลผิดพลาด \nกรุณาตรวจสอบข้อมูลอีกครั้ง", Toast.LENGTH_SHORT).show();
+                            }
+                            Intent intent = new Intent(AnnouceNewsActivity.this, ViewListSubjectActivity.class);
+                            intent.putExtra("personID", gb.getLoginModel().getLogin().getPerson().getPersonID());
+                            startActivity(intent);
                         }
-                        Intent intent = new Intent(AnnouceNewsActivity.this,ViewListSubjectActivity.class);
-                        intent.putExtra("personID",gb.getLoginModel().getLogin().getPerson().getPersonID());
-                        startActivity(intent);
-                    }
 
-                    @Override
-                    public void onError(String error) {
-                        progress.dismiss();
-                    }
-                });
-
+                        @Override
+                        public void onError(String error) {
+                            progress.dismiss();
+                        }
+                    });
+                }
             }
         });
     }
