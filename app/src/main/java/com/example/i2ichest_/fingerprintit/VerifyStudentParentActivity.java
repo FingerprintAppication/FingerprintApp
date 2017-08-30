@@ -2,6 +2,7 @@ package com.example.i2ichest_.fingerprintit;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -66,6 +67,10 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
             space = false;
         }else{
             email.setBackground(getDrawable(R.color.white));
+            firstname.setBackground(getDrawable(R.color.white));
+            lastname.setBackground(getDrawable(R.color.white));
+            studentID.setBackground(getDrawable(R.color.white));
+            phone.setBackground(getDrawable(R.color.white));
             space = true;
         }
 
@@ -86,10 +91,19 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(Object response) {
                     progress.dismiss();
-                    AlertDialog alertDialog = new AlertDialog.Builder(VerifyStudentParentActivity.this).create();
-                    alertDialog.setTitle("สถานะการลงทะเบียน");
-                    alertDialog.setMessage(response.toString());
-                    alertDialog.show();
+
+                    if(!"ลงทะเบียนเสร็จสมบูรณ์  ชื่อผู้ใช้งานและรหัสผ่านคือ หมายเลขโทรศัพท์ของคุณ".equals(response.toString())){
+                        AlertDialog alertDialog = new AlertDialog.Builder(VerifyStudentParentActivity.this).create();
+                        alertDialog.setIcon(R.drawable.error);
+                        alertDialog.setTitle("สถานะการลงทะเบียน");
+                        alertDialog.setMessage(response.toString());
+                        alertDialog.show();
+                    }else{
+                        Intent intent = new Intent(VerifyStudentParentActivity.this,LoginActivity.class);
+                        intent.putExtra("resultVerify",response.toString());
+                        finish();
+                        startActivity(intent);
+                    }
                 }
 
                 @Override

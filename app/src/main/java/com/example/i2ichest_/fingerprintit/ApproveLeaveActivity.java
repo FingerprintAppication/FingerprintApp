@@ -107,9 +107,8 @@ public class ApproveLeaveActivity extends AppCompatActivity {
                 mRow4.setVisibility(View.INVISIBLE);
             }
         }
-    }
 
-       /* Button approve = (Button)findViewById(R.id.approve);
+        Button approve = (Button)findViewById(R.id.approve);
         approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,24 +118,24 @@ public class ApproveLeaveActivity extends AppCompatActivity {
                 final Spinner approveSpinner = (Spinner)alertView.findViewById(R.id.approveSpinner);
                 final EditText caseDetail = (EditText)alertView.findViewById(R.id.caseDetail);
 
-               approveSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                   @Override
-                   public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                approveSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                       Log.d("", "onItemSelected: "+adapterView.getSelectedItem().toString());
-                       if("ไม่อนุมัติ".equals(adapterView.getSelectedItem().toString())){
-                           caseDetail.setEnabled(true);
+                        Log.d("", "onItemSelected: "+adapterView.getSelectedItem().toString());
+                        if("ไม่อนุมัติ".equals(adapterView.getSelectedItem().toString())){
+                            caseDetail.setEnabled(true);
 
-                       }else{
-                           caseDetail.setEnabled(false);
-                       }
-                   }
+                        }else{
+                            caseDetail.setEnabled(false);
+                        }
+                    }
 
-                   @Override
-                   public void onNothingSelected(AdapterView<?> adapterView) {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
 
-                   }
-               });
+                    }
+                });
                 alertDialog.setPositiveButton("ยืนยัน", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -185,7 +184,10 @@ public class ApproveLeaveActivity extends AppCompatActivity {
             }
         });
     }
-    */
+
+
+
+
 
     public Bitmap decodeToImage(String imageString) {
         byte[] imageByte;

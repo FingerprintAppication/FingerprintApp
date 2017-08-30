@@ -139,7 +139,8 @@ public class PeriodActivity extends AppCompatActivity {
                             });
 
                             Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
-                            btnCal.setOnClickListener(new View.OnClickListener() {
+                            /*มันโหลดหน้า PERIOD บ่อได้ถ้าบ่ปิด*/
+                           /* btnCal.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(PeriodActivity.this, CalculateClassScoreActivity.class);
@@ -151,7 +152,7 @@ public class PeriodActivity extends AppCompatActivity {
                                     intent.putExtra("subjectName",subjectName);
                                     startActivity(intent);
                                 }
-                            });
+                            });*/
                         } else if(gb.getTypeUser().equals("student")) {
                             Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
                             btnCal.setVisibility(View.INVISIBLE);

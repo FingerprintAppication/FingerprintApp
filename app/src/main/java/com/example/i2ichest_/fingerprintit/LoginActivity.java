@@ -1,5 +1,6 @@
 package com.example.i2ichest_.fingerprintit;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         gb = (GlobalClass) this.getApplicationContext();
+        Intent intent = getIntent();
+        String responseFormVerify = intent.getStringExtra("resultVerify");
+        if(responseFormVerify!=null) {
+            AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+            alertDialog.setIcon(R.drawable.success);
+            alertDialog.setTitle("สถานะการลงทะเบียน");
+            alertDialog.setMessage(responseFormVerify.toString());
+            alertDialog.show();
+        }
     }
 
     public void onClickLogin(View view){
