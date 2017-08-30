@@ -30,6 +30,7 @@ public class AnnouceNewsModel implements Serializable {
         private int annouceNewsID;
         private String annouceNewsType;
         private String detail;
+        private Date annouceDate;
         TeacherModel.Teacher teacher;
         ScheduleModel.Schedule schedule;
 
@@ -40,6 +41,14 @@ public class AnnouceNewsModel implements Serializable {
             this.annouceNewsID = annouceNewsID;
             this.annouceNewsType = annouceNewsType;
             this.detail = detail;
+        }
+
+        public Date getAnnouceDate() {
+            return annouceDate;
+        }
+
+        public void setAnnouceDate(Date annouceDate) {
+            this.annouceDate = annouceDate;
         }
 
         public int getAnnouceNewsID() {

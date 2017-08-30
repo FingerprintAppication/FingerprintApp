@@ -102,71 +102,27 @@ public class ProfileActivity extends AppCompatActivity {
             public void onComplete(Object response) {
                 progress.dismiss();
 
-                try {
-                    JSONArray jsonArray = new JSONArray(response.toString());
-                    gb.getListStudent().clear();
+                gb.getListStudent().clear();
+                List<StudentModel.Student> listStudent = (List<StudentModel.Student>) response;
 
-                    for (int i = 0 ; i < jsonArray.length() ; i++){
-                        JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
-
-                        String title = jsonObject.getString("title");
-                        String firstName = jsonObject.getString("firstName");
-                        String lastName = jsonObject.getString("lastName");
-
-                        JSONObject jsonMajor = jsonObject.getJSONObject("major");
-                        long majorID = jsonMajor.getLong("majorID");
-                        String secondaryMajorID = jsonMajor.getString("secondaryMajorID");
-                        String majorName = jsonMajor.getString("majorName");
-
-                        JSONObject jsonFaculty = jsonMajor.getJSONObject("faculty");
-                        long facultyID = jsonFaculty.getLong("facultyID");
-                        String facultyName = jsonFaculty.getString("facultyName");
-
-                        long studentID = jsonObject.getLong("studentID");
-                        String parentPhone = jsonObject.getString("parentPhone");
-                        long personID = jsonObject.getLong("personID");
-
-                        StudentModel studentModel = new StudentModel();
-                        studentModel.getStudent().setTitle(title);
-                        studentModel.getStudent().setFirstName(firstName);
-                        studentModel.getStudent().setLastName(lastName);
-
-                        FacultyModel facultyModel = new FacultyModel();
-                        facultyModel.getFaculty().setFacultyID(facultyID);
-                        facultyModel.getFaculty().setFacultyName(facultyName);
-
-                        MajorModel majorModel = new MajorModel();
-                        majorModel.getMajor().setMajorID(majorID);
-                        majorModel.getMajor().setScondaryMajorID(secondaryMajorID);
-                        majorModel.getMajor().setMajorName(majorName);
-                        majorModel.getMajor().setFaculty(facultyModel.getFaculty());
-
-                        studentModel.getStudent().setMajor(majorModel.getMajor());
-                        studentModel.getStudent().setPersonID(personID);
-                        studentModel.getStudent().setStudentID(studentID);
-                        studentModel.getStudent().setParentPhone(parentPhone);
-
-                        gb.getListStudent().add(studentModel.getStudent());
-                    }
-                    Log.d("LIST STUDENT ADD ", gb.getListStudent().toString());
-
-                    Intent intent = null;
-                    //Log.d("Size ", listStudent.size() + "");
-                    if ( gb.getListStudent().size() > 1) {
-                        intent = new Intent(ProfileActivity.this, SelectStudentParentActivity.class);
-                    } else if (gb.getTypeUser().equals("parent")) {
-                        intent = new Intent(ProfileActivity.this, ViewListSubjectActivity.class);
-                        intent.putExtra("personID", gb.getListStudent().get(0).getPersonID());
-                        gb.setParentStudent(gb.getListStudent().get(0));
-                    } else {
-                        intent = new Intent(ProfileActivity.this, ViewListSubjectActivity.class);
-                        intent.putExtra("personID", gb.getLoginModel().getLogin().getPerson().getPersonID());
-                    }
-                    startActivity(intent);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                for(StudentModel.Student i : listStudent) {
+                    gb.getListStudent().add(i);
                 }
+                Log.d("LIST STUDENT ADD ", gb.getListStudent().toString());
+
+                Intent intent = null;
+                //Log.d("Size ", listStudent.size() + "");
+                if ( gb.getListStudent().size() > 1) {
+                    intent = new Intent(ProfileActivity.this, SelectStudentParentActivity.class);
+                } else if (gb.getTypeUser().equals("parent")) {
+                    intent = new Intent(ProfileActivity.this, ViewListSubjectActivity.class);
+                    intent.putExtra("personID", gb.getListStudent().get(0).getPersonID());
+                    gb.setParentStudent(gb.getListStudent().get(0));
+                } else {
+                    intent = new Intent(ProfileActivity.this, ViewListSubjectActivity.class);
+                    intent.putExtra("personID", gb.getLoginModel().getLogin().getPerson().getPersonID());
+                }
+                startActivity(intent);
             }
 
             @Override
