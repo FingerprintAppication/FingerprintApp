@@ -1,7 +1,9 @@
 package com.example.i2ichest_.fingerprintit;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,14 +31,18 @@ import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
     private GlobalClass gb;
+    SharedPreferences sp = null;
+    final String USER_DETAIL = "USERDETAIL";
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         gb = (GlobalClass) this.getApplicationContext();
-        //FirebaseMessaging.getInstance().unsubscribeFromTopic("test_subject");
-        //FirebaseMessaging.getInstance().subscribeToTopic("Network_Administration");
+        sp = getSharedPreferences(USER_DETAIL, Context.MODE_PRIVATE);
+        editor = sp.edit();
+        editor.putBoolean("autoLogin", true).commit();
         if(gb.getTypeUser().equals("student")){
             for (String s : gb.getAllSubject()) {
                 FirebaseMessaging.getInstance().subscribeToTopic(s);
@@ -197,6 +203,8 @@ public class ProfileActivity extends AppCompatActivity {
             Log.d("TAG", "UnsubscribeTopic "+s);
         }
         gb = new GlobalClass();
+        sp = getSharedPreferences(USER_DETAIL, Context.MODE_PRIVATE);
+        editor.putBoolean("autoLogin", false).commit();
         Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
         finish();
         startActivity(intent);

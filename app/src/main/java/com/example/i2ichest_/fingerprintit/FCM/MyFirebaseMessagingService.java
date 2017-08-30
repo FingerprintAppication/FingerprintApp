@@ -48,7 +48,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
         Intent intent = new Intent(this, ViewListAnnounceNews.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -79,5 +80,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationBuilder.setLights(Color.YELLOW, 1000, 300);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
+
+
+
     }
 }
