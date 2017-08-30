@@ -136,12 +136,8 @@ public class PeriodActivity extends AppCompatActivity {
                             });
 
                             Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
-<<<<<<< HEAD
-                            /*มันโหลดหน้า PERIOD บ่อได้ถ้าบ่ปิด*/
-                            /*btnCal.setOnClickListener(new View.OnClickListener() {
-=======
+
                             btnCal.setOnClickListener(new View.OnClickListener() {
->>>>>>> de7ad35145341a05da277358f918b8ee33711de5
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(PeriodActivity.this, CalculateClassScoreActivity.class);
@@ -155,18 +151,8 @@ public class PeriodActivity extends AppCompatActivity {
                                 }
                             });
                         } else if(gb.getTypeUser().equals("student")) {
-<<<<<<< HEAD
                             Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
                             btnCal.setVisibility(View.GONE);
-=======
-                            /*มันโหลดหน้า PERIOD บ่อได้ถ้าบ่ปิด*/
-                            //Button btnCal = (Button) findViewById(R.id.buttonCalculateScore);
-<<<<<<< HEAD
-                           // btnCal.setVisibility(View.INVISIBLE);
-=======
-                            //btnCal.setVisibility(View.INVISIBLE);
->>>>>>> 0830ab9f723a8918141226e369560e8acea3a54d
->>>>>>> de7ad35145341a05da277358f918b8ee33711de5
                             Button btn = (Button) view.findViewById(R.id.buttonInformLeave);
                             btn.setText("ลาเรียน");
                             btn.setOnClickListener(new View.OnClickListener() {
