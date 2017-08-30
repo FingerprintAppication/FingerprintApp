@@ -73,6 +73,8 @@ public class ProfileActivity extends AppCompatActivity {
                 major.setText("");
                 TextView m = (TextView) findViewById(R.id.textMajor);
                 m.setText("");
+                Button btn = (Button) findViewById(R.id.buttonViewInform);
+                btn.setVisibility(View.GONE);
             }
             stuID.setText("");
             fingerID.setText("");
@@ -172,8 +174,6 @@ public class ProfileActivity extends AppCompatActivity {
                 progress.dismiss();
             }
         });
-
-
 
     }
 
