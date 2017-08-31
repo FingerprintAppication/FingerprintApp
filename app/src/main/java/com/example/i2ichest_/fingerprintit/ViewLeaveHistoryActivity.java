@@ -96,52 +96,65 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
             });
         }
 
-        ImageButton imageButton = (ImageButton) findViewById(R.id.chooseImage);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requestPermission();
-                startActivityForResult(galleryPhoto.openGalleryIntent(),GALLERY_REQUEST);
-            }
-        });
+        Button btnImg = (Button) findViewById(R.id.btnAddDoc);
+        Button btnUpdate = (Button) findViewById(R.id.btnUpdate);
 
-        Button btn = (Button) findViewById(R.id.btnAddDoc);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String parseDate = "";
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                Log.d("DATE PARSE1", "PRINT DATE : "+inform.getSchedule().getScheduleDate());
-                try {
-                    parseDate=  sdf.parse(inform.getSchedule().getScheduleDate()).getTime()+"";
-                    Log.d("DATE PARSE2", "PRINT DATE : "+parseDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+        if(inform.getStatus().equals("อนุมัติ")){
+            btnImg.setVisibility(View.GONE);
+            btnUpdate.setVisibility(View.GONE);
+        } else {
+            btnImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    requestPermission();
+                    startActivityForResult(galleryPhoto.openGalleryIntent(),GALLERY_REQUEST);
                 }
-                inform.getSchedule().setScheduleDate(parseDate);
+            });
+
+            btnUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String parseDate = "";
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    Log.d("DATE PARSE1", "PRINT DATE : "+inform.getSchedule().getScheduleDate());
+                    try {
+                        parseDate=  sdf.parse(inform.getSchedule().getScheduleDate()).getTime()+"";
+                        Log.d("DATE PARSE2", "PRINT DATE : "+parseDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+<<<<<<< HEAD
+                    inform.getSchedule().setScheduleDate(parseDate);
                 /*Here WSManager to send class*/
-                final ProgressDialog progress = ProgressDialog.show(ViewLeaveHistoryActivity.this,"Please Wait...","Please wait...",true);
-                wsManager.updateImageLeaveHistory(inform, new WSManager.WSManagerListener() {
-                    @Override
-                    public void onComplete(Object response) {
-                        Log.d("UPDATEIMAGE!", "onComplete: "+response.toString());
-                        Intent intentHistory = new Intent(ViewLeaveHistoryActivity.this,ViewListLeaveHistoryActivity.class);
-                        intentHistory.putExtra("personId",intent.getLongExtra("personId",1L));
-                        intentHistory.putExtra("result",response.toString());
-                        progress.dismiss();
-                        finish();
-                        startActivity(intentHistory);
-                    }
+                    final ProgressDialog progress = ProgressDialog.show(ViewLeaveHistoryActivity.this,"Please Wait...","Please wait...",true);
+                    wsManager.updateImageLeaveHistory(inform, new WSManager.WSManagerListener() {
+                        @Override
+                        public void onComplete(Object response) {
+                            Log.d("UPDATEIMAGE!", "onComplete: "+response.toString());
+                            Intent intentHistory = new Intent(ViewLeaveHistoryActivity.this,ViewListLeaveHistoryActivity.class);
+                            intentHistory.putExtra("personId",intent.getLongExtra("personId",1L));
+                            intentHistory.putExtra("result",response.toString());
+                            progress.dismiss();
+                            finish();
+                            startActivity(intentHistory);
+                        }
 
-                    @Override
-                    public void onError(String error) {
+                        @Override
+                        public void onError(String error) {
 
-                    }
+                        }
+                    });
+
+                }
+            });
+        }
+=======
                 });
 
             }
         });
+>>>>>>> 0d46f2f1d26037915e4de08d53ca95b914bf4ff2
     }
 
     @Override

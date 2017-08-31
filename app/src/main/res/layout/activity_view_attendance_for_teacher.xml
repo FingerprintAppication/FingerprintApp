@@ -11,30 +11,6 @@
     tools:context="com.example.i2ichest_.fingerprintit.ViewAttendanceForTeacherActivity">
 
     <TextView
-        android:text="วิชา"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="29dp"
-        android:id="@+id/textView3"
-        android:textSize="18sp"
-        android:textColor="@color/colorAccent" />
-
-    <TextView
-        android:text="จำนวนนักศึกษาทั้งหมด"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/txt"
-        android:textSize="18sp"
-        android:paddingTop="10dp"
-        android:layout_below="@+id/textView3"
-        android:layout_alignStart="@+id/textView3"
-        android:textColor="@color/colorAccent" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="38dp"
@@ -42,25 +18,15 @@
         android:layout_alignBaseline="@+id/txt"
         android:layout_alignBottom="@+id/txt"
         android:layout_toEndOf="@+id/txt"
-        android:textSize="18dp"
-        android:textColor="@color/colorAccent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/subject"
-        android:textSize="18sp"
-        android:layout_above="@+id/txt"
-        android:layout_toEndOf="@+id/textView3"
-        android:layout_marginStart="13dp"
+        android:textSize="16dp"
         android:textColor="@color/colorAccent" />
 
     <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="350dp"
         android:id="@+id/scrollView"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_height="400dp">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -68,11 +34,39 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_height="350dp">
-
-
-
-
-
     </LinearLayout>
 </ScrollView>
+
+    <TextView
+        android:text="จำนวนนักศึกษาทั้งหมด"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt"
+        android:textSize="16sp"
+        android:paddingTop="10dp"
+        android:textColor="@color/colorAccent"
+        android:layout_above="@+id/scrollView"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_marginBottom="15dp" />
+
+    <TextView
+        android:text="วิชา"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="17dp" />
+
+    <TextView
+        android:id="@+id/subject"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textView3"
+        android:layout_marginStart="19dp" />
 </RelativeLayout>

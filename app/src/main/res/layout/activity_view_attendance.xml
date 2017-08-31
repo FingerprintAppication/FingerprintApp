@@ -16,9 +16,10 @@
         android:id="@+id/textView"
         android:layout_centerHorizontal="true"
         android:paddingTop="10dp"
-        android:layout_height="45dp"
-        android:textSize="20dp"
-        android:textStyle="normal|bold" />
+        android:layout_height="30dp"
+        android:textStyle="normal|bold"
+        android:textSize="18dp"
+        android:textColor="@color/colorAccent" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,41 +53,41 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="8dp">
+            android:paddingTop="5dp">
 
             <TextView
                 android:text="รหัสวิชา        "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView11"
-                android:textSize="18sp"
-                android:paddingTop="8dp" />
+                android:textSize="16sp"
+                android:paddingTop="5dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/subjectID"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="5dp">
+            android:paddingTop="5dp"
+            android:layout_height="match_parent">
 
             <TextView
                 android:text="ชื่อวิชา"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView12"
-                android:textSize="18dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:textSize="16sp" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/subjectNmae"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -98,15 +99,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView13"
-                android:textSize="18dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/time"
-                android:textSize="18dp"
-                android:paddingTop="5dp" />
+                android:paddingTop="5dp"
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -119,14 +120,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView14"
-                android:textSize="18dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/typeStudy"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -139,14 +140,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView15"
-                android:textSize="18dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/roomName"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -159,14 +160,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView16"
-                android:textSize="18dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/term"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
         </TableRow>
 
         <TableRow
@@ -179,14 +180,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView17"
-                android:textSize="18dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/teacher"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
         </TableRow>
     </TableLayout>
     </ScrollView>
@@ -206,14 +207,14 @@
             android:paddingTop="1dp">
 
             <TextView
-                android:text="มา           "
+                android:text="มา         "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textcome"
                 android:textSize="18sp" />
 
             <TextView
-                android:text="สาย          "
+                android:text="สาย        "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView9"
@@ -234,7 +235,7 @@
                 android:textSize="18dp" />
 
             <TextView
-                android:text="คะแนนที่ได้"
+                android:text="คะแนน"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView6"
