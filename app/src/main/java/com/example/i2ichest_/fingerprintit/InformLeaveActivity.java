@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
+import com.example.i2ichest_.fingerprintit.model.Base64Model;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
 import com.example.i2ichest_.fingerprintit.model.PeriodModel;
 import com.example.i2ichest_.fingerprintit.model.ScheduleModel;
@@ -47,11 +48,13 @@ public class InformLeaveActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter = null;
     Spinner dateSpinner = null;
     List<String> sickLeave = null;
+    Base64Model base;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inform_leave);
-
+        base = new Base64Model();
         setInformLeaveData ();
     }
 
@@ -218,21 +221,12 @@ public class InformLeaveActivity extends AppCompatActivity {
                  Uri uri = data.getData();
                  galleryPhoto.setPhotoUri(uri);
                  String photoPath = galleryPhoto.getPath();
-                 informLeaveModel.getInformLeave().setSupportDocument(encodeBase64(photoPath));
+                 informLeaveModel.getInformLeave().setSupportDocument(base.encodeBase64(photoPath));
                  final TextView imageName = (TextView)findViewById(R.id.imageName) ;
                  File finalFile = new File(photoPath);
                  imageName.setText(finalFile.getName());
              }
         }
-    }
-
-    public String encodeBase64 (String filePath) {
-        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-        ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOut);
-        byte[] byteArray = byteArrayOut.toByteArray();
-
-        return Base64.encodeToString(byteArray,Base64.DEFAULT);
     }
 
     private void requestPermission() {

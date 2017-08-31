@@ -23,6 +23,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
+import com.example.i2ichest_.fingerprintit.model.Base64Model;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
 
 import org.w3c.dom.Text;
@@ -35,6 +36,7 @@ import Decoder.BASE64Decoder;
 public class ApproveLeaveActivity extends AppCompatActivity {
     WSManager wsManager;
     private GlobalClass gb;
+    Base64Model base;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class ApproveLeaveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_approve_leave);
         wsManager = WSManager.getWsManager(this);
         gb = (GlobalClass) this.getApplicationContext();
+        base = new Base64Model();
         //Log.d("LIMGS", "onCreate: "+gb.getLargeImage());
         ShowInformLeave();
     }
@@ -72,7 +75,7 @@ public class ApproveLeaveActivity extends AppCompatActivity {
             if (!"".equals(inform.getSupportDocument())) {
                 TableRow mRow4 = (TableRow) table.getChildAt(3);
                 ImageView image = (ImageView) mRow4.findViewById(R.id.imageView);
-                final Bitmap bb = decodeToImage(inform.getSupportDocument());
+                final Bitmap bb = base.decodeToImage(inform.getSupportDocument());
                 image.setImageBitmap(bb);
                 image.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -91,7 +94,7 @@ public class ApproveLeaveActivity extends AppCompatActivity {
                 if (!"".equals(inform.getSupportDocument())) {
                     TableRow mRow4 = (TableRow) table.getChildAt(3);
                     ImageView image = (ImageView) mRow4.findViewById(R.id.imageView);
-                    final Bitmap bb = decodeToImage(inform.getSupportDocument());
+                    final Bitmap bb = base.decodeToImage(inform.getSupportDocument());
                     image.setImageBitmap(bb);
                     image.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -188,19 +191,4 @@ public class ApproveLeaveActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
-    public Bitmap decodeToImage(String imageString) {
-        byte[] imageByte;
-        Bitmap bitmap = null;
-        try {
-            imageByte = Base64.decode(imageString, Base64.DEFAULT);
-            bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
 }
