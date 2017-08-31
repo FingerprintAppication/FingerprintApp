@@ -66,7 +66,6 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterLate = new ArrayAdapter<String>(CalculateClassScoreActivity.this,android.R.layout.simple_spinner_dropdown_item,listLate);
         spLate.setAdapter(adapterLate);
 
-<<<<<<< HEAD
         Button spinnerScore = (Button)findViewById(R.id.buttonCalculateScore);
 
         spinnerScore.setOnClickListener(new View.OnClickListener() {
@@ -163,8 +162,5 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
                 if (c1.getStudent().getStudentID() < c2.getStudent().getStudentID()) return -1;
                 return 0;
             }});
-=======
-
->>>>>>> 9fef7efe4bb2fe95701df963232ec18bdec0b72e
     }
 }

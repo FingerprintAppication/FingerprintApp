@@ -124,7 +124,7 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-<<<<<<< HEAD
+
                     inform.getSchedule().setScheduleDate(parseDate);
                 /*Here WSManager to send class*/
                     final ProgressDialog progress = ProgressDialog.show(ViewLeaveHistoryActivity.this,"Please Wait...","Please wait...",true);
@@ -149,12 +149,6 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
                 }
             });
         }
-=======
-                });
-
-            }
-        });
->>>>>>> 0d46f2f1d26037915e4de08d53ca95b914bf4ff2
     }
 
     @Override
