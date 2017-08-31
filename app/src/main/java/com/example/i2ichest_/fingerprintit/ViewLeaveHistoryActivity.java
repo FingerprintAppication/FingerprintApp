@@ -142,8 +142,6 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     @Override
