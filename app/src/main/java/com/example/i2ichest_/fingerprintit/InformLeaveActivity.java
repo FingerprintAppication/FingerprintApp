@@ -56,6 +56,7 @@ public class InformLeaveActivity extends AppCompatActivity {
     }
 
     public void setInformLeaveData () {
+        final ProgressDialog progress = ProgressDialog.show(InformLeaveActivity.this,"Please Wait...","Please wait...",true);
         informLeaveModel = new InformLeaveModel();
         wsManager = WSManager.getWsManager(this);
         galleryPhoto = new GalleryPhoto(getApplicationContext());
@@ -74,7 +75,7 @@ public class InformLeaveActivity extends AppCompatActivity {
         final TextView imageName = (TextView)findViewById(R.id.imageName) ;
         final ImageButton imageButton = (ImageButton)findViewById(R.id.imageButton);
         Log.d("TAPO", "setInformLeaveData: periodddddd "+periodModel.getPeriod().getPeriodID());
-        final ProgressDialog progress = ProgressDialog.show(InformLeaveActivity.this,"Please Wait...","Please wait...",true);
+
         dateArray = new ArrayList<String>();
         wsManager.doSearchDateOfInformLeave(periodModel, new WSManager.WSManagerListener() {
             @Override

@@ -1,38 +1,45 @@
 package com.example.i2ichest_.fingerprintit;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import com.example.i2ichest_.fingerprintit.manager.WSManager;
+import com.example.i2ichest_.fingerprintit.model.Base64Model;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import java.util.Locale;
+
 
 public class ViewLeaveHistoryActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_PERMISSION = 687;
     int GALLERY_REQUEST = 4567;
     GalleryPhoto galleryPhoto;
     InformLeaveModel.InformLeave inform;
+    WSManager wsManager;
+    AlertDialog alertDialog;
+    View alertView;
+    ImageView image;
+    Base64Model base;
+    Intent intent;
+    private GlobalClass gb;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -40,15 +47,18 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_leave_history);
         galleryPhoto = new GalleryPhoto(getApplicationContext());
+        wsManager = WSManager.getWsManager(this);
+        base = new Base64Model();
+        gb = (GlobalClass) this.getApplicationContext();
         showDetail();
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void showDetail(){
-        Intent intent = getIntent();
+        intent = getIntent();
         inform = (InformLeaveModel.InformLeave) intent.getSerializableExtra("inform");
-
+        inform.setSupportDocument(gb.getLargeImage());
         TextView subName = (TextView) findViewById(R.id.HisSubName);
         subName.setText(inform.getSchedule().getPeriod().getSection().getSubject().getSubjectName().toString());
 
@@ -68,17 +78,16 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
             cause.setText("รอ");
         }
 
-        ImageView image = (ImageView) findViewById(R.id.imageDoc);
-
+        image = (ImageView) findViewById(R.id.imageDoc);
         if (inform.getSupportDocument()!= null) {
             Log.d("TAG", "showDetail: "+inform.getSupportDocument());
-            final Bitmap bb = decodeToImage(inform.getSupportDocument());
+            final Bitmap bb = base.decodeToImage(inform.getSupportDocument());
             image.setImageBitmap(bb);
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(ViewLeaveHistoryActivity.this).create();
-                    View alertView = LayoutInflater.from(ViewLeaveHistoryActivity.this).inflate(R.layout.image_click, null);
+                    alertDialog = new AlertDialog.Builder(ViewLeaveHistoryActivity.this).create();
+                    alertView = LayoutInflater.from(ViewLeaveHistoryActivity.this).inflate(R.layout.image_click, null);
                     ImageView img = (ImageView) alertView.findViewById(R.id.imageView);
                     img.setImageBitmap(bb);
                     alertDialog.setView(alertView);
@@ -87,8 +96,8 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
             });
         }
 
-        final Button btn = (Button) findViewById(R.id.btnAddDoc);
-        btn.setOnClickListener(new View.OnClickListener() {
+        ImageButton imageButton = (ImageButton) findViewById(R.id.chooseImage);
+        imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 requestPermission();
@@ -96,8 +105,44 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
             }
         });
 
-        /*Here WSManager to send class*/
-        /*Here WSManager to send class*/
+        Button btn = (Button) findViewById(R.id.btnAddDoc);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String parseDate = "";
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                Log.d("DATE PARSE1", "PRINT DATE : "+inform.getSchedule().getScheduleDate());
+                try {
+                    parseDate=  sdf.parse(inform.getSchedule().getScheduleDate()).getTime()+"";
+                    Log.d("DATE PARSE2", "PRINT DATE : "+parseDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                inform.getSchedule().setScheduleDate(parseDate);
+                /*Here WSManager to send class*/
+                final ProgressDialog progress = ProgressDialog.show(ViewLeaveHistoryActivity.this,"Please Wait...","Please wait...",true);
+                wsManager.updateImageLeaveHistory(inform, new WSManager.WSManagerListener() {
+                    @Override
+                    public void onComplete(Object response) {
+                        Log.d("UPDATEIMAGE!", "onComplete: "+response.toString());
+                        Intent intentHistory = new Intent(ViewLeaveHistoryActivity.this,ViewListLeaveHistoryActivity.class);
+                        intentHistory.putExtra("personId",intent.getLongExtra("personId",1L));
+                        intentHistory.putExtra("result",response.toString());
+                        progress.dismiss();
+                        finish();
+                        startActivity(intentHistory);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+
+            }
+        });
+
 
     }
 
@@ -108,7 +153,7 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 galleryPhoto.setPhotoUri(uri);
                 String photoPath = galleryPhoto.getPath();
-                inform.setSupportDocument(encodeBase64(photoPath));
+                inform.setSupportDocument(base.encodeBase64(photoPath));
                 ImageView image = (ImageView) findViewById(R.id.imageDoc);
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -118,19 +163,6 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
         }
     }
 
-
-    public Bitmap decodeToImage(String imageString) {
-        byte[] imageByte;
-        Bitmap bitmap = null;
-        try {
-            imageByte = Base64.decode(imageString, Base64.DEFAULT);
-            bitmap = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
-
     private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
@@ -138,15 +170,4 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
             //openFilePicker();
         }
     }
-
-    public String encodeBase64 (String filePath) {
-        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-        ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOut);
-        byte[] byteArray = byteArrayOut.toByteArray();
-
-        return Base64.encodeToString(byteArray,Base64.DEFAULT);
-    }
-
-
 }

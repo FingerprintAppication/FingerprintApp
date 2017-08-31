@@ -592,5 +592,29 @@ public class WSManager {
         });
         task.execute("/informLeaveSearchDate?id="+periodModel.getPeriod().getPeriodID(),"##");
     }
+
+    public void updateImageLeaveHistory(Object object,final WSManagerListener listener){
+        if(!(object instanceof InformLeaveModel.InformLeave)){
+            return;
+        }
+        InformLeaveModel inform =  new InformLeaveModel();
+        inform.setInformLeave((InformLeaveModel.InformLeave)object);
+        Log.d(TAG, "updateImageLeaveHistory: "+inform.toJSONString());
+        WSTaskPost task = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                listener.onComplete(response);
+
+            }
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+                Log.d("searchHistory Error" , err.toString());
+            }
+        });
+        task.execute("/updateImageLeaveHistory",inform.toJSONString());
+    }
+
+
 }
 

@@ -18,6 +18,8 @@ public class GlobalClass extends Application {
     List<StudentModel.Student> listStudent = new ArrayList<>();
     StudentModel.Student parentStudent = new StudentModel().getStudent();
     List<String> allSubject = new ArrayList<>();
+    /*อันนี้เอาเก็บโค้ดรูปที่โครตใหญ่*/
+    String largeImage = "";
 
     public GlobalClass(){}
 
@@ -59,5 +61,13 @@ public class GlobalClass extends Application {
 
     public void setAllSubject(List<String> allSubject) {
         this.allSubject = allSubject;
+    }
+
+    public String getLargeImage() {
+        return largeImage;
+    }
+
+    public void setLargeImage(String largeImage) {
+        this.largeImage = largeImage;
     }
 }

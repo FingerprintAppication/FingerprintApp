@@ -1,5 +1,6 @@
 package com.example.i2ichest_.fingerprintit;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.icu.util.Calendar;
@@ -24,24 +25,42 @@ import java.util.List;
 
 public class ViewListLeaveHistoryActivity extends AppCompatActivity {
     WSManager wsManager;
+    private GlobalClass gb;
+    /*for keeping big images code*/
+    List<String> images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_list_leave_history);
+        gb = (GlobalClass) this.getApplicationContext();
         showLeaveHistory();
     }
 
     public void showLeaveHistory(){
         Intent intent = getIntent();
-        Long personID = intent.getLongExtra("personId",1L);
-        Log.d("personID", personID.toString());
+        /*show response when we already updated image*/
+        String result = intent.getStringExtra("result");
+        if(result!=null){
+            AlertDialog alertDialog = new AlertDialog.Builder(ViewListLeaveHistoryActivity.this).create();
+            alertDialog.setTitle("อับโหลดรูปภาพ");
+            if ("success".equals(result)) {
+                alertDialog.setIcon(getResources().getDrawable(R.drawable.success));
+                alertDialog.setMessage("อับโหลดรูปภาพเสร็จสมบูรณ์");
+            } else {
+                alertDialog.setIcon(getResources().getDrawable(R.drawable.error));
+                alertDialog.setMessage("ไม่สามารถอับโหลดรูปภาพได้");
+            }
+            alertDialog.show();
+        }
+        final Long PERSONID = intent.getLongExtra("personId",1L);
+        Log.d("PERSONID", PERSONID.toString());
         final ProgressDialog progress = ProgressDialog.show(ViewListLeaveHistoryActivity.this,"Please Wait...","Please wait...",true);
 
         wsManager = WSManager.getWsManager(this);
 
         PersonModel personModel = new PersonModel();
-        personModel.getPerson().setPersonID(personID);
+        personModel.getPerson().setPersonID(PERSONID);
 
         wsManager.doSearchLeaveHistory(personModel, new WSManager.WSManagerListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -53,6 +72,7 @@ public class ViewListLeaveHistoryActivity extends AppCompatActivity {
                 if (!list.isEmpty()) {
                     view.clearAnimation();
                     List<String> string = new ArrayList<String>();
+                    images = new ArrayList<String>();
                     for (InformLeaveModel.InformLeave i : list) {
                         Calendar car = Calendar.getInstance();
                         car.clear();
@@ -68,6 +88,7 @@ public class ViewListLeaveHistoryActivity extends AppCompatActivity {
 
                         string.add("วิชา " + i.getSchedule().getPeriod().getSection().getSubject().getSubjectNumber() + " : " + i.getSchedule().getPeriod().getSection().getSubject().getSubjectName()
                                 + "\nวันที่ลา " +  i.getSchedule().getScheduleDate() + " สถานะการลา [ " + i.getStatus() + " ]" );
+                        images.add(i.getSupportDocument());
 
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewListLeaveHistoryActivity.this, android.R.layout.simple_selectable_list_item, string);
@@ -80,7 +101,10 @@ public class ViewListLeaveHistoryActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(ViewListLeaveHistoryActivity.this,ViewLeaveHistoryActivity.class);
+                        gb.setLargeImage(images.get(i));
+                        list.get(i).setSupportDocument("");
                         intent.putExtra("inform" , list.get(i));
+                        intent.putExtra("personId",PERSONID);
                         startActivity(intent);
                     }
                 });

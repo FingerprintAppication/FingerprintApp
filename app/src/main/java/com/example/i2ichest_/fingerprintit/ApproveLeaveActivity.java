@@ -42,12 +42,15 @@ public class ApproveLeaveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_approve_leave);
         wsManager = WSManager.getWsManager(this);
         gb = (GlobalClass) this.getApplicationContext();
+        //Log.d("LIMGS", "onCreate: "+gb.getLargeImage());
         ShowInformLeave();
     }
 
     public void ShowInformLeave () {
         Intent intent = getIntent();
         final InformLeaveModel.InformLeave inform = (InformLeaveModel.InformLeave) intent.getExtras().getSerializable("informleave");
+        inform.setSupportDocument(gb.getLargeImage());
+
         TextView studeId = (TextView) findViewById(R.id.studentIdTxt);
         TextView studeName = (TextView) findViewById(R.id.studentNameTxt);
         studeId.setText(inform.getStudent().getStudentID().toString());

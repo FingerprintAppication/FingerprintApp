@@ -1,6 +1,7 @@
 package com.example.i2ichest_.fingerprintit;
 
 import android.app.AlertDialog;
+import android.app.IntentService;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -29,11 +30,16 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
     WSManager wsManager;
     DatabaseHelper myDb;
     int index = 0;
+    private GlobalClass gb;
+    /*for keeping big images code*/
+    List<String> images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_list_inform_leave);
+        gb = (GlobalClass) this.getApplicationContext();
+
         showInformLeave ();
     }
     public void onStart (){
@@ -44,6 +50,7 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
             TextView tee = (TextView)adat.findViewById(R.id.informTxt);
             tee.setBackgroundColor(Color.WHITE);
         }
+        //Log.d("LIMGS1", "onCreate: "+gb.getLargeImage()+" os ");
     }
 
     public void showInformLeave () {
@@ -74,28 +81,26 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
                     s.getMessage();
                     myDb.createTable();
                 }
-                            List<String> setColor = new ArrayList<String>();
-                            if(!list.isEmpty()) {
-                                view.clearAnimation();
-                                List<String> string = new ArrayList<String>();
-                                for (InformLeaveModel i : list) {
-                                    Calendar car = Calendar.getInstance();
-                                    car.clear();
-                                    Date date = new Date();
-                                    Long setDate = Long.parseLong(i.getInformLeave().getSchedule().getScheduleDate());
-                                    date.setTime(setDate);
-                                    car.setTime(date);
-                                    i.getInformLeave().getSchedule().setScheduleDate(car.get(java.util.Calendar.YEAR) + "-"
-                                            + (car.get(java.util.Calendar.MONTH) + 1)
-                                            + "-" + car.get(java.util.Calendar.DAY_OF_MONTH));
-                                    string.add(i.getInformLeave().getStudent().getStudentID() + " วิชา: " + i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectNumber()
-                                    +" "+i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectName()+" วันที่ลา: " + i.getInformLeave().getSchedule().getScheduleDate()+" สถานะ: ["+
-                                    i.getInformLeave().getStatus()+"]");
-                                    if(unRead.get(i.getInformLeave().getInformLeaveID()+"") == null){
-                                        setColor.add("set");
-                                    }else {
-                                        setColor.add("off");
-                        }
+                List<String> setColor = new ArrayList<String>();
+                    if(!list.isEmpty()) {
+                        view.clearAnimation();
+                        List<String> string = new ArrayList<String>();
+                        images = new ArrayList<String>();
+                        for (InformLeaveModel i : list) {
+                            Calendar car = Calendar.getInstance();
+                            car.clear();
+                            Date date = new Date();
+                            Long setDate = Long.parseLong(i.getInformLeave().getSchedule().getScheduleDate());
+                            date.setTime(setDate);
+                            car.setTime(date);
+                            i.getInformLeave().getSchedule().setScheduleDate(car.get(java.util.Calendar.YEAR) + "-" + (car.get(java.util.Calendar.MONTH) + 1) + "-" + car.get(java.util.Calendar.DAY_OF_MONTH));
+                            string.add(i.getInformLeave().getStudent().getStudentID() + " วิชา: " + i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectNumber() +" "+i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectName()+" วันที่ลา: " + i.getInformLeave().getSchedule().getScheduleDate()+" สถานะ: ["+ i.getInformLeave().getStatus()+"]");
+                            if(unRead.get(i.getInformLeave().getInformLeaveID()+"") == null){
+                                setColor.add("set");
+                            }else {
+                                setColor.add("off");
+                            }
+                            images.add(i.getInformLeave().getSupportDocument());
                     }
                     InformViewAdapter informViewAdapter = new InformViewAdapter(ViewListInformLeaveActivity.this,string,setColor,string.size());
                     view.setAdapter(informViewAdapter);
@@ -104,6 +109,8 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             Intent intent = new Intent(ViewListInformLeaveActivity.this, ApproveLeaveActivity.class);
+                            gb.setLargeImage(images.get(i));
+                            list.get(i).getInformLeave().setSupportDocument("");
                             intent.putExtra("informleave", list.get(i).getInformLeave());
                             try{
                                 myDb.addInformRead(list.get(i).getInformLeave());
@@ -114,7 +121,6 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
                             }
                         }
                     });
-
                 }else {
                     String show [] =  {"ไม่พบนักศึกษาที่ลา"};
                     view.setAdapter(new ArrayAdapter<String>(ViewListInformLeaveActivity.this, android.R.layout.simple_list_item_1, show));
@@ -140,5 +146,10 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
             final int childIndex = pos - firstListItemPosition;
             return listView.getChildAt(childIndex);
         }
+    }
+
+    public void onDestroy(){
+        super.onDestroy();
+        gb.setLargeImage("");
     }
 }
