@@ -49,5 +49,7 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
         Spinner spLate = (Spinner) findViewById(R.id.spinnerLate);
         ArrayAdapter<String> adapterLate = new ArrayAdapter<String>(CalculateClassScoreActivity.this,android.R.layout.simple_spinner_dropdown_item,listLate);
         spLate.setAdapter(adapterLate);
+
+
     }
 }
