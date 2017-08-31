@@ -6,6 +6,7 @@ import com.example.i2ichest_.fingerprintit.R;
 import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
 import com.example.i2ichest_.fingerprintit.model.AttendanceModel;
 import com.example.i2ichest_.fingerprintit.model.BuildingModel;
+import com.example.i2ichest_.fingerprintit.model.EnrollmentModel;
 import com.example.i2ichest_.fingerprintit.model.FacultyModel;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
 import com.example.i2ichest_.fingerprintit.model.LoginModel;
@@ -615,6 +616,33 @@ public class WSManager {
         task.execute("/updateImageLeaveHistory",inform.toJSONString());
     }
 
+    public void getEnrollmentForCalculateScore(String object,final WSManagerListener listener){
+
+        WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                List<EnrollmentModel.Enrollment> listInform = new ArrayList<EnrollmentModel.Enrollment>();
+
+                try {
+                    JSONArray jsonArray = new JSONArray(response.toString());
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        EnrollmentModel enroll = new EnrollmentModel(jsonArray.get(i).toString());
+                        listInform.add(enroll.getEnrollment());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                listener.onComplete(listInform);
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+            }
+        });
+        task.execute("/calculateScore?section="+object,"##");
+    }
 
 }
 

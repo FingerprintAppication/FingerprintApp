@@ -4,29 +4,17 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
-import com.example.i2ichest_.fingerprintit.model.FacultyModel;
-import com.example.i2ichest_.fingerprintit.model.MajorModel;
 import com.example.i2ichest_.fingerprintit.model.PersonModel;
 import com.example.i2ichest_.fingerprintit.model.StudentModel;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -34,6 +22,7 @@ public class ProfileActivity extends AppCompatActivity {
     SharedPreferences sp = null;
     final String USER_DETAIL = "USERDETAIL";
     SharedPreferences.Editor editor;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
         gb = (GlobalClass) this.getApplicationContext();
         sp = getSharedPreferences(USER_DETAIL, Context.MODE_PRIVATE);
         editor = sp.edit();
+        fab = (FloatingActionButton)findViewById(R.id.floatingActionButton) ;
         editor.putBoolean("autoLogin", true).commit();
         if(gb.getTypeUser().equals("student")){
             for (String s : gb.getAllSubject()) {
@@ -68,11 +58,18 @@ public class ProfileActivity extends AppCompatActivity {
         String typeUser = gb.getTypeUser();
         if (!typeUser.equals("parent")){
             major.setText(gb.getLoginModel().getLogin().getPerson().getMajor().getMajorName());
+            fab.setVisibility(View.INVISIBLE);
         }
 
         if (typeUser.equals("student")){
             stuID.setText(gb.getLoginModel().getLogin().getUsername());
             fingerID.setText(gb.getLoginModel().getLogin().getPerson().getFingerprintData());
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(ProfileActivity.this,ViewListAnnounceNews.class));
+                }
+            });
 
         } else if (typeUser.equals("teacher") ||typeUser.equals("parent")) {
             if (gb.getTypeUser().equals("parent")){
@@ -81,6 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
                 m.setText("");
                 Button btn = (Button) findViewById(R.id.buttonViewInform);
                 btn.setVisibility(View.GONE);
+                fab.setVisibility(View.INVISIBLE);
             }
             stuID.setText("");
             fingerID.setText("");
