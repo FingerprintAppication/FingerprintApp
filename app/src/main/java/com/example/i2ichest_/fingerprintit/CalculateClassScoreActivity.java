@@ -139,17 +139,36 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
                 inform++;
             } else if("ยกเลิก".equals(att.getStatus())){
                 cancel++;
-            }else{
+            } else {
 
             }
         }
+
+        /*
+        // test Calculate
+        come = 28.0;
+        late = 2.0;
+        absence = 0.0;
+        inform = 1.0;
+        */
+
+        int bonus = 0;
+        if (late <= timeLate && late != 0){
+           bonus = 1;
+        }
+
+        Log.d("come : ", come.toString());
+        Log.d("bonus : ", bonus + "");
+        Log.d("list : ", listAttendance.size()+ "");
+        Log.d("cancel : ", cancel.toString());
+        Log.d("score : " , score.toString());
+
+        total = Double.valueOf(((come + bonus) / (listAttendance.size()-cancel)) * score);
+
         list.add(come);
         list.add(late);
         list.add(absence);
         list.add(inform);
-        Double calLate = late/timeLate;
-        Log.d("LATE TO ABSENCE ", "Attendance: status "+calLate);
-        total = Double.valueOf(((come - (absence+calLate.intValue())) /listAttendance.size()) * score);
         list.add(Double.valueOf(df2.format(total)));
         return list;
     }

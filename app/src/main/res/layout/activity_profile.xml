@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
             android:layout_margin="@dimen/fab_margin"
-            android:backgroundTint="#E36A5C"
+
             android:id="@+id/floatingActionButton"
             android:src="@drawable/news"
             />

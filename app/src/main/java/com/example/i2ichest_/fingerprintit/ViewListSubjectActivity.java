@@ -34,6 +34,7 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
     WSManager wsManager;
     ListViewAdapter lva;
 
+    //sq lv 2
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,21 +43,25 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
         showListSubject();
     }
 
+    //sq lv 2
     public void showListSubject(){
         final ProgressDialog progress = ProgressDialog.show(ViewListSubjectActivity.this,"Please Wait...","Please wait...",true);
-        wsManager = WSManager.getWsManager(this);
 
         Intent intent = getIntent();
         Long pID = intent.getLongExtra("personID",1L);
 
+        //sq lv 2
         PersonModel personModel = new PersonModel();
         personModel.getPerson().setPersonID(pID);
 
+        //sq lv 2
+        wsManager = WSManager.getWsManager(this);
         wsManager.doSearchSubject(personModel, new WSManager.WSManagerListener() {
             @Override
             public void onComplete(Object response) {
                 progress.dismiss();
 
+                    //sq lv 2
                     final List<SubjectModel> listSubject = (List<SubjectModel>) response;
                     List<String> listSubjectName = new ArrayList<>();
 
@@ -72,6 +77,7 @@ public class ViewListSubjectActivity extends AppCompatActivity implements Serial
                     lva.setMode(Attributes.Mode.Single);
                     listView.setAdapter(lva);
 
+                    //sq lv 2
                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                        @Override
                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

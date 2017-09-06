@@ -155,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 progress.dismiss();
-                Toast.makeText(LoginActivity.this, "ผิดพลาด " + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "เกิดข้อผิดพลาดไม่พบข้อมูล" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
