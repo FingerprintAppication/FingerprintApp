@@ -132,6 +132,7 @@ public class PeriodActivity extends AppCompatActivity {
                                 public void onClick(View view) {
                                     Intent intent = new Intent(PeriodActivity.this, AnnouceNewsActivity.class);
                                     intent.putExtra("periodID",section.getPeriodList().get(finalG).getPeriodID());
+                                    intent.putExtra("subjectID",subjectID);
                                     intent.putExtra("subjectNumber",subjectNumber);
                                     intent.putExtra("subjectName",subjectName);
                                     intent.putExtra("subjectType",section.getPeriodList().get(finalG).getStudyType());

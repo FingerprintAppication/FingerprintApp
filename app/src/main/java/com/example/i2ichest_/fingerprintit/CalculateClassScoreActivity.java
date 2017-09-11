@@ -144,17 +144,17 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
             }
         }
 
-        /*
-        // test Calculate
-        come = 28.0;
-        late = 2.0;
-        absence = 0.0;
-        inform = 1.0;
-        */
 
-        int bonus = 0;
-        if (late <= timeLate && late != 0){
-           bonus = 1;
+        // test Calculate
+        come = 25.0;
+        late = 3.0;
+        absence = 1.0;
+        inform = 1.0;
+
+        double bonus = 0;
+        bonus = late;
+        if (late > timeLate){
+            bonus = timeLate;
         }
 
         Log.d("come : ", come.toString());

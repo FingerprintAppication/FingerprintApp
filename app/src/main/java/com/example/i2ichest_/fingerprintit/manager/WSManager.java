@@ -69,13 +69,11 @@ public class WSManager {
             public void onComplete(String response) {
                 Map<String,List<String>> map = new HashMap<String,List<String>>();
 
-                if (!map.isEmpty()){
-                    Log.d("response Login", response.toString());
-
                     List<String> listSubject = new ArrayList<>();
                     List<String> listLogin = new ArrayList<>();
 
                     try {
+                        Log.d("response Login", response.toString());
                         JSONObject jsonObject = new JSONObject(response.toString());
 
                         JSONArray jsonSubject = jsonObject.getJSONArray("subject");
@@ -91,15 +89,13 @@ public class WSManager {
                         map.put("subject",listSubject);
                         map.put("login",listLogin);
 
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                     Log.d("Login Complete ", map.toString());
                     listener.onComplete(map);
-                } else {
-                    listener.onError("null Map");
-                }
+
 
 
             }

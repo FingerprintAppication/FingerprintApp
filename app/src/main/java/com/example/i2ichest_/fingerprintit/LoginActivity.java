@@ -82,82 +82,87 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickLogin(View view){
 
-        final ProgressDialog progress = ProgressDialog.show(LoginActivity.this,"Please Wait...","Please wait...",true);
-        wsManager = WSManager.getWsManager(this);
         final LoginModel loginModel = new LoginModel();
-
         final EditText username = (EditText) findViewById(R.id.editTextUsername);
         EditText password = (EditText) findViewById(R.id.editTextPassword);
 
-        loginModel.getLogin().setUsername(username.getText().toString());
-        loginModel.getLogin().setPassword(password.getText().toString());
+        if (username.getText().toString().equals("")) {
+            Toast.makeText(this, "กรุณากรอก username", Toast.LENGTH_SHORT).show();
+        } else if (password.getText().toString().equals("") ){
+            Toast.makeText(this, "กรุณากรอก password", Toast.LENGTH_SHORT).show();
+        } else {
+            loginModel.getLogin().setUsername(username.getText().toString());
+            loginModel.getLogin().setPassword(password.getText().toString());
 
-        wsManager.doLogin(loginModel, new WSManager.WSManagerListener() {
-            @Override
-            public void onComplete(Object response) {
-                progress.dismiss();
+            final ProgressDialog progress = ProgressDialog.show(LoginActivity.this,"Please Wait...","Please wait...",true);
+            wsManager = WSManager.getWsManager(this);
+            wsManager.doLogin(loginModel, new WSManager.WSManagerListener() {
+                @Override
+                public void onComplete(Object response) {
+                    progress.dismiss();
 
-                Map<String,List<String>> map = (Map<String, List<String>>) response;
+                    Map<String, List<String>> map = (Map<String, List<String>>) response;
 
-                if (!map.isEmpty()) {
-                    Log.d("Map<LOGIN> @@ : ", map.get("login").toString());
-                    List<String> login = map.get("login");
+                    if (!map.isEmpty()) {
+                        Log.d("Map<LOGIN> @@ : ", map.get("login").toString());
+                        List<String> login = map.get("login");
 
-                    gb.getLoginModel().getLogin().setUsername(login.get(0));
-                    gb.getLoginModel().getLogin().setPassword(login.get(1));
+                        gb.getLoginModel().getLogin().setUsername(login.get(0));
+                        gb.getLoginModel().getLogin().setPassword(login.get(1));
 
-                    PersonModel personModel = new PersonModel();
-                    personModel.getPerson().setTitle(login.get(2));
-                    personModel.getPerson().setFirstName(login.get(3));
-                    personModel.getPerson().setLastName(login.get(4));
-                    personModel.getPerson().setPersonID(Long.valueOf(login.get(5)));
-                    editor.putString("personId", login.get(5));
+                        PersonModel personModel = new PersonModel();
+                        personModel.getPerson().setTitle(login.get(2));
+                        personModel.getPerson().setFirstName(login.get(3));
+                        personModel.getPerson().setLastName(login.get(4));
+                        personModel.getPerson().setPersonID(Long.valueOf(login.get(5)));
+                        editor.putString("personId", login.get(5));
 
-                    if (login.get(8).equals("student") || login.get(8).equals("teacher")) {
-                        if (login.get(8).equals("student")) {
-                            personModel.getPerson().setFingerprintData(login.get(9));
-                        }
+                        if (login.get(8).equals("student") || login.get(8).equals("teacher")) {
+                            if (login.get(8).equals("student")) {
+                                personModel.getPerson().setFingerprintData(login.get(9));
+                            }
 
-                        MajorModel majorModel = new MajorModel();
-                        majorModel.getMajor().setMajorName(login.get(6));
+                            MajorModel majorModel = new MajorModel();
+                            majorModel.getMajor().setMajorName(login.get(6));
 
-                        FacultyModel facultyModel = new FacultyModel();
-                        facultyModel.getFaculty().setFacultyName(login.get(7));
+                            FacultyModel facultyModel = new FacultyModel();
+                            facultyModel.getFaculty().setFacultyName(login.get(7));
 
-                        majorModel.getMajor().setFaculty(facultyModel.getFaculty());
-                        personModel.getPerson().setMajor(majorModel.getMajor());
+                            majorModel.getMajor().setFaculty(facultyModel.getFaculty());
+                            personModel.getPerson().setMajor(majorModel.getMajor());
 
                         /*save preferrences*/
-                        CheckBox saveDetail = (CheckBox)findViewById(R.id.saveUserDetail);
-                        if(saveDetail.isChecked()){
+                            CheckBox saveDetail = (CheckBox) findViewById(R.id.saveUserDetail);
+                            if (saveDetail.isChecked()) {
 
-                            editor.putString("username", gb.getLoginModel().getLogin().getUsername());
-                            editor.putString("password", gb.getLoginModel().getLogin().getPassword());
+                                editor.putString("username", gb.getLoginModel().getLogin().getUsername());
+                                editor.putString("password", gb.getLoginModel().getLogin().getPassword());
 
-                            boolean save = editor.commit();
-                            Log.d("SAVE USER!", "save user detail: "+save);
+                                boolean save = editor.commit();
+                                Log.d("SAVE USER!", "save user detail: " + save);
+                            }
                         }
+
+                        gb.getLoginModel().getLogin().setPerson(personModel.getPerson());
+                        gb.setTypeUser(login.get(8));
+                        List<String> allSub = map.get("subject");
+                        gb.setAllSubject(allSub);
+                        /**เพิ่มตรงนี้เซฟ autologin**/
+
+                        Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
                     }
-
-                    gb.getLoginModel().getLogin().setPerson(personModel.getPerson());
-                    gb.setTypeUser(login.get(8));
-                    List<String> allSub = map.get("subject");
-                    gb.setAllSubject(allSub);
-                    /**เพิ่มตรงนี้เซฟ autologin**/
-
-                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
                 }
-            }
 
-            @Override
-            public void onError(String error) {
-                progress.dismiss();
-                Toast.makeText(LoginActivity.this, "เกิดข้อผิดพลาดไม่พบข้อมูล" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onError(String error) {
+                    progress.dismiss();
+                    Toast.makeText(LoginActivity.this, "เกิดข้อผิดพลาดไม่พบข้อมูลเชิฟเวอร์", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     public void onClickVerifyParent(View view){

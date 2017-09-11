@@ -128,3 +128,5 @@ app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/CalculateClassScoreActivity.java
 app/src/main/res/layout/show_attendance_teacher.xml
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
