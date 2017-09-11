@@ -130,9 +130,17 @@ app/src/main/java/com/example/i2ichest_/fingerprintit/CalculateClassScoreActivit
 app/src/main/res/layout/show_attendance_teacher.xml
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
+<<<<<<< HEAD
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
 app/src/main/res/layout/activity_profile.xml
 app/src/main/res/layout/show_attendance_teacher.xml
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
 app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
+=======
+>>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTask.java
+app/src/main/java/com/example/i2ichest_/fingerprintit/task/WSTaskPost.java
+app/src/main/java/com/example/i2ichest_/fingerprintit/ViewLeaveHistoryActivity.java
+app/src/main/res/layout/activity_profile.xml
+app/src/main/res/layout/show_attendance_teacher.xml

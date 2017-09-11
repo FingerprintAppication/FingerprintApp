@@ -125,6 +125,10 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
 =======
 
 >>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
@@ -153,7 +157,10 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
             });
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
 =======
 >>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
     }
