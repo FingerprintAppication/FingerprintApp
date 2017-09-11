@@ -65,8 +65,10 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
         Spinner spLate = (Spinner) findViewById(R.id.spinnerLate);
         ArrayAdapter<String> adapterLate = new ArrayAdapter<String>(CalculateClassScoreActivity.this,android.R.layout.simple_spinner_dropdown_item,listLate);
         spLate.setAdapter(adapterLate);
-
 <<<<<<< HEAD
+=======
+
+>>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
         Button spinnerScore = (Button)findViewById(R.id.buttonCalculateScore);
 
         spinnerScore.setOnClickListener(new View.OnClickListener() {
@@ -140,17 +142,36 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
                 inform++;
             } else if("ยกเลิก".equals(att.getStatus())){
                 cancel++;
-            }else{
+            } else {
 
             }
         }
+
+
+        // test Calculate
+        come = 25.0;
+        late = 3.0;
+        absence = 1.0;
+        inform = 1.0;
+
+        double bonus = 0;
+        bonus = late;
+        if (late > timeLate){
+            bonus = timeLate;
+        }
+
+        Log.d("come : ", come.toString());
+        Log.d("bonus : ", bonus + "");
+        Log.d("list : ", listAttendance.size()+ "");
+        Log.d("cancel : ", cancel.toString());
+        Log.d("score : " , score.toString());
+
+        total = Double.valueOf(((come + bonus) / (listAttendance.size()-cancel)) * score);
+
         list.add(come);
         list.add(late);
         list.add(absence);
         list.add(inform);
-        Double calLate = late/timeLate;
-        Log.d("LATE TO ABSENCE ", "Attendance: status "+calLate);
-        total = Double.valueOf(((come - (absence+calLate.intValue())) /listAttendance.size()) * score);
         list.add(Double.valueOf(df2.format(total)));
         return list;
     }
@@ -163,8 +184,5 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
                 if (c1.getStudent().getStudentID() < c2.getStudent().getStudentID()) return -1;
                 return 0;
             }});
-=======
-
->>>>>>> 9fef7efe4bb2fe95701df963232ec18bdec0b72e
     }
 }

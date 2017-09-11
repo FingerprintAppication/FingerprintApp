@@ -3,13 +3,10 @@ package com.example.i2ichest_.fingerprintit;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,7 +25,6 @@ import com.example.i2ichest_.fingerprintit.model.ScheduleModel;
 import com.example.i2ichest_.fingerprintit.model.StudentModel;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,10 +40,10 @@ public class InformLeaveActivity extends AppCompatActivity {
     GalleryPhoto galleryPhoto;
     InformLeaveModel informLeaveModel ;
     WSManager wsManager;
-    List<String> dateArray = null;
+    List<String> allDate = null;
     ArrayAdapter<String> adapter = null;
     Spinner dateSpinner = null;
-    List<String> sickLeave = null;
+    List<String> futureDate = null;
     Base64Model base;
 
     @Override
@@ -59,9 +55,6 @@ public class InformLeaveActivity extends AppCompatActivity {
     }
 
     public void setInformLeaveData () {
-        final ProgressDialog progress = ProgressDialog.show(InformLeaveActivity.this,"Please Wait...","Please wait...",true);
-        informLeaveModel = new InformLeaveModel();
-        wsManager = WSManager.getWsManager(this);
         galleryPhoto = new GalleryPhoto(getApplicationContext());
         final ImageButton but = (ImageButton)findViewById(R.id.imageButton);
         final Button informButton = (Button)findViewById(R.id.informSubmit);
@@ -72,33 +65,23 @@ public class InformLeaveActivity extends AppCompatActivity {
         final String studentName = intent.getStringExtra("studentName");
         final String subject = intent.getStringExtra("subject");
         final String periodId = intent.getStringExtra("periodId");
-        final PeriodModel periodModel = new PeriodModel();
-        periodModel.getPeriod().setPeriodID(Long.parseLong(periodId));
         final TextView imageTitle = (TextView)findViewById(R.id.imageTitle) ;
         final TextView imageName = (TextView)findViewById(R.id.imageName) ;
         final ImageButton imageButton = (ImageButton)findViewById(R.id.imageButton);
+        
+        final PeriodModel periodModel = new PeriodModel();
+        periodModel.getPeriod().setPeriodID(Long.parseLong(periodId));
         Log.d("TAPO", "setInformLeaveData: periodddddd "+periodModel.getPeriod().getPeriodID());
+        final ProgressDialog progress = ProgressDialog.show(InformLeaveActivity.this,"Please Wait...","Please wait...",true);
+        allDate = new ArrayList<String>();
+        wsManager = WSManager.getWsManager(this);
 
-        dateArray = new ArrayList<String>();
         wsManager.doSearchDateOfInformLeave(periodModel, new WSManager.WSManagerListener() {
             @Override
             public void onComplete(Object response) {
-                dateArray = (List<String>)response;
-                Date d = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                sickLeave = new ArrayList<String>();
-                for (String s : dateArray) {
-                    try {
-                        Date date = sdf.parse(s);
-                        if (date.after(d)) {
-                            sickLeave.add(s);
-                        }
-                    } catch (ParseException e) {
-
-                        e.printStackTrace();
-                    }
-                }
-                Log.d("SIZE ", "onComplete: "+dateArray.size());
+                allDate = (List<String>)response;
+                informLeaveModel = new InformLeaveModel();
+                Log.d("SIZE ", "onComplete: "+ allDate.size());
                 dateSpinner = (Spinner)findViewById(R.id.dateOfInform);
                 TextView stuId = (TextView)findViewById(R.id.studentIdTxt);
                 TextView stuName = (TextView)findViewById(R.id.studentNameTxt);
@@ -120,34 +103,33 @@ public class InformLeaveActivity extends AppCompatActivity {
                         startActivityForResult(galleryPhoto.openGalleryIntent(),GALLERY_REQUEST);
                     }
                 });
+                futureDate();
                 imageTitle.setVisibility(View.INVISIBLE);
                 imageName.setVisibility(View.INVISIBLE);
                 imageButton.setVisibility(View.INVISIBLE);
-                adapter = new ArrayAdapter<String>(InformLeaveActivity.this,android.R.layout.simple_list_item_1, sickLeave);
+                adapter = new ArrayAdapter<String>(InformLeaveActivity.this,android.R.layout.simple_list_item_1, futureDate);
                 dateSpinner.setAdapter(adapter);
-
                 Spinner typeInform = (Spinner)findViewById(R.id.typeOfInform);
                 typeInform.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         Log.d("TAG TYPES ", ""+adapterView.getAdapter().getItem(i).toString());
                         if(adapterView.getAdapter().getItem(i).toString().equals("ลาป่วย")){
+                            imageName.setText("ชื่อรูปภาพ");
                             imageTitle.setVisibility(View.VISIBLE);
                             imageName.setVisibility(View.VISIBLE);
                             imageButton.setVisibility(View.VISIBLE);
-                            adapter = new ArrayAdapter<String>(InformLeaveActivity.this,android.R.layout.simple_list_item_1, dateArray);
+                            adapter = new ArrayAdapter<String>(InformLeaveActivity.this,android.R.layout.simple_list_item_1, allDate);
                             dateSpinner.setAdapter(adapter);
-                           // Log.d("changed ", "onComplete: ");
                         }else {
+                            Log.d("onselected", "onItemSelected: future");
                             informLeaveModel.getInformLeave().setSupportDocument("");
-                            imageName.setText("ชื่อรูปภาพ");
                             imageTitle.setVisibility(View.INVISIBLE);
                             imageName.setVisibility(View.INVISIBLE);
                             imageButton.setVisibility(View.INVISIBLE);
-                            adapter = new ArrayAdapter<String>(InformLeaveActivity.this,android.R.layout.simple_list_item_1, sickLeave);
+                            adapter = new ArrayAdapter<String>(InformLeaveActivity.this,android.R.layout.simple_list_item_1, futureDate);
                             dateSpinner.setAdapter(adapter);
                         }
-
                     }
 
                     @Override
@@ -156,21 +138,19 @@ public class InformLeaveActivity extends AppCompatActivity {
                     }
                 });
 
-
                 informButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         Spinner typeInform = (Spinner)findViewById(R.id.typeOfInform);
                         TextView StudentId = (TextView) findViewById(R.id.studentIdTxt);
                         Spinner date = (Spinner)findViewById(R.id.dateOfInform);
                         EditText description = (EditText)findViewById(R.id.description);
+
                         informLeaveModel.getInformLeave().setInformType(typeInform.getSelectedItem().toString());
-                        Log.d("IDDDDDDDDDDD ",StudentId.getText().toString());
                         StudentModel studentModel = new StudentModel();
+                        studentModel.getStudent().setStudentID(Long.parseLong(StudentId.getText().toString()));
                         ScheduleModel scheduleModel = new ScheduleModel();
                         scheduleModel.getSchedule().setScheduleDate(date.getSelectedItem().toString());
-                        studentModel.getStudent().setStudentID(Long.parseLong(StudentId.getText().toString()));
                         scheduleModel.getSchedule().setPeriod(periodModel.getPeriod());
                         informLeaveModel.getInformLeave().setStudent(studentModel.getStudent());
                         informLeaveModel.getInformLeave().setDetail(description.getText().toString());
@@ -182,7 +162,7 @@ public class InformLeaveActivity extends AppCompatActivity {
                             Toast.makeText(InformLeaveActivity.this,"โปรดกรอกคำอธิบาย 5 ตัวอักษรขึ้นไป",Toast.LENGTH_SHORT).show();
                         }else{
                             final ProgressDialog progress = ProgressDialog.show(InformLeaveActivity.this,"Please Wait...","Please wait...",true);
-                            wsManager.informLeave(informLeaveModel, new WSManager.WSManagerListener() {
+                            wsManager.doInsertInformLeave(informLeaveModel, new WSManager.WSManagerListener() {
                                 @Override
                                 public void onComplete(Object response) {
                                     progress.dismiss();
@@ -236,6 +216,22 @@ public class InformLeaveActivity extends AppCompatActivity {
             //openFilePicker();
         }
 
+    }
+
+    public void futureDate() {
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        futureDate = new ArrayList<String>();
+        for (String s : allDate) {
+            try {
+                Date date = sdf.parse(s);
+                if (date.after(d)) {
+                    futureDate.add(s);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

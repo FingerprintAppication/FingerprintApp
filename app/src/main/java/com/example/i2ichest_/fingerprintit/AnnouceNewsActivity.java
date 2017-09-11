@@ -44,10 +44,10 @@ public class AnnouceNewsActivity extends AppCompatActivity {
     public void showAnnouceNews() {
         final Intent intent = getIntent();
         final long periodID = intent.getLongExtra("periodID", 1L);
-
-        String subjectName = intent.getStringExtra("subjectName");
-        String subjectNumber = intent.getStringExtra("subjectNumber");
-        String subjectType = intent.getStringExtra("subjectType");
+        final long subjectID = intent.getLongExtra("subjectID", 1L);
+        final String subjectName = intent.getStringExtra("subjectName");
+        final String subjectNumber = intent.getStringExtra("subjectNumber");
+        final String subjectType = intent.getStringExtra("subjectType");
         String subjectDay = intent.getStringExtra("subjectDay");
 
         TextView txtSubID = (TextView) findViewById(R.id.textViewSubID);
@@ -81,8 +81,33 @@ public class AnnouceNewsActivity extends AppCompatActivity {
             public void onComplete(Object response) {
                 progress.dismiss();
                 List<String> listDate = (List<String>) response;
-                ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(AnnouceNewsActivity.this, android.R.layout.simple_list_item_1, listDate);
-                spDate.setAdapter(adapter2);
+
+                if (listDate.size() == 0){
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(AnnouceNewsActivity.this);
+                    alertDialog.setMessage("ไม่พบข้อมูลวันที่คาบเรียน");
+                    alertDialog.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+
+                    alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            Intent intent = new Intent(AnnouceNewsActivity.this,PeriodActivity.class);
+                            intent.putExtra("subjectID",subjectID);
+                            intent.putExtra("subjectNumber",subjectNumber);
+                            intent.putExtra("subjectName",subjectName);
+                            startActivity(intent);
+                        }
+                    });
+
+                    alertDialog.show();
+                } else {
+                    ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(AnnouceNewsActivity.this, android.R.layout.simple_list_item_1, listDate);
+                    spDate.setAdapter(adapter2);
+                }
             }
 
             @Override
@@ -126,9 +151,9 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                                 public void onComplete(Object response) {
                                     progress.dismiss();
                                     if (response.toString().equals("1")) {
-                                        Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเร็จ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเร็จ", Toast.LENGTH_LONG).show();
                                     } else {
-                                        Toast.makeText(AnnouceNewsActivity.this, "ข้อมูลผิดพลาด \nกรุณาตรวจสอบข้อมูลอีกครั้ง", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AnnouceNewsActivity.this, "ข้อมูลผิดพลาด \nกรุณาตรวจสอบข้อมูลอีกครั้ง", Toast.LENGTH_LONG).show();
                                     }
                                     Intent intent = new Intent(AnnouceNewsActivity.this, ViewListSubjectActivity.class);
                                     intent.putExtra("personID", gb.getLoginModel().getLogin().getPerson().getPersonID());

@@ -37,6 +37,7 @@ public class PeriodActivity extends AppCompatActivity {
         showPeriod();
     }
 
+    //sq lv 2
     public void showPeriod(){
         Intent intent = getIntent();
         final long subjectID = intent.getLongExtra("subjectID",1L);
@@ -67,14 +68,18 @@ public class PeriodActivity extends AppCompatActivity {
 
         final TextView textViewSectionTitle = (TextView) findViewById(R.id.textViewSectionTitle);
         final ProgressDialog progress = ProgressDialog.show(PeriodActivity.this,"Please Wait...","Please wait...",true);
-        wsManager = WSManager.getWsManager(this);
 
+        //sq lv 2
         SubjectModel subjectModel = new SubjectModel();
         subjectModel.getSubject().setSubjectID(subjectID);
+
+        //sq lv 2
+        wsManager = WSManager.getWsManager(this);
         wsManager.doSearchSection(subjectModel, new WSManager.WSManagerListener() {
             @Override
             public void onComplete(final Object response) {
-
+                progress.dismiss();
+                //sq lv 2
                 final SectionModel.Section section = (SectionModel.Section) response;
 
                     /*section ID here*/
@@ -127,6 +132,7 @@ public class PeriodActivity extends AppCompatActivity {
                                 public void onClick(View view) {
                                     Intent intent = new Intent(PeriodActivity.this, AnnouceNewsActivity.class);
                                     intent.putExtra("periodID",section.getPeriodList().get(finalG).getPeriodID());
+                                    intent.putExtra("subjectID",subjectID);
                                     intent.putExtra("subjectNumber",subjectNumber);
                                     intent.putExtra("subjectName",subjectName);
                                     intent.putExtra("subjectType",section.getPeriodList().get(finalG).getStudyType());
@@ -209,7 +215,7 @@ public class PeriodActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onError(String error) {
-
+                                    progress.dismiss();
                                 }
                             });
                             }
@@ -217,7 +223,7 @@ public class PeriodActivity extends AppCompatActivity {
 
                         gridLayout.addView(view);
                     }
-                progress.dismiss();
+
             }
 
             @Override

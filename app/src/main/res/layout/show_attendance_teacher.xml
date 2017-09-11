@@ -112,9 +112,14 @@
         android:textStyle="normal|bold"
         android:textAlignment="center"
 <<<<<<< HEAD
-        android:paddingBottom="10dp" />
+
+        android:paddingBottom="10dp"
+        android:textSize="16dp"
+        android:layout_marginBottom="20dp"
+        />
 =======
         android:textSize="16dp"
         android:layout_marginBottom="20dp"/>
->>>>>>> 9fef7efe4bb2fe95701df963232ec18bdec0b72e
+
+>>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
 </LinearLayout>

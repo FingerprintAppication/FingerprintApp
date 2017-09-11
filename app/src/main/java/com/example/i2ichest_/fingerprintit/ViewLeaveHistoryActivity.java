@@ -97,13 +97,13 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
         }
 
         Button btnImg = (Button) findViewById(R.id.btnAddDoc);
-        Button btnUpdate = (Button) findViewById(R.id.btnUpdate);
+        ImageButton btnUpdate = (ImageButton) findViewById(R.id.chooseImage);
 
         if(inform.getStatus().equals("อนุมัติ")){
             btnImg.setVisibility(View.GONE);
             btnUpdate.setVisibility(View.GONE);
         } else {
-            btnImg.setOnClickListener(new View.OnClickListener() {
+            btnUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     requestPermission();
@@ -111,7 +111,7 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
                 }
             });
 
-            btnUpdate.setOnClickListener(new View.OnClickListener() {
+            btnImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -125,6 +125,9 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 <<<<<<< HEAD
+=======
+
+>>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
                     inform.getSchedule().setScheduleDate(parseDate);
                 /*Here WSManager to send class*/
                     final ProgressDialog progress = ProgressDialog.show(ViewLeaveHistoryActivity.this,"Please Wait...","Please wait...",true);
@@ -149,12 +152,10 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
                 }
             });
         }
-=======
-                });
+<<<<<<< HEAD
 
-            }
-        });
->>>>>>> 0d46f2f1d26037915e4de08d53ca95b914bf4ff2
+=======
+>>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
     }
 
     @Override

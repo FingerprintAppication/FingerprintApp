@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -64,6 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (typeUser.equals("student")){
             stuID.setText(gb.getLoginModel().getLogin().getUsername());
             fingerID.setText(gb.getLoginModel().getLogin().getPerson().getFingerprintData());
+            fab.setVisibility(View.VISIBLE);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

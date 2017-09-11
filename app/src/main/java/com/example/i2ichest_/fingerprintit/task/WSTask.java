@@ -38,7 +38,11 @@ public class WSTask extends AsyncTask<String,String,String> {
     protected String doInBackground(String... params) {
         Request.Builder builder = new Request.Builder();
 
-        Request request = builder.url("http://192.168.1.200:8080".concat(params[0])).build();
+<<<<<<< HEAD
+        Request request = builder.url("http://192.168.1.190:8080".concat(params[0])).build();
+=======
+        Request request = builder.url("http://192.168.1.195:8080".concat(params[0])).build();
+>>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
 
         try {
             client.readTimeoutMillis();

@@ -74,12 +74,7 @@ public class ListViewAdapter extends BaseSwipeAdapter {
         View v = LayoutInflater.from(mContext).inflate(R.layout.listview_item, null);
         v.findViewById(R.id.setAlarm).setTag(splitSubject[0]);
         SwipeLayout swipeLayout = (SwipeLayout)v.findViewById(getSwipeLayoutResourceId(position));
-        swipeLayout.addSwipeListener(new SimpleSwipeListener() {
-            @Override
-            public void onOpen(SwipeLayout layout) {
-                //YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
-            }
-        });
+
         swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
             @Override
             public void onDoubleClick(SwipeLayout layout, boolean surface) {
@@ -100,39 +95,19 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                 mit.setMinValue(0);
                 mit.setMaxValue(59);
                 hr.setWrapSelectorWheel(true);
-                /*hr.setOnValueChangedListener(( new NumberPicker.
-                        OnValueChangeListener() {
-                    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                        Log.i("value is",""+newVal);
-                    }
-                }));*/
-                mit.setWrapSelectorWheel(true);
-               /* mit.setOnValueChangedListener(( new NumberPicker.
-                        OnValueChangeListener() {
-                    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                        Log.i("value is",""+newVal);
-                    }
-                }));*/
-
-
                 wsManager = WSManager.getWsManager(parentActivity);
                 SubjectModel subjectModel = new SubjectModel();
                 subjectModel.getSubject().setSubjectID(Long.parseLong(subject));
                 wsManager.doSearchPeriod(subjectModel, new WSManager.WSManagerListener() {
                     @Override
                     public void onComplete(Object response) {
-                        try {
                             String showTimeToStudy = "";
-                            JSONArray jsonArray = new JSONArray(response.toString());
-                            JSONObject jsonSection = new JSONObject(jsonArray.get(0).toString());
-                            final SectionModel section = new SectionModel(jsonSection.toString());
-
+                            final SectionModel section =  (SectionModel)response;
                             for(PeriodModel.Period period:section.getSection().getPeriodList()){
                                 showTimeToStudy+= "วัน "+period.getDayOfWeek()+" "+period.getPeriodStartTime()+"-"+period.getPeriodEndTime()+"\n";
                             }
-                            TextView periodOne = (TextView)alertView.findViewById(R.id.periodSubect);
-
-                            periodOne.setText(showTimeToStudy);
+                            TextView allPeriodShow = (TextView)alertView.findViewById(R.id.periodSubect);
+                            allPeriodShow.setText(showTimeToStudy);
                             alertDialog.setPositiveButton("ยืนยัน", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -141,34 +116,27 @@ public class ListViewAdapter extends BaseSwipeAdapter {
 
                                                     Calendar calendar  = Calendar.getInstance();
                                                     int start = Integer.parseInt(period.getPeriodStartTime().split(":")[0]);
-                                                    final int tiemId = (int)(long)period.getPeriodID();
+                                                    final int timeID = (int)(long)period.getPeriodID();
                                                     if(onOff.isChecked() == true) {
-
-
                                                         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
                                                         Log.d("Days of week   ",dayOfWeek+" == "+setDateSubject(period.getDayOfWeek())+" GET NUM OF WEEK "+Calendar.SUNDAY);
                                                         if(dayOfWeek == setDateSubject(period.getDayOfWeek())){
                                                             if(calendar.get(Calendar.HOUR_OF_DAY)<start){
-                                                                //calendar = Calendar.getInstance();
-                                                               // Log.d("start and getHour ",start+" == "+time.getHour());
                                                                 calendar.set(Calendar.HOUR_OF_DAY, start -  hr.getValue());
                                                                 calendar.set(Calendar.MINUTE, mit.getValue());
                                                                 Log.d("EQULAS  ",start+" == "+ hr.getValue());
                                                             }else {
-                                                                //calendar = Calendar.getInstance();
                                                                 calendar.add(Calendar.DATE,7);
                                                                 calendar.set(Calendar.HOUR_OF_DAY, start -  hr.getValue());
                                                                 calendar.set(Calendar.MINUTE, mit.getValue());
                                                             }
                                                         }else if (dayOfWeek > setDateSubject(period.getDayOfWeek())){
-                                                            //calendar = Calendar.getInstance();
                                                             calendar.add(Calendar.DATE,7-(dayOfWeek - setDateSubject(period.getDayOfWeek())));
                                                             calendar.set(Calendar.HOUR_OF_DAY, start -  hr.getValue());
                                                             calendar.set(Calendar.MINUTE, mit.getValue());
                                                             Log.d("MORE THAN  ",start+" == "+ hr.getValue());
 
                                                         }else if (dayOfWeek < setDateSubject(period.getDayOfWeek())) {
-                                                            //calendar = Calendar.getInstance();
                                                             calendar.add(Calendar.DATE,(setDateSubject(period.getDayOfWeek())-dayOfWeek));
                                                             calendar.set(Calendar.HOUR_OF_DAY, start -  hr.getValue());
                                                             calendar.set(Calendar.MINUTE, mit.getValue());
@@ -179,16 +147,14 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         intent.putExtra("study", splitSubject[1]);
                                                         intent.putExtra("period",period.getPeriodID());
-                                                        pendingIntent = PendingIntent.getBroadcast(parentActivity,tiemId, intent, PendingIntent.FLAG_UPDATE_CURRENT | Intent.FILL_IN_DATA);
+                                                        pendingIntent = PendingIntent.getBroadcast(parentActivity,timeID, intent, PendingIntent.FLAG_UPDATE_CURRENT | Intent.FILL_IN_DATA);
                                                         alm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000, pendingIntent);
-                                                        //Toast.makeText(parentActivity, "SET TIME PERIOD ID + "+period.getPeriodID(), Toast.LENGTH_LONG).show();
                                                         Toast.makeText(parentActivity, "ตั้งเวลาการเตือน "+calendar.getTime(), Toast.LENGTH_LONG).show();
-                                                        //Log.d("DATE ",calendar.getTime()+"");
                                                     }else{
                                                         Intent in = new Intent(parentActivity, AlarmReceiver.class);
                                                         in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         AlarmManager alarmCancel = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
-                                                        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(parentActivity,tiemId, in,PendingIntent.FLAG_UPDATE_CURRENT| Intent.FILL_IN_DATA);
+                                                        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(parentActivity,timeID, in,PendingIntent.FLAG_UPDATE_CURRENT| Intent.FILL_IN_DATA);
                                                         pendingIntentCancel.cancel();
                                                         alarmCancel.cancel(pendingIntentCancel);
                                                         Toast.makeText(parentActivity, "ยกเลิกการเตือน ", Toast.LENGTH_LONG).show();
@@ -197,9 +163,7 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                                     dialogInterface.cancel();
                                 }
                             });
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+
                         alertDialog.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -209,17 +173,11 @@ public class ListViewAdapter extends BaseSwipeAdapter {
                         alertDialog.setView(alertView);
                         AlertDialog alert = alertDialog.create();
                         alert.show();
-
-                       /* AlertDialog showTime = new AlertDialog.Builder(parentActivity).create();
-                        showTime.setTitle("เวลา");
-                        showTime.setIcon(R.drawable.clock);
-                        showTime.setMessage(showTimeToStudy);
-                        showTime.show();*/
                     }
 
                     @Override
                     public void onError(String error) {
-
+                        Log.d(TAG, "onError: "+error);
                     }
                 });
             }
@@ -250,7 +208,7 @@ public class ListViewAdapter extends BaseSwipeAdapter {
     }
 
 
-    public int setDateSubject (String date) {
+    public int setDateSubject ( String date) {
         int numberDay = 1;
         if("จันทร์".equals(date)){
             numberDay = 2;

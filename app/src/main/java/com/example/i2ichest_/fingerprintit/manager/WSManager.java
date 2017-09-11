@@ -68,33 +68,35 @@ public class WSManager {
             @Override
             public void onComplete(String response) {
                 Map<String,List<String>> map = new HashMap<String,List<String>>();
-                Log.d("response Login", response.toString());
 
-                List<String> listSubject = new ArrayList<>();
-                List<String> listLogin = new ArrayList<>();
+                    List<String> listSubject = new ArrayList<>();
+                    List<String> listLogin = new ArrayList<>();
 
-                try {
-                    JSONObject jsonObject = new JSONObject(response.toString());
+                    try {
+                        Log.d("response Login", response.toString());
+                        JSONObject jsonObject = new JSONObject(response.toString());
 
-                    JSONArray jsonSubject = jsonObject.getJSONArray("subject");
-                    for ( int i = 0 ; i < jsonSubject.length() ; i++){
-                        listSubject.add(jsonSubject.get(i).toString());
+                        JSONArray jsonSubject = jsonObject.getJSONArray("subject");
+                        for ( int i = 0 ; i < jsonSubject.length() ; i++){
+                            listSubject.add(jsonSubject.get(i).toString());
+                        }
+
+                        JSONArray jsonLogin = jsonObject.getJSONArray("login");
+                        for ( int i = 0 ; i < jsonLogin.length() ; i++){
+                            listLogin.add(jsonLogin.get(i).toString());
+                        }
+
+                        map.put("subject",listSubject);
+                        map.put("login",listLogin);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
-                    JSONArray jsonLogin = jsonObject.getJSONArray("login");
-                    for ( int i = 0 ; i < jsonLogin.length() ; i++){
-                        listLogin.add(jsonLogin.get(i).toString());
-                    }
+                    Log.d("Login Complete ", map.toString());
+                    listener.onComplete(map);
 
-                    map.put("subject",listSubject);
-                    map.put("login",listLogin);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                Log.d("Login Complete ", map.toString());
-                listener.onComplete(map);
 
             }
 
@@ -153,6 +155,7 @@ public class WSManager {
         PersonModel personModel = (PersonModel) object;
         personModel.toJSONString();
 
+        //sq lv 2
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
@@ -189,9 +192,11 @@ public class WSManager {
         SubjectModel subjectModel = (SubjectModel) object;
         subjectModel.toJSONString();
 
+        //sq lv 2
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
+                //sq lv 2
                 SectionModel sectionModel = new SectionModel();
 
                 try {
@@ -227,7 +232,15 @@ public class WSManager {
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                listener.onComplete(response);
+                try {
+                    JSONArray jsonArray = new JSONArray(response.toString());
+                    JSONObject jsonSection = new JSONObject(jsonArray.get(0).toString());
+                    SectionModel section = new SectionModel(jsonSection.toString());
+                    listener.onComplete(section);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 Log.d("onSearchPeriodComplete" ,  response.toString());
             }
 
@@ -406,7 +419,7 @@ public class WSManager {
     }
 
 
-    public void informLeave(Object object,final WSManagerListener listener){
+    public void doInsertInformLeave(Object object, final WSManagerListener listener){
         if(!(object instanceof InformLeaveModel)){
             return;
         }
