@@ -2,9 +2,13 @@ package com.example.i2ichest_.fingerprintit;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,13 +31,34 @@ import java.util.List;
 
 public class CalculateClassScoreActivity extends AppCompatActivity {
     WSManager wsManager;
+    Toolbar toolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculate_class_score);
         wsManager = WSManager.getWsManager(this);
+        toolBar = (Toolbar)findViewById(R.id.profile);
+        ActionBar ab = getSupportActionBar();
+        ab.setDefaultDisplayHomeAsUpEnabled(true);
         showCalculateScore();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my,menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile:
+                finish();
+                startActivity(new Intent(this,ProfileActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void showCalculateScore(){
@@ -65,14 +90,6 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
         Spinner spLate = (Spinner) findViewById(R.id.spinnerLate);
         ArrayAdapter<String> adapterLate = new ArrayAdapter<String>(CalculateClassScoreActivity.this,android.R.layout.simple_spinner_dropdown_item,listLate);
         spLate.setAdapter(adapterLate);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
-=======
-
->>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
         Button spinnerScore = (Button)findViewById(R.id.buttonCalculateScore);
 
         spinnerScore.setOnClickListener(new View.OnClickListener() {

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ScheduleModel implements Serializable{
     private Schedule schedule;
-    Gson gson = new GsonBuilder().create();
+    Gson gson = new GsonBuilder().setDateFormat("MM-dd-yyyy").create();
 
     public ScheduleModel(){
         schedule = new Schedule();
@@ -32,7 +32,7 @@ public class ScheduleModel implements Serializable{
     public class Schedule implements Serializable {
         private long scheduleID;
         private int scheduleNumber;
-        private String scheduleDate;
+        private Date scheduleDate;
         private Time ddd;
         List<PostponeModel.Postpone> postponeList;
         PeriodModel.Period period;
@@ -40,7 +40,7 @@ public class ScheduleModel implements Serializable{
         public Schedule() {
         }
 
-        public Schedule(long scheduleID, int scheduleNumber, String scheduleDate, Time ddd) {
+        public Schedule(long scheduleID, int scheduleNumber, Date scheduleDate, Time ddd) {
             this.scheduleID = scheduleID;
             this.scheduleNumber = scheduleNumber;
             this.scheduleDate = scheduleDate;
@@ -79,11 +79,11 @@ public class ScheduleModel implements Serializable{
             this.scheduleNumber = scheduleNumber;
         }
 
-        public String getScheduleDate() {
+        public Date getScheduleDate() {
             return scheduleDate;
         }
 
-        public void setScheduleDate(String scheduleDate) {
+        public void setScheduleDate(Date scheduleDate) {
             this.scheduleDate = scheduleDate;
         }
 

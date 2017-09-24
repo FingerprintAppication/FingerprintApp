@@ -3,9 +3,13 @@ package com.example.i2ichest_.fingerprintit;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -29,12 +33,35 @@ public class PeriodActivity extends AppCompatActivity {
     final String[] subjectDetail = new String[7];
     private GlobalClass gb;
 
+    Toolbar toolBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_period);
         gb = (GlobalClass) this.getApplicationContext();
+        toolBar = (Toolbar)findViewById(R.id.profile);
+        ActionBar ab = getSupportActionBar();
+        ab.setDefaultDisplayHomeAsUpEnabled(true);
+
         showPeriod();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my,menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile:
+                finish();
+                startActivity(new Intent(this,ProfileActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //sq lv 2
@@ -43,26 +70,10 @@ public class PeriodActivity extends AppCompatActivity {
         final long subjectID = intent.getLongExtra("subjectID",1L);
         final String subjectNumber = intent.getStringExtra("subjectNumber");
         final String subjectName = intent.getStringExtra("subjectName");
-
-        String resultInform = intent.getStringExtra("resultInform");
-        Log.d("TAG", "##############################################: "+subjectID);
-        if(resultInform!= null) {
-            AlertDialog alertDialog = new AlertDialog.Builder(PeriodActivity.this).create();
-            alertDialog.setTitle("ลาเรียน");
-            Log.d("TAG", "ลาเข้าล้ะ: ");
-            if ("ลาเรียนสำเร็จ".equals(resultInform)) {
-                alertDialog.setIcon(getResources().getDrawable(R.drawable.success));
-                alertDialog.setMessage(resultInform);
-            } else {
-                alertDialog.setIcon(getResources().getDrawable(R.drawable.duplicated));
-                alertDialog.setMessage(resultInform);
-            }
-            alertDialog.show();
-        }
+        final String personID = intent.getStringExtra("personID");
 
         subjectDetail[0] = subjectNumber;
         subjectDetail[1] = subjectName;
-
         TextView textViewSubjectName = (TextView) findViewById(R.id.textViewSubjectName);
         textViewSubjectName.setText(subjectName);
 
@@ -205,6 +216,8 @@ public class PeriodActivity extends AppCompatActivity {
                                         Intent intent = new Intent(PeriodActivity.this,VIewAttendanceActivity.class);
                                         intent.putExtra("forAttendance",sectionID+"-"+periodForAttendance+"-"+subjectNumber);
                                         intent.putExtra("allSubjectData",response.toString());
+                                        Toast.makeText(PeriodActivity.this, "personID "+personID, Toast.LENGTH_SHORT).show();
+                                        intent.putExtra("personID", personID);
                                         Bundle b = new Bundle();
                                         b.putStringArray("sub", subjectDetail);
                                         intent.putExtras(b);

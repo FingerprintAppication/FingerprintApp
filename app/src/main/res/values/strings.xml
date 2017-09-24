@@ -37,8 +37,8 @@
 
     <!--type of informleave-->
     <string-array name="inform">
-        <item>ลากิจ</item>
         <item>ลาป่วย</item>
+        <item>ลากิจ</item>
     </string-array>
     <!--array approve-->
     <string-array name="approve">

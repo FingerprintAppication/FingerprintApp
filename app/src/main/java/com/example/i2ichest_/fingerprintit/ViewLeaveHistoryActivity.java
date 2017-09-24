@@ -3,20 +3,30 @@ package com.example.i2ichest_.fingerprintit;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.provider.DocumentFile;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.Base64Model;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
@@ -26,6 +36,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
 public class ViewLeaveHistoryActivity extends AppCompatActivity {
@@ -40,6 +53,7 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
     Base64Model base;
     Intent intent;
     private GlobalClass gb;
+    Toolbar toolBar;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -50,7 +64,27 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
         wsManager = WSManager.getWsManager(this);
         base = new Base64Model();
         gb = (GlobalClass) this.getApplicationContext();
+        toolBar = (Toolbar)findViewById(R.id.profile);
+        ActionBar ab = getSupportActionBar();
+        ab.setDefaultDisplayHomeAsUpEnabled(true);
         showDetail();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my,menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile:
+                finish();
+                startActivity(new Intent(this,ProfileActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -67,8 +101,8 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
         TextView status = (TextView) findViewById(R.id.HistoryStatus);
         TextView detail = (TextView) findViewById(R.id.HistoryDetail);
         TextView cause = (TextView) findViewById(R.id.HistoryCause);
-
-        date.setText(inform.getSchedule().getScheduleDate());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        date.setText(sdf.format(inform.getSchedule().getScheduleDate()));
         type.setText(inform.getInformType());
         status.setText(inform.getStatus());
         detail.setText(inform.getDetail());
@@ -96,44 +130,35 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
             });
         }
 
-        Button btnImg = (Button) findViewById(R.id.btnAddDoc);
-        ImageButton btnUpdate = (ImageButton) findViewById(R.id.chooseImage);
+        final Button btnAdd = (Button) findViewById(R.id.btnUpdate);
+        Button btnAddImg = (Button) findViewById(R.id.btnAddDoc);
 
-        if(inform.getStatus().equals("อนุมัติ")){
-            btnImg.setVisibility(View.GONE);
-            btnUpdate.setVisibility(View.GONE);
+        if(inform.getStatus().equals("อนุมัติ") || inform.getInformType().equals("ลากิจ") ){
+            btnAdd.setVisibility(View.GONE);
+            btnAddImg.setVisibility(View.GONE);
+
+            if (inform.getInformType().equals("ลากิจ")) {
+                TextView txtDoc = (TextView) findViewById(R.id.txtHistoryDoc);
+                txtDoc.setText("");
+                image.setVisibility(View.GONE);
+            }
         } else {
-            btnUpdate.setOnClickListener(new View.OnClickListener() {
+            btnAddImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     requestPermission();
-                    startActivityForResult(galleryPhoto.openGalleryIntent(),GALLERY_REQUEST);
+
+                    try {
+                        startActivityForResult(galleryPhoto.openGalleryIntent(),GALLERY_REQUEST);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             });
 
-            btnImg.setOnClickListener(new View.OnClickListener() {
+            btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    String parseDate = "";
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                    Log.d("DATE PARSE1", "PRINT DATE : "+inform.getSchedule().getScheduleDate());
-                    try {
-                        parseDate=  sdf.parse(inform.getSchedule().getScheduleDate()).getTime()+"";
-                        Log.d("DATE PARSE2", "PRINT DATE : "+parseDate);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
-=======
-
->>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
-                    inform.getSchedule().setScheduleDate(parseDate);
-                /*Here WSManager to send class*/
                     final ProgressDialog progress = ProgressDialog.show(ViewLeaveHistoryActivity.this,"Please Wait...","Please wait...",true);
                     wsManager.updateImageLeaveHistory(inform, new WSManager.WSManagerListener() {
                         @Override
@@ -156,35 +181,32 @@ public class ViewLeaveHistoryActivity extends AppCompatActivity {
                 }
             });
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
-=======
->>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
     }
 
     @Override
     public void onActivityResult (int request,int resultC,Intent data){
-        if(request == GALLERY_REQUEST){
-            if(resultC == RESULT_OK) {
-                Uri uri = data.getData();
-                galleryPhoto.setPhotoUri(uri);
-                String photoPath = galleryPhoto.getPath();
-                inform.setSupportDocument(base.encodeBase64(photoPath));
-                ImageView image = (ImageView) findViewById(R.id.imageDoc);
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
-                image.setImageBitmap(bitmap);
+        try{
+            if(request == GALLERY_REQUEST){
+                if(resultC == RESULT_OK) {
+                    Uri uri = data.getData();
+                    galleryPhoto.setPhotoUri(uri);
+                    String photoPath = galleryPhoto.getPath();
+                    inform.setSupportDocument(base.encodeBase64(photoPath));
+                    ImageView image = (ImageView) findViewById(R.id.imageDoc);
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    Bitmap bitmap = BitmapFactory.decodeFile(photoPath, options);
+                    image.setImageBitmap(bitmap);
+                }
             }
+        }catch(Exception s){
+            s.getMessage();
         }
     }
 
     private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
         } else {
             //openFilePicker();
         }

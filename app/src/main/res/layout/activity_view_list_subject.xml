@@ -28,4 +28,12 @@
         android:layout_marginTop="12dp"
         android:id="@+id/listViewSubject" />
 
+    <include
+        layout="@layout/home_action_bar"
+        android:id="@+id/toolbar"
+        />
+
+
+
+
 </RelativeLayout>

@@ -18,7 +18,7 @@ public class GlobalClass extends Application {
     List<StudentModel.Student> listStudent = new ArrayList<>();
     StudentModel.Student parentStudent = new StudentModel().getStudent();
     List<String> allSubject = new ArrayList<>();
-    /*อันนี้เอาเก็บโค้ดรูปที่โครตใหญ่*/
+    /*For keeping big images*/
     String largeImage = "";
 
     public GlobalClass(){}

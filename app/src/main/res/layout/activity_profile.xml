@@ -91,7 +91,7 @@
         android:onClick="logOut" />
 
     <ImageView
-        app:srcCompat="@mipmap/ic_launcher"
+        app:srcCompat="@drawable/profile"
         android:id="@+id/imageProfile"
         android:layout_height="100dp"
         android:layout_width="100dp"
@@ -138,17 +138,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
             android:layout_margin="@dimen/fab_margin"
-<<<<<<< HEAD
-<<<<<<< HEAD
             app:backgroundTint="#E36A5C"
-=======
-
->>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
-=======
-
->>>>>>> 2fbdb5428c5d43d9aaa86ed1ca2c9e5528fa7cf4
             android:id="@+id/floatingActionButton"
-            android:src="@drawable/news"
-            />
+            app:srcCompat="@android:drawable/ic_dialog_email"/>
     </android.support.design.widget.CoordinatorLayout>
+
+
 </RelativeLayout>

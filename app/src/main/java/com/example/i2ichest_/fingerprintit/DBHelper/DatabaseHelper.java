@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        this.getReadableDatabase();
+        //this.getReadableDatabase();
         String sql = "Create Table IF NOT EXISTS Informleave (informID TEXT PRIMARY KEY, stuID TEXT)";
         sqLiteDatabase.execSQL(sql);
         Log.d("SQLITE", "onCreate: CREATED!");

@@ -2,12 +2,17 @@ package com.example.i2ichest_.fingerprintit;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.AttendanceModel;
@@ -19,14 +24,41 @@ import java.util.List;
 public class VIewAttendanceActivity extends AppCompatActivity {
     WSManager wsManager;
     private GlobalClass gb;
+    Toolbar toolBar;
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_attendance);
         wsManager = WSManager.getWsManager(this);
-        final Intent intent = getIntent();
+        intent = getIntent();
         gb = (GlobalClass) this.getApplicationContext();
+        toolBar = (Toolbar)findViewById(R.id.profile);
+        ActionBar ab = getSupportActionBar();
+        ab.setDefaultDisplayHomeAsUpEnabled(true);
+        showAttendance();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my,menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile:
+                finish();
+                startActivity(new Intent(this,ProfileActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void showAttendance(){
         TextView studentName = (TextView)findViewById(R.id.studentNameTxt);
         String title = null;
         String name = null;
@@ -43,12 +75,13 @@ public class VIewAttendanceActivity extends AppCompatActivity {
         PeriodModel period = new PeriodModel();
         period.getPeriod().setPeriodID(Long.parseLong(forAttendances[1]));
         Log.d("sectionID ",forAttendances[0]+" id");
-        /*this line below this is setting studentID*/
-        period.getPeriod().setStudyType(Long.toString(gb.getLoginModel().getLogin().getPerson().getPersonID()));
+        /*this line below this is setting studentPersonID*/
+        period.getPeriod().setStudyType(intent.getStringExtra("personID"));
+        Toast.makeText(this, "personID "+intent.getStringExtra("personID"), Toast.LENGTH_SHORT).show();
         /*this line below this is setting subjectNumber*/
         period.getPeriod().setComingTime(forAttendances[2]);
         final ProgressDialog progress = ProgressDialog.show(this,"Please Wait...","Please wait...",true);
-        wsManager.getEnrollment(period, new WSManager.WSManagerListener() {
+        wsManager.searchAttendanceData(period, new WSManager.WSManagerListener() {
 
             @Override
             public void onComplete(Object response) {

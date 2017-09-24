@@ -8,9 +8,13 @@ import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +24,8 @@ import com.example.i2ichest_.fingerprintit.DBHelper.DatabaseHelper;
 import com.example.i2ichest_.fingerprintit.adapter.InformViewAdapter;
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,13 +39,16 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
     private GlobalClass gb;
     /*for keeping big images code*/
     List<String> images;
+    Toolbar toolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_list_inform_leave);
         gb = (GlobalClass) this.getApplicationContext();
-
+        toolBar = (Toolbar)findViewById(R.id.profile);
+        ActionBar ab = getSupportActionBar();
+        ab.setDefaultDisplayHomeAsUpEnabled(true);
         showInformLeave ();
     }
     public void onStart (){
@@ -51,6 +60,23 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
             tee.setBackgroundColor(Color.WHITE);
         }
         //Log.d("LIMGS1", "onCreate: "+gb.getLargeImage()+" os ");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my,menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile:
+                finish();
+                startActivity(new Intent(this,ProfileActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void showInformLeave () {
@@ -87,15 +113,17 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
                         List<String> string = new ArrayList<String>();
                         images = new ArrayList<String>();
                         for (InformLeaveModel i : list) {
-                            Calendar car = Calendar.getInstance();
+                           /* Calendar car = Calendar.getInstance();
                             car.clear();
                             Date date = new Date();
                             Long setDate = Long.parseLong(i.getInformLeave().getSchedule().getScheduleDate());
                             date.setTime(setDate);
                             car.setTime(date);
                             i.getInformLeave().getSchedule().setScheduleDate(car.get(java.util.Calendar.YEAR) + "-" + (car.get(java.util.Calendar.MONTH) + 1) + "-" + car.get(java.util.Calendar.DAY_OF_MONTH));
+                            */
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                             string.add(i.getInformLeave().getStudent().getStudentID() + " วิชา: " + i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectNumber()
-                                    +" "+i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectName()+" วันที่ลา: " + i.getInformLeave().getSchedule().getScheduleDate()
+                                    +" "+i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectName()+" \nวันที่ลา: " + sdf.format(i.getInformLeave().getSchedule().getScheduleDate())
                                     +" สถานะ: ["+ i.getInformLeave().getStatus()+"]");
                             if(unRead.get(i.getInformLeave().getInformLeaveID()+"") == null){
                                 setColor.add("set");

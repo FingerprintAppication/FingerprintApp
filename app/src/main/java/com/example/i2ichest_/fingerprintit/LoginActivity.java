@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -36,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     final String USER_DETAIL = "USERDETAIL";
     String saveCheck = "saveCheck";
     SharedPreferences.Editor editor;
+    AlertDialog.Builder showRex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +53,23 @@ public class LoginActivity extends AppCompatActivity {
                 editor.commit();
             }
         });
-        /**เพิ่มตรงนี้เซฟ จำพาสเวิดไหม**/
+        /**This is saving username and password**/
         boolean isRemember = sp.getBoolean(saveCheck, false);
         cbRemember.setChecked(isRemember);
         if(!cbRemember.isChecked()){
             sp.edit().clear().commit();
         }
-        /**เพิ่มตรงนี้ไส่ค่าเวลาจำพาส**/
+        /**This is adding user detail to fields**/
         EditText username = (EditText) findViewById(R.id.editTextUsername);
         EditText password = (EditText) findViewById(R.id.editTextPassword);
         username.setText(sp.getString("username",""));
         password.setText(sp.getString("password",""));
 
-        /*เช็คว่าออกระบบหรือยัง*/
+        /**This is checking user logout**/
         if(sp.getBoolean("autoLogin",false)){
             onClickLogin(null);
-        }
 
+        }
 
         Intent intent = getIntent();
         String responseFormVerify = intent.getStringExtra("resultVerify");
@@ -81,16 +83,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickLogin(View view){
-
         final LoginModel loginModel = new LoginModel();
         final EditText username = (EditText) findViewById(R.id.editTextUsername);
         EditText password = (EditText) findViewById(R.id.editTextPassword);
-
-        if (username.getText().toString().equals("")) {
-            Toast.makeText(this, "กรุณากรอก username", Toast.LENGTH_SHORT).show();
-        } else if (password.getText().toString().equals("") ){
-            Toast.makeText(this, "กรุณากรอก password", Toast.LENGTH_SHORT).show();
-        } else {
+        /*Regular Expression here*/
+        showRex = new AlertDialog.Builder(this);
+        showRex.setTitle("สถานะการตวจสอบข้อมูล");
+        showRex.setIcon(R.drawable.error);
+        String usernamePattern = "([a-zA-Z0-9]){2,20}";
+        String passwordPattern = "([a-zA-Z0-9]){2,20}";
+        if(!username.getText().toString().matches(usernamePattern)){
+            showRex.setMessage("ข้อมูลผิดพลาด : กรุณาระบุชื่อผู้ใช้ให้ถูกต้อง");
+            showRex.create().show();
+        }else if (!password.getText().toString().matches(passwordPattern)){
+            showRex.setMessage("ข้อมูลผิดพลาด : กรุณาระบุรหัสผ่านให้ถูกต้อง");
+            showRex.create().show();
+        }else{
             loginModel.getLogin().setUsername(username.getText().toString());
             loginModel.getLogin().setPassword(password.getText().toString());
 
@@ -131,16 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                             majorModel.getMajor().setFaculty(facultyModel.getFaculty());
                             personModel.getPerson().setMajor(majorModel.getMajor());
 
-                        /*save preferrences*/
-                            CheckBox saveDetail = (CheckBox) findViewById(R.id.saveUserDetail);
-                            if (saveDetail.isChecked()) {
 
-                                editor.putString("username", gb.getLoginModel().getLogin().getUsername());
-                                editor.putString("password", gb.getLoginModel().getLogin().getPassword());
-
-                                boolean save = editor.commit();
-                                Log.d("SAVE USER!", "save user detail: " + save);
-                            }
                         }
 
                         gb.getLoginModel().getLogin().setPerson(personModel.getPerson());
@@ -148,18 +147,33 @@ public class LoginActivity extends AppCompatActivity {
                         List<String> allSub = map.get("subject");
                         gb.setAllSubject(allSub);
                         /**เพิ่มตรงนี้เซฟ autologin**/
+                        /*save preferences*/
+                        //Toast.makeText(LoginActivity.this, "SAVED "+gb.getLoginModel().getLogin().getUsername(), Toast.LENGTH_SHORT).show();
+                        CheckBox saveDetail = (CheckBox) findViewById(R.id.saveUserDetail);
+                        if (saveDetail.isChecked()) {
+
+                            editor.putString("username", gb.getLoginModel().getLogin().getUsername());
+                            editor.putString("password", gb.getLoginModel().getLogin().getPassword());
+
+                            boolean save = editor.commit();
+                            //Toast.makeText(LoginActivity.this, "SAVED "+save, Toast.LENGTH_SHORT).show();
+                            Log.d("SAVE USER!", "save user detail: " + save);
+                        }
 
                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
+                        showRex.setTitle("สถานะการค้นหาข้อมูล");
+                        showRex.setMessage("กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง");
+                        showRex.create().show();
+                        //Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onError(String error) {
                     progress.dismiss();
-                    Toast.makeText(LoginActivity.this, "เกิดข้อผิดพลาดไม่พบข้อมูลเชิฟเวอร์", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "เกิดข้อผิดพลาดไม่พบข้อมูลเชิฟเวอร์", Toast.LENGTH_SHORT).show();
                 }
             });
         }

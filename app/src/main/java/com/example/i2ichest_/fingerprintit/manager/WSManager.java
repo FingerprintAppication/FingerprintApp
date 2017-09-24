@@ -26,8 +26,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,7 +163,7 @@ public class WSManager {
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                Log.d("onSearchSubjectComplete" , response.toString());
+                //Log.d("onSearchSubjectComplete" , response.toString());
                 final List<SubjectModel> listSubject = new ArrayList<>();
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
@@ -167,12 +171,12 @@ public class WSManager {
                         SubjectModel subject = new SubjectModel(jsonArray.get(i).toString());
                         listSubject.add(subject);
                     }
-
+                    listener.onComplete(listSubject);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                listener.onComplete(listSubject);
+
             }
 
             @Override
@@ -203,12 +207,12 @@ public class WSManager {
                     JSONArray jsonArray = new JSONArray(response.toString());
                     Log.d("SECTION @@@@ :",jsonArray.toString());
                     sectionModel = new SectionModel(jsonArray.get(0).toString());
-
+                    listener.onComplete(sectionModel.getSection());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                listener.onComplete(sectionModel.getSection());
+
                 Log.d("onSearchSectionComplete" ,  sectionModel.toString());
             }
 
@@ -225,10 +229,7 @@ public class WSManager {
         if(!(object instanceof SubjectModel)){
             return;
         }
-
         SubjectModel subjectModel = (SubjectModel) object;
-        subjectModel.toJSONString();
-
         WSTaskPost taskPost = new WSTaskPost(this.context, new WSTaskPost.WSTaskListener() {
             @Override
             public void onComplete(String response) {
@@ -268,6 +269,7 @@ public class WSManager {
                 List<String> listDate = new ArrayList<String>();
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
+                    Log.d(TAG, "onComplete:ad announces "+response.toString());
                     for (int i = 0; i < jsonArray.length(); i++) {
                         String[] sp = jsonArray.get(i).toString().split("-");
                         String year = sp[0];
@@ -342,7 +344,7 @@ public class WSManager {
     }
 
 
-    public void getEnrollment(Object object,final WSManagerListener listener){
+    public void searchAttendanceData(Object object, final WSManagerListener listener){
         if(!(object instanceof PeriodModel)){
             return;
         }
@@ -502,6 +504,13 @@ public class WSManager {
                 }
 
                 Log.d("SIZE inform ", listInform.size() + " ");
+                Collections.sort(listInform, new Comparator<InformLeaveModel.InformLeave>() {
+                    @Override
+                    public int compare(InformLeaveModel.InformLeave x, InformLeaveModel.InformLeave y) {
+
+                        return y.getSchedule().getScheduleDate().compareTo(x.getSchedule().getScheduleDate());
+                    }
+                });
                 listener.onComplete(listInform);
 
             }
@@ -512,7 +521,7 @@ public class WSManager {
 
             }
         });
-        task.execute("/leaveHistory",personModel.toJSONString());
+        task.execute("/leaveHistory", personModel.toJSONString());
     }
 
     public void getAnnounceNewsFromStudentId(Object object,final WSManagerListener listener){
@@ -521,11 +530,13 @@ public class WSManager {
             public void onComplete(String response) {
                 List<AnnouceNewsModel.AnnouceNews> listAnnounce = new ArrayList<AnnouceNewsModel.AnnouceNews>();
                 try {
+                    Log.d(TAG, "check LIst an  "+response.toString());
                     JSONArray announce = new JSONArray(response.toString());
                     for (int i = 0; i < announce.length(); i++) {
                         JSONObject json = new JSONObject(announce.get(i).toString());
                         AnnouceNewsModel an = new AnnouceNewsModel(json.toString());
-                        Calendar cal = Calendar.getInstance();
+
+                        /*Calendar cal = Calendar.getInstance();
                         long parseDate = Long.parseLong(an.getAnnouceNews().getSchedule().getScheduleDate());
                         Date dd = new Date(parseDate);
                         cal.setTime(dd);
@@ -533,14 +544,14 @@ public class WSManager {
                         int month = cal.get(Calendar.MONTH) + 1;
                         int day = cal.get(Calendar.DAY_OF_MONTH);
                         String date = year  + "-" + month + "-" + day;
-                        an.getAnnouceNews().getSchedule().setScheduleDate(date);
+                        an.getAnnouceNews().getSchedule().setScheduleDate(date);*/
                         listAnnounce.add(an.getAnnouceNews());
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.d(TAG, "onComplete: "+response.toString());
+                Log.d(TAG, "onCompletezz: "+response.toString());
                 listener.onComplete(listAnnounce);
             }
 
@@ -583,12 +594,17 @@ public class WSManager {
         WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
             @Override
             public void onComplete(String response) {
-                //Log.d("ScheduleDateComplete" ,  response.toString());
+                Log.d("ScheduleDateComplete" ,  response.toString());
                 List<String> date = new ArrayList<String>();
                 try {
                     JSONArray jsonArray = new JSONArray(response.toString());
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        date.add(jsonArray.get(i).toString());
+                        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        try {
+                            date.add(jsonArray.get(i).toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     listener.onComplete(date);
@@ -656,6 +672,35 @@ public class WSManager {
         });
         task.execute("/calculateScore?section="+object,"##");
     }
+
+    public void getAttendancesForParent(String object,final WSManagerListener listener){
+
+        WSTask task = new WSTask(this.context, new WSTask.WSTaskListener() {
+            @Override
+            public void onComplete(String response) {
+                List<EnrollmentModel.Enrollment> listEnroll = new ArrayList<EnrollmentModel.Enrollment>();
+
+                try {
+                    JSONArray jsonArray = new JSONArray(response.toString());
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        EnrollmentModel enroll = new EnrollmentModel(jsonArray.get(i).toString());
+                        listEnroll.add(enroll.getEnrollment());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d(TAG, "onComplete: parent "+listEnroll.size());
+                listener.onComplete(listEnroll);
+            }
+
+            @Override
+            public void onError(String err) {
+                listener.onError(err);
+            }
+        });
+        task.execute("/attendanceParent?personId="+object,"##");
+    }
+
 
 }
 

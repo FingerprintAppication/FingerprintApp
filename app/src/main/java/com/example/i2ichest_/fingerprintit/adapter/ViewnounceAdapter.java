@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.i2ichest_.fingerprintit.R;
 import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.sql.Date;
 import java.util.List;
@@ -84,10 +85,10 @@ public class ViewnounceAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = LayoutInflater.from(context).inflate(R.layout.list_unread, null);
         TextView text = (TextView)view.findViewById(R.id.informTxt);
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         text.setText("วิชา: "+an.get(i).getSchedule().getPeriod().getSection().getSubject().getSubjectNumber()+" "+an.get(i).getSchedule().getPeriod().getSection().getSubject().getSubjectName()+" "
         +an.get(i).getAnnouceNewsType()+" ผู้ประกาศ: "+an.get(i).getTeacher().getTitle()+an.get(i).getTeacher().getFirstName()
-                +" "+an.get(i).getTeacher().getLastName()+" วันที่ประกาศ: "+an.get(i).getSchedule().getScheduleDate()
+                +" "+an.get(i).getTeacher().getLastName()+" วันที่ประกาศ: "+sdf.format(an.get(i).getSchedule().getScheduleDate())
         );
         if(setColor.get(i).equals("set")){
             text.setBackgroundResource(R.color.grey_unread);

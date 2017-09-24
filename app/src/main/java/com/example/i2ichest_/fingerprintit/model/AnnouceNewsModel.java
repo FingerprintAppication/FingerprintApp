@@ -1,5 +1,8 @@
 package com.example.i2ichest_.fingerprintit.model;
 
+import android.media.audiofx.BassBoost;
+import android.media.audiofx.Equalizer;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -8,7 +11,8 @@ import java.util.Date;
 
 public class AnnouceNewsModel implements Serializable {
     private AnnouceNews annouceNews;
-    Gson gson = new GsonBuilder().create();
+
+    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
     public AnnouceNewsModel(){
         annouceNews = new AnnouceNews();

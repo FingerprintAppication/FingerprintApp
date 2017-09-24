@@ -21,15 +21,6 @@
         android:layout_marginTop="24dp"
         android:id="@+id/caseApprove" />
 
-    <Spinner
-        android:layout_height="wrap_content"
-        android:id="@+id/typeOfInform"
-        android:layout_width="200dp"
-        android:layout_alignTop="@+id/caseApprove"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="38dp"
-        android:entries="@array/inform" />
-
     <TextView
         android:text="ชื่อ-สกุล"
         android:layout_width="wrap_content"
@@ -77,13 +68,6 @@
         android:layout_alignStart="@+id/textView21"
         android:id="@+id/textView22" />
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView22"
-        android:layout_alignStart="@+id/subjectTxt"
-        android:id="@+id/dateOfInform" />
-
     <TextView
         android:text="คำอธิบาย"
         android:layout_width="wrap_content"
@@ -91,13 +75,13 @@
         android:layout_below="@+id/dateOfInform"
         android:layout_alignStart="@+id/textView22"
         android:layout_marginTop="30dp"
-        android:id="@+id/textView23" />
+        android:id="@+id/descriptTextView" />
 
     <EditText
         android:layout_width="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:layout_alignTop="@+id/textView23"
+        android:layout_alignTop="@+id/descriptTextView"
         android:layout_alignEnd="@+id/subjectTxt"
         android:id="@+id/description"
         android:layout_height="60dp" />
@@ -107,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/description"
-        android:layout_alignStart="@+id/textView23"
+        android:layout_alignStart="@+id/descriptTextView"
         android:layout_marginTop="23dp"
         android:id="@+id/imageTitle" />
 
@@ -133,7 +117,7 @@
         android:text="ยกเลิก"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button2"
+        android:id="@+id/informCancel"
         android:layout_alignBaseline="@+id/informSubmit"
         android:layout_alignBottom="@+id/informSubmit"
         android:layout_toStartOf="@+id/imageButton" />
@@ -165,9 +149,26 @@
         android:id="@+id/imageName"
         android:layout_alignBaseline="@+id/imageTitle"
         android:layout_alignBottom="@+id/imageTitle"
-        android:layout_toEndOf="@+id/textView23"
+        android:layout_toEndOf="@+id/descriptTextView"
         android:layout_width="200dp"
         android:text="ชื่อรูปภาพ" />
+
+    <Spinner
+        android:layout_height="wrap_content"
+        android:id="@+id/typeOfInform"
+        android:layout_width="200dp"
+        android:entries="@array/inform"
+        android:layout_marginEnd="22dp"
+        android:layout_alignTop="@+id/caseApprove"
+        android:layout_alignParentEnd="true" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateOfInform"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/description" />
 
 
 </RelativeLayout>

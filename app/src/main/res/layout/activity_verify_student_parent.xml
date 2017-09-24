@@ -10,16 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.i2ichest_.fingerprintit.VerifyStudentParentActivity">
 
-    <Spinner
-        android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:id="@+id/titleSpinner"
-        android:layout_width="100dp"
-        android:layout_marginStart="21dp"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/textView2"
-        android:entries="@array/title" />
-
     <TextView
         android:text="นามสกุล"
         android:layout_width="wrap_content"
@@ -30,26 +20,94 @@
         android:layout_alignStart="@+id/fn"
         android:paddingTop="10dp" />
 
+    <Button
+        android:text="ยกเลิก"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel"
+        android:layout_marginStart="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/onVerifyParent" />
+
+    <Button
+        android:text="ลงทะเบียน"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/onVerifyParent"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/lnTxt" />
+
+    <TextView
+        android:text="อีเมล์"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView19"
+        android:paddingTop="8dp"
+        android:layout_above="@+id/onVerifyParent"
+        android:layout_alignStart="@+id/textView18"
+        android:layout_marginBottom="43dp" />
+
+    <TextView
+        android:text="เบอร์โทรศัพท์"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView18"
+        android:layout_above="@+id/textView19"
+        android:layout_alignStart="@+id/textView10"
+        android:layout_marginBottom="32dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/phoneTxt"
+        android:hint="0801234567"
+        android:layout_alignBaseline="@+id/textView18"
+        android:layout_alignBottom="@+id/textView18"
+        android:layout_alignStart="@+id/studentIdTxt" />
+
     <TextView
         android:text="รหัสนักศึกษา"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lastNameTxt"
-        android:layout_alignStart="@+id/lnTxt"
-        android:layout_marginTop="34dp"
         android:id="@+id/textView10"
-        android:paddingTop="8dp" />
+        android:paddingTop="8dp"
+        android:layout_marginBottom="33dp"
+        android:layout_above="@+id/phoneTxt"
+        android:layout_alignStart="@+id/lnTxt" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:layout_marginTop="15dp"
         android:id="@+id/lastNameTxt"
         android:hint="ใจดี"
-        android:layout_below="@+id/firstNameTxt"
+        android:layout_marginBottom="24dp"
+        android:layout_above="@+id/studentIdTxt"
         android:layout_alignStart="@+id/studentIdTxt" />
+
+    <TextView
+        android:text="คำนำหน้าชื่อ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:id="@+id/textView2"
+        android:paddingTop="10dp"
+        android:layout_alignBaseline="@+id/titleSpinner"
+        android:layout_alignBottom="@+id/titleSpinner"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="ชื่อ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fn"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="32dp"
+        android:layout_above="@+id/lastNameTxt"
+        android:layout_alignStart="@+id/textView2" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -73,46 +131,14 @@
         android:layout_alignBottom="@+id/textView10"
         android:layout_alignStart="@+id/titleSpinner" />
 
-    <TextView
-        android:text="เบอร์โทรศัพท์"
-        android:layout_width="wrap_content"
+    <Spinner
         android:layout_height="wrap_content"
-        android:layout_below="@+id/studentIdTxt"
-        android:layout_alignStart="@+id/textView10"
-        android:layout_marginTop="31dp"
-        android:id="@+id/textView18" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:layout_below="@+id/studentIdTxt"
-        android:layout_alignStart="@+id/studentIdTxt"
-        android:layout_marginTop="14dp"
-        android:id="@+id/phoneTxt"
-        android:hint="0801234567" />
-
-    <TextView
-        android:text="อีเมล์"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/phoneTxt"
-        android:layout_alignStart="@+id/textView18"
-        android:layout_marginTop="26dp"
-        android:id="@+id/textView19"
-        android:paddingTop="8dp" />
-
-    <TextView
-        android:text="คำนำหน้าชื่อ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:id="@+id/textView2"
-        android:paddingTop="10dp"
-        android:layout_alignBaseline="@+id/titleSpinner"
-        android:layout_alignBottom="@+id/titleSpinner"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/titleSpinner"
+        android:layout_width="135dp"
+        android:entries="@array/title"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@+id/firstNameTxt"
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -126,32 +152,14 @@
         android:layout_alignStart="@+id/phoneTxt" />
 
     <TextView
-        android:text="ชื่อ"
+        android:text="ลงทะเบียนผู้ปกครอง"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:id="@+id/fn"
-        android:paddingTop="10dp"
-        android:layout_below="@+id/titleSpinner"
-        android:layout_alignStart="@+id/textView2" />
-
-    <Button
-        android:text="ลงทะเบียน"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/onVerifyParent"
-        android:onClick="getPersonData"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/emailTxt"
-        android:layout_toEndOf="@+id/lnTxt" />
-
-    <Button
-        android:text="ยกเลิก"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cancel"
-        android:layout_alignBaseline="@+id/onVerifyParent"
-        android:layout_alignBottom="@+id/onVerifyParent"
-        android:layout_toEndOf="@+id/onVerifyParent"
-        android:layout_marginStart="39dp" />
+        android:id="@+id/textView36"
+        android:textStyle="normal|bold"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textView2" />
 </RelativeLayout>

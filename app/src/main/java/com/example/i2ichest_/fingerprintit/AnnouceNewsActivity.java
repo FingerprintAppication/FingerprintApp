@@ -4,8 +4,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,17 +31,42 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AnnouceNewsActivity extends AppCompatActivity {
     WSManager wsManager;
     private GlobalClass gb;
+    SimpleDateFormat sdf;
+    SimpleDateFormat sdfAdd;
+    AlertDialog.Builder showRex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annouce_news);
         gb = (GlobalClass) this.getApplicationContext();
+        sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        sdfAdd = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        ActionBar ab = getSupportActionBar();
+        ab.setDefaultDisplayHomeAsUpEnabled(true);
         showAnnouceNews();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my,menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile:
+                finish();
+                startActivity(new Intent(this,ProfileActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void showAnnouceNews() {
@@ -62,8 +90,7 @@ public class AnnouceNewsActivity extends AppCompatActivity {
         txtSubDay.setText(subjectDay);
 
         Date d = new Date();
-        final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        txtDateNow.setText("[ " + sdf.format(d) + " ]");
+        txtDateNow.setText("[ " + sdfAdd.format(d) + " ]");
 
         final Spinner spType = (Spinner) findViewById(R.id.spinnerNewsType);
         String[] type = {"ทั่วไป", "ยกเลิกคาบเรียน"};
@@ -120,10 +147,15 @@ public class AnnouceNewsActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showRex = new AlertDialog.Builder(AnnouceNewsActivity.this);
+                showRex.setTitle("สถานะการตวจสอบข้อมูล");
+                showRex.setIcon(R.drawable.error);
+                String patternName = "([ก-์a-zA-Z0-9]){5,150}";
                 final EditText editText = (EditText) findViewById(R.id.editTextNewsDetail);
-
-                if (editText.getText().toString().equals("")){
-                    Toast.makeText(AnnouceNewsActivity.this, "กรุณากรอกรายละเอียด", Toast.LENGTH_SHORT).show();
+                if (!editText.getText().toString().matches(patternName)){
+                    showRex.setMessage("ข้อมูลผิดพลาด : กรุณากรอกรายละเอียดให้ ถูกต้อง");
+                    showRex.create().show();
+                    //Toast.makeText(AnnouceNewsActivity.this, "กรุณากรอกรายละเอียด", Toast.LENGTH_SHORT).show();
                 } else {
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(AnnouceNewsActivity.this);
                     alertDialog.setMessage("ยืนยันการประกาศข่าว");
@@ -142,8 +174,13 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                             ScheduleModel scheduleModel = new ScheduleModel();
                             scheduleModel.getSchedule().setPeriod(periodModel.getPeriod());
                             String dateSelected = spDate.getSelectedItem().toString();
-                            scheduleModel.getSchedule().setScheduleDate(dateSelected);
-
+                            /*Parsing Date here*/
+                            try {
+                                Date date = sdfAdd.parse(dateSelected);
+                                scheduleModel.getSchedule().setScheduleDate(date);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                             final ProgressDialog progress = ProgressDialog.show(AnnouceNewsActivity.this, "Please Wait...", "Please wait...", true);
                             annouceNewsModel.getAnnouceNews().setSchedule(scheduleModel.getSchedule());
                             wsManager.doAddAnnouceNews(annouceNewsModel, new WSManager.WSManagerListener() {
@@ -165,8 +202,6 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                                     progress.dismiss();
                                 }
                             });
-
-
                         }
                     });
 

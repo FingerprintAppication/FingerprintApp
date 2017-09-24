@@ -69,7 +69,8 @@ public class ProfileActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(ProfileActivity.this,ViewListAnnounceNews.class));
+                    Intent intentAnnounce = new Intent(ProfileActivity.this,ViewListAnnounceNews.class);
+                    startActivity(intentAnnounce);
                 }
             });
 
@@ -117,7 +118,6 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.d("LIST STUDENT ADD ", gb.getListStudent().toString());
 
                 Intent intent = null;
-                //Log.d("Size ", listStudent.size() + "");
                 if ( gb.getListStudent().size() > 1) {
                     intent = new Intent(ProfileActivity.this, SelectStudentParentActivity.class);
                 } else if (gb.getTypeUser().equals("parent")) {
@@ -162,6 +162,7 @@ public class ProfileActivity extends AppCompatActivity {
         sp = getSharedPreferences(USER_DETAIL, Context.MODE_PRIVATE);
         editor.putBoolean("autoLogin", false).commit();
         Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();
         startActivity(intent);
     }

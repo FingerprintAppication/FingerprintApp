@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class InformLeaveModel implements Serializable {
     private InformLeave informLeave;
-    Gson gson = new GsonBuilder().create();
+    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
     public InformLeaveModel(){
         this.informLeave = new InformLeave();
