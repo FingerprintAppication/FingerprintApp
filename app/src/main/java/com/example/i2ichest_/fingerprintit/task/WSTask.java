@@ -63,17 +63,6 @@ public class WSTask extends AsyncTask<String,String,String> {
             listener.onError("Error ,please try again");
         }
         Gson gson = new GsonBuilder().create();
-
-       /* ResponseModel model = gson.fromJson(s, ResponseModel.class);
-
-        if(!model.getResult().equals("Welcome")){
-            if(model.getResult() ==null) {
-                listener.onError(context.getString(R.string.global));
-                return;
-            }
-                listener.onError(model.getResult().toString());
-                return;
-        }*/
         listener.onComplete(s);
     }
 

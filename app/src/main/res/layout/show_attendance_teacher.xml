@@ -63,7 +63,7 @@
                 android:textColor="@android:color/black" />
 
             <TextView
-                android:text="คะแนน"
+                android:text="สัปดาห์"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView6"

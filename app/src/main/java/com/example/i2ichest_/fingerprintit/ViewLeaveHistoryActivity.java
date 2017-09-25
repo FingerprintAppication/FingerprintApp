@@ -3,15 +3,11 @@ package com.example.i2ichest_.fingerprintit;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,24 +18,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.Base64Model;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 
 public class ViewLeaveHistoryActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_PERMISSION = 687;

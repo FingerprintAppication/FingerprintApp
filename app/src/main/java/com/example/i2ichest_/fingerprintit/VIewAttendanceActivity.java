@@ -12,12 +12,9 @@ import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.AttendanceModel;
 import com.example.i2ichest_.fingerprintit.model.PeriodModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +74,6 @@ public class VIewAttendanceActivity extends AppCompatActivity {
         Log.d("sectionID ",forAttendances[0]+" id");
         /*this line below this is setting studentPersonID*/
         period.getPeriod().setStudyType(intent.getStringExtra("personID"));
-        Toast.makeText(this, "personID "+intent.getStringExtra("personID"), Toast.LENGTH_SHORT).show();
         /*this line below this is setting subjectNumber*/
         period.getPeriod().setComingTime(forAttendances[2]);
         final ProgressDialog progress = ProgressDialog.show(this,"Please Wait...","Please wait...",true);
@@ -95,11 +91,13 @@ public class VIewAttendanceActivity extends AppCompatActivity {
                 TextView lateTxt = (TextView)mRow.getChildAt(1);
                 TextView absenceTxt = (TextView)mRow.getChildAt(2);
                 TextView informTxt = (TextView)mRow.getChildAt(3);
+                TextView weeks = (TextView)mRow.getChildAt(4);
                 /*set attendance time*/
                 comeTxt.setText(status.get(0).toString());
                 lateTxt.setText(status.get(1).toString());
                 absenceTxt.setText(status.get(2).toString());
                 informTxt.setText(status.get(3).toString());
+                weeks.setText(status.get(4).toString());
 
                 Bundle b = getIntent().getExtras();
                 String[] array=b.getStringArray("sub");
@@ -124,7 +122,7 @@ public class VIewAttendanceActivity extends AppCompatActivity {
         int late =0;
         int absence = 0;
         int inform = 0;
-        int total = 0;
+        int weeks = listAttendance.size();
         List<Integer> list = new ArrayList<Integer>();
         for(AttendanceModel.Attendance att:listAttendance) {
             if ("มา".equals(att.getStatus())) {
@@ -143,7 +141,7 @@ public class VIewAttendanceActivity extends AppCompatActivity {
         list.add(late);
         list.add(absence);
         list.add(inform);
-        list.add(total);
+        list.add(weeks);
         return list;
 
     }

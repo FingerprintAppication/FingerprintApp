@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.ParentModel;
 import com.example.i2ichest_.fingerprintit.model.StudentModel;
@@ -129,7 +128,11 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
                         @Override
                         public void onError(String error) {
                             progress.dismiss();
-                            Toast.makeText(VerifyStudentParentActivity.this, error, Toast.LENGTH_SHORT).show();
+                            showRex = new AlertDialog.Builder(VerifyStudentParentActivity.this);
+                            showRex.setTitle("สถานะการบันทึกข้อมูล");
+                            showRex.setIcon(R.drawable.error);
+                            showRex.setMessage("ไม่สามารถลงทะเบียนได้");
+                            showRex.create().show();
                         }
                     });
                 }else{
@@ -143,7 +146,6 @@ public class VerifyStudentParentActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(VerifyStudentParentActivity.this,"CANCELED ACTIVITY!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

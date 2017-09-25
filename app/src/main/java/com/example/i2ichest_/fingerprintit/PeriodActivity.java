@@ -14,19 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
-import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
-import com.example.i2ichest_.fingerprintit.model.BuildingModel;
-import com.example.i2ichest_.fingerprintit.model.PeriodModel;
-import com.example.i2ichest_.fingerprintit.model.RoomModel;
 import com.example.i2ichest_.fingerprintit.model.SectionModel;
 import com.example.i2ichest_.fingerprintit.model.SubjectModel;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PeriodActivity extends AppCompatActivity {
     WSManager wsManager;
@@ -43,7 +33,6 @@ public class PeriodActivity extends AppCompatActivity {
         toolBar = (Toolbar)findViewById(R.id.profile);
         ActionBar ab = getSupportActionBar();
         ab.setDefaultDisplayHomeAsUpEnabled(true);
-
         showPeriod();
     }
 
@@ -67,51 +56,47 @@ public class PeriodActivity extends AppCompatActivity {
     //sq lv 2
     public void showPeriod(){
         Intent intent = getIntent();
-        final long subjectID = intent.getLongExtra("subjectID",1L);
-        final String subjectNumber = intent.getStringExtra("subjectNumber");
-        final String subjectName = intent.getStringExtra("subjectName");
-        final String personID = intent.getStringExtra("personID");
-
-        subjectDetail[0] = subjectNumber;
-        subjectDetail[1] = subjectName;
+        final long SUBJECTID = intent.getLongExtra("subjectID",1L);
+        final String SUBJECTNUMBER = intent.getStringExtra("subjectNumber");
+        final String SUBJECTNAME = intent.getStringExtra("subjectName");
+        final String PERSONID = intent.getStringExtra("personID");
+        subjectDetail[0] = SUBJECTNUMBER;
+        subjectDetail[1] = SUBJECTNAME;
         TextView textViewSubjectName = (TextView) findViewById(R.id.textViewSubjectName);
-        textViewSubjectName.setText(subjectName);
-
-        final TextView textViewSectionTitle = (TextView) findViewById(R.id.textViewSectionTitle);
-        final ProgressDialog progress = ProgressDialog.show(PeriodActivity.this,"Please Wait...","Please wait...",true);
-
+        textViewSubjectName.setText(SUBJECTNAME);
+        final TextView TEXTVIEW_SECTION_TITLE = (TextView) findViewById(R.id.textViewSectionTitle);
+        final ProgressDialog PROGRESS = ProgressDialog.show(PeriodActivity.this,"Please Wait...","Please wait...",true);
         //sq lv 2
         SubjectModel subjectModel = new SubjectModel();
-        subjectModel.getSubject().setSubjectID(subjectID);
-
+        subjectModel.getSubject().setSubjectID(SUBJECTID);
         //sq lv 2
         wsManager = WSManager.getWsManager(this);
         wsManager.doSearchSection(subjectModel, new WSManager.WSManagerListener() {
             @Override
             public void onComplete(final Object response) {
-                progress.dismiss();
+                PROGRESS.dismiss();
                 //sq lv 2
-                final SectionModel.Section section = (SectionModel.Section) response;
+                final SectionModel.Section SECTION = (SectionModel.Section) response;
 
                     /*section ID here*/
-                    final String sectionID = section.getSectionID().toString();
-                    final String sectionNumber = String.valueOf(section.getSectionNumber());
-                    final int semester = section.getSemester();
-                    final int schoolYear = section.getSchoolYear();
+                    final String sectionID = SECTION.getSectionID().toString();
+                    final String sectionNumber = String.valueOf(SECTION.getSectionNumber());
+                    final int semester = SECTION.getSemester();
+                    final int schoolYear = SECTION.getSchoolYear();
 
-                    textViewSectionTitle.setText("กลุ่มเรียน " + sectionNumber + " : ภาคเรียนที่ " + semester + " : ปีการศึกษา " + schoolYear);
+                    TEXTVIEW_SECTION_TITLE.setText("กลุ่มเรียน " + sectionNumber + " : ภาคเรียนที่ " + semester + " : ปีการศึกษา " + schoolYear);
                     subjectDetail[5] = semester+"/"+schoolYear;
 
                     subjectDetail[6] = "";
-                    for (int k = 0; k < section.getTeacherList().size(); k++) {
-                        subjectDetail[6] += section.getTeacherList().get(k).getTitle()
-                                + " " + section.getTeacherList().get(k).getFirstName()
-                                + " " + section.getTeacherList().get(k).getLastName() + "\n";
+                    for (int k = 0; k < SECTION.getTeacherList().size(); k++) {
+                        subjectDetail[6] += SECTION.getTeacherList().get(k).getTitle()
+                                + " " + SECTION.getTeacherList().get(k).getFirstName()
+                                + " " + SECTION.getTeacherList().get(k).getLastName() + "\n";
 
                     }
 
                     GridLayout gridLayout = (GridLayout) findViewById(R.id.period_gridlayout);
-                    for ( int g = 0 ; g < section.getPeriodList().size() ; g++){
+                    for ( int g = 0 ; g < SECTION.getPeriodList().size() ; g++){
                         View view = getLayoutInflater().inflate(R.layout.period_layout,null);
 
                         TextView txtDay = (TextView) view.findViewById(R.id.textViewPeriodDay);
@@ -121,16 +106,16 @@ public class PeriodActivity extends AppCompatActivity {
                         TextView txtBuild = (TextView) view.findViewById(R.id.textViewPeriodBuild);
                         Button viewAttendance = (Button) view.findViewById(R.id.buttonViewAttendance);
 
-                        txtDay.setText("วันที่เรียน : " + section.getPeriodList().get(g).getDayOfWeek());
-                        txtTime.setText("เวลา : " +  section.getPeriodList().get(g).getPeriodStartTime() + " - " + section.getPeriodList().get(g).getPeriodEndTime());
-                        txtType.setText("ประเภท : " + section.getPeriodList().get(g).getStudyType());
-                        txtRoom.setText("ห้อง : " +  section.getPeriodList().get(g).getRoom().getRoomName());
-                        txtBuild.setText("ตึก : " + section.getPeriodList().get(g).getRoom().getBuilding().getBuildingName());
+                        txtDay.setText("วันที่เรียน : " + SECTION.getPeriodList().get(g).getDayOfWeek());
+                        txtTime.setText("เวลา : " +  SECTION.getPeriodList().get(g).getPeriodStartTime() + " - " + SECTION.getPeriodList().get(g).getPeriodEndTime());
+                        txtType.setText("ประเภท : " + SECTION.getPeriodList().get(g).getStudyType());
+                        txtRoom.setText("ห้อง : " +  SECTION.getPeriodList().get(g).getRoom().getRoomName());
+                        txtBuild.setText("ตึก : " + SECTION.getPeriodList().get(g).getRoom().getBuilding().getBuildingName());
 
-                        final Long periodForAttendance = section.getPeriodList().get(g).getPeriodID();
-                        final String time = section.getPeriodList().get(g).getPeriodStartTime() + " - " + section.getPeriodList().get(g).getPeriodEndTime();
-                        final String type = section.getPeriodList().get(g).getStudyType();
-                        final String room = section.getPeriodList().get(g).getRoom().getRoomName();
+                        final Long periodForAttendance = SECTION.getPeriodList().get(g).getPeriodID();
+                        final String time = SECTION.getPeriodList().get(g).getPeriodStartTime() + " - " + SECTION.getPeriodList().get(g).getPeriodEndTime();
+                        final String type = SECTION.getPeriodList().get(g).getStudyType();
+                        final String room = SECTION.getPeriodList().get(g).getRoom().getRoomName();
 
                         /****When we click inform leave button*****/
                         if(gb.getTypeUser().equals("teacher")){
@@ -142,12 +127,12 @@ public class PeriodActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(PeriodActivity.this, AnnouceNewsActivity.class);
-                                    intent.putExtra("periodID",section.getPeriodList().get(finalG).getPeriodID());
-                                    intent.putExtra("subjectID",subjectID);
-                                    intent.putExtra("subjectNumber",subjectNumber);
-                                    intent.putExtra("subjectName",subjectName);
-                                    intent.putExtra("subjectType",section.getPeriodList().get(finalG).getStudyType());
-                                    intent.putExtra("subjectDay",section.getPeriodList().get(finalG).getDayOfWeek());
+                                    intent.putExtra("periodID",SECTION.getPeriodList().get(finalG).getPeriodID());
+                                    intent.putExtra("subjectID",SUBJECTID);
+                                    intent.putExtra("subjectNumber",SUBJECTNUMBER);
+                                    intent.putExtra("subjectName",SUBJECTNAME);
+                                    intent.putExtra("subjectType",SECTION.getPeriodList().get(finalG).getStudyType());
+                                    intent.putExtra("subjectDay",SECTION.getPeriodList().get(finalG).getDayOfWeek());
                                     startActivity(intent);
                                 }
                             });
@@ -162,8 +147,8 @@ public class PeriodActivity extends AppCompatActivity {
                                     intent.putExtra("sectionNumber",sectionNumber);
                                     intent.putExtra("semester",semester);
                                     intent.putExtra("schoolYear",schoolYear);
-                                    intent.putExtra("subjectNumber",subjectNumber);
-                                    intent.putExtra("subjectName",subjectName);
+                                    intent.putExtra("subjectNumber",SUBJECTNUMBER);
+                                    intent.putExtra("subjectName",SUBJECTNAME);
                                     startActivity(intent);
                                 }
                             });
@@ -176,15 +161,15 @@ public class PeriodActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intents = new Intent(PeriodActivity.this, InformLeaveActivity.class);
-                                    intents.putExtra("subject", subjectNumber);
+                                    intents.putExtra("subject", SUBJECTNUMBER);
                                     intents.putExtra("periodId", periodForAttendance.toString());
                                     intents.putExtra("studentID",gb.getLoginModel().getLogin().getUsername());
                                     intents.putExtra("studentName",gb.getLoginModel().getLogin().getPerson().getTitle()+
                                             gb.getLoginModel().getLogin().getPerson().getFirstName()+" "+
                                             gb.getLoginModel().getLogin().getPerson().getLastName());
-                                    intents.putExtra("subjectID", subjectID);
-                                    Log.d("TAG", "##############################################2: "+subjectID);
-                                    intents.putExtra("subjectName", subjectName);
+                                    intents.putExtra("subjectID", SUBJECTID);
+                                    Log.d("TAG", "##############################################2: "+SUBJECTID);
+                                    intents.putExtra("subjectName", SUBJECTNAME);
                                     startActivity(intents);
                                 }
                             });
@@ -214,10 +199,9 @@ public class PeriodActivity extends AppCompatActivity {
                                         subjectDetail[3] = type;
                                         subjectDetail[4] = room;
                                         Intent intent = new Intent(PeriodActivity.this,VIewAttendanceActivity.class);
-                                        intent.putExtra("forAttendance",sectionID+"-"+periodForAttendance+"-"+subjectNumber);
+                                        intent.putExtra("forAttendance",sectionID+"-"+periodForAttendance+"-"+SUBJECTNUMBER);
                                         intent.putExtra("allSubjectData",response.toString());
-                                        Toast.makeText(PeriodActivity.this, "personID "+personID, Toast.LENGTH_SHORT).show();
-                                        intent.putExtra("personID", personID);
+                                        intent.putExtra("personID", PERSONID);
                                         Bundle b = new Bundle();
                                         b.putStringArray("sub", subjectDetail);
                                         intent.putExtras(b);
@@ -228,7 +212,7 @@ public class PeriodActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onError(String error) {
-                                    progress.dismiss();
+                                    PROGRESS.dismiss();
                                 }
                             });
                             }
@@ -241,7 +225,7 @@ public class PeriodActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                progress.dismiss();
+                PROGRESS.dismiss();
             }
         });
 

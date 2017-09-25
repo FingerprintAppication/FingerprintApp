@@ -1,11 +1,9 @@
 package com.example.i2ichest_.fingerprintit;
 
 import android.app.AlertDialog;
-import android.app.IntentService;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.icu.util.Calendar;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
@@ -24,10 +22,8 @@ import com.example.i2ichest_.fingerprintit.DBHelper.DatabaseHelper;
 import com.example.i2ichest_.fingerprintit.adapter.InformViewAdapter;
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +55,6 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
             TextView tee = (TextView)adat.findViewById(R.id.informTxt);
             tee.setBackgroundColor(Color.WHITE);
         }
-        //Log.d("LIMGS1", "onCreate: "+gb.getLargeImage()+" os ");
     }
 
     @Override
@@ -81,7 +76,6 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
 
     public void showInformLeave () {
         myDb = new DatabaseHelper(this);
-        //myDb.dropTable();
         wsManager = WSManager.getWsManager(this);
         Intent intent = getIntent();
         String personId = intent.getStringExtra("personId");
@@ -113,14 +107,6 @@ public class ViewListInformLeaveActivity extends AppCompatActivity {
                         List<String> string = new ArrayList<String>();
                         images = new ArrayList<String>();
                         for (InformLeaveModel i : list) {
-                           /* Calendar car = Calendar.getInstance();
-                            car.clear();
-                            Date date = new Date();
-                            Long setDate = Long.parseLong(i.getInformLeave().getSchedule().getScheduleDate());
-                            date.setTime(setDate);
-                            car.setTime(date);
-                            i.getInformLeave().getSchedule().setScheduleDate(car.get(java.util.Calendar.YEAR) + "-" + (car.get(java.util.Calendar.MONTH) + 1) + "-" + car.get(java.util.Calendar.DAY_OF_MONTH));
-                            */
                             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                             string.add(i.getInformLeave().getStudent().getStudentID() + " วิชา: " + i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectNumber()
                                     +" "+i.getInformLeave().getSchedule().getPeriod().getSection().getSubject().getSubjectName()+" \nวันที่ลา: " + sdf.format(i.getInformLeave().getSchedule().getScheduleDate())

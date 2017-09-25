@@ -9,24 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.FacultyModel;
 import com.example.i2ichest_.fingerprintit.model.LoginModel;
 import com.example.i2ichest_.fingerprintit.model.MajorModel;
 import com.example.i2ichest_.fingerprintit.model.PersonModel;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -83,8 +73,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickLogin(View view){
-        final LoginModel loginModel = new LoginModel();
-        final EditText username = (EditText) findViewById(R.id.editTextUsername);
+        final LoginModel LOGINMODEL = new LoginModel();
+        final EditText USERNAME = (EditText) findViewById(R.id.editTextUsername);
         EditText password = (EditText) findViewById(R.id.editTextPassword);
         /*Regular Expression here*/
         showRex = new AlertDialog.Builder(this);
@@ -92,22 +82,22 @@ public class LoginActivity extends AppCompatActivity {
         showRex.setIcon(R.drawable.error);
         String usernamePattern = "([a-zA-Z0-9]){2,20}";
         String passwordPattern = "([a-zA-Z0-9]){2,20}";
-        if(!username.getText().toString().matches(usernamePattern)){
+        if(!USERNAME.getText().toString().matches(usernamePattern)){
             showRex.setMessage("ข้อมูลผิดพลาด : กรุณาระบุชื่อผู้ใช้ให้ถูกต้อง");
             showRex.create().show();
         }else if (!password.getText().toString().matches(passwordPattern)){
             showRex.setMessage("ข้อมูลผิดพลาด : กรุณาระบุรหัสผ่านให้ถูกต้อง");
             showRex.create().show();
         }else{
-            loginModel.getLogin().setUsername(username.getText().toString());
-            loginModel.getLogin().setPassword(password.getText().toString());
+            LOGINMODEL.getLogin().setUsername(USERNAME.getText().toString());
+            LOGINMODEL.getLogin().setPassword(password.getText().toString());
 
-            final ProgressDialog progress = ProgressDialog.show(LoginActivity.this,"Please Wait...","Please wait...",true);
+            final ProgressDialog PROGRESS = ProgressDialog.show(LoginActivity.this,"Please Wait...","Please wait...",true);
             wsManager = WSManager.getWsManager(this);
-            wsManager.doLogin(loginModel, new WSManager.WSManagerListener() {
+            wsManager.doLogin(LOGINMODEL, new WSManager.WSManagerListener() {
                 @Override
                 public void onComplete(Object response) {
-                    progress.dismiss();
+                    PROGRESS.dismiss();
 
                     Map<String, List<String>> map = (Map<String, List<String>>) response;
 
@@ -148,15 +138,11 @@ public class LoginActivity extends AppCompatActivity {
                         gb.setAllSubject(allSub);
                         /**เพิ่มตรงนี้เซฟ autologin**/
                         /*save preferences*/
-                        //Toast.makeText(LoginActivity.this, "SAVED "+gb.getLoginModel().getLogin().getUsername(), Toast.LENGTH_SHORT).show();
                         CheckBox saveDetail = (CheckBox) findViewById(R.id.saveUserDetail);
                         if (saveDetail.isChecked()) {
-
                             editor.putString("username", gb.getLoginModel().getLogin().getUsername());
                             editor.putString("password", gb.getLoginModel().getLogin().getPassword());
-
                             boolean save = editor.commit();
-                            //Toast.makeText(LoginActivity.this, "SAVED "+save, Toast.LENGTH_SHORT).show();
                             Log.d("SAVE USER!", "save user detail: " + save);
                         }
 
@@ -166,14 +152,12 @@ public class LoginActivity extends AppCompatActivity {
                         showRex.setTitle("สถานะการค้นหาข้อมูล");
                         showRex.setMessage("กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง");
                         showRex.create().show();
-                        //Toast.makeText(LoginActivity.this, "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onError(String error) {
-                    progress.dismiss();
-                    //Toast.makeText(LoginActivity.this, "เกิดข้อผิดพลาดไม่พบข้อมูลเชิฟเวอร์", Toast.LENGTH_SHORT).show();
+                    PROGRESS.dismiss();
                 }
             });
         }

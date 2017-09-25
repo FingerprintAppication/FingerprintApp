@@ -5,12 +5,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,24 +17,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.Base64Model;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
-
-import org.w3c.dom.Text;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
-
-import Decoder.BASE64Decoder;
 
 public class ApproveLeaveActivity extends AppCompatActivity {
     WSManager wsManager;
@@ -45,6 +34,9 @@ public class ApproveLeaveActivity extends AppCompatActivity {
     Toolbar toolBar;
     AlertDialog.Builder showRex;
     ProgressDialog progress;
+    AlertDialog.Builder alertDialog;
+    Spinner approveSpinner;
+    EditText caseDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +54,6 @@ public class ApproveLeaveActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my,menu);
-
         return true;
     }
 
@@ -94,23 +85,23 @@ public class ApproveLeaveActivity extends AppCompatActivity {
         type.setText(inform.getInformType());
         TableRow mRow3 = (TableRow) table.getChildAt(2);
         TextView cases = (TextView) mRow3.findViewById(R.id.caseApprove);
-
         cases.setText(inform.getCaseDetail());
         cases.setText(inform.getDetail());
-
         if ("ลาป่วย".equals(inform.getInformType())) {
             if (!"".equals(inform.getSupportDocument())) {
                 TableRow mRow4 = (TableRow) table.getChildAt(3);
                 ImageView image = (ImageView) mRow4.findViewById(R.id.imageView);
-                final Bitmap bb = base.decodeToImage(inform.getSupportDocument());
-                image.setImageBitmap(bb);
+                image.setVisibility(View.VISIBLE);
+                final Bitmap BITMAP = base.decodeToImage(inform.getSupportDocument());
+                mRow4.setVisibility(View.VISIBLE);
+                image.setImageBitmap(BITMAP);
                 image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         AlertDialog alertDialog = new AlertDialog.Builder(ApproveLeaveActivity.this).create();
                         View alertView = LayoutInflater.from(ApproveLeaveActivity.this).inflate(R.layout.image_click, null);
                         ImageView img = (ImageView) alertView.findViewById(R.id.imageView);
-                        img.setImageBitmap(bb);
+                        img.setImageBitmap(BITMAP);
                         alertDialog.setView(alertView);
                         alertDialog.show();
                     }
@@ -124,11 +115,10 @@ public class ApproveLeaveActivity extends AppCompatActivity {
         approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ApproveLeaveActivity.this);
+                alertDialog = new AlertDialog.Builder(ApproveLeaveActivity.this);
                 View alertView = LayoutInflater.from(ApproveLeaveActivity.this).inflate(R.layout.approve_inform, null);
-                final Spinner approveSpinner = (Spinner)alertView.findViewById(R.id.approveSpinner);
-                final EditText caseDetail = (EditText)alertView.findViewById(R.id.caseDetail);
-
+                approveSpinner = (Spinner)alertView.findViewById(R.id.approveSpinner);
+                caseDetail = (EditText)alertView.findViewById(R.id.caseDetail);
                 approveSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -163,6 +153,7 @@ public class ApproveLeaveActivity extends AppCompatActivity {
                         }
                         if(rex == true){
                             inform.setStatus(approveSpinner.getSelectedItem().toString());
+                            inform.setInformLeaveID(0);
                             inform.setCaseDetail(caseDetail.getText().toString());
                             progress = ProgressDialog.show(ApproveLeaveActivity.this,"Please Wait...","Please wait...",true);
                             wsManager.updateAttendanceStatus(inform, new WSManager.WSManagerListener() {
@@ -187,7 +178,11 @@ public class ApproveLeaveActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onError(String error) {
-
+                                    showRex = new AlertDialog.Builder(ApproveLeaveActivity.this);
+                                    showRex.setTitle("สถานะการยืนยัน");
+                                    showRex.setMessage("ข้อมูลผิดพลาด :  ไม่สามารถยืนยันได้");
+                                    showRex.setIcon(R.drawable.error);
+                                    showRex.create().show();
                                 }
                             });
                         }

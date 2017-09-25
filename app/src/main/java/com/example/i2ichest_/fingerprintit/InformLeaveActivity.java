@@ -24,7 +24,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.Base64Model;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
@@ -32,7 +31,6 @@ import com.example.i2ichest_.fingerprintit.model.PeriodModel;
 import com.example.i2ichest_.fingerprintit.model.ScheduleModel;
 import com.example.i2ichest_.fingerprintit.model.StudentModel;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
-
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
+
 
 public class InformLeaveActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_PERMISSION = 786;
@@ -134,7 +132,7 @@ public class InformLeaveActivity extends AppCompatActivity {
                 TextView stuName = (TextView)findViewById(R.id.studentNameTxt);
                 TextView subj = (TextView)findViewById(R.id.subjectTxt);
                 description = (EditText)findViewById(R.id.description);
-                final TextView descriptTextView = (TextView)findViewById(R.id.descriptTextView);
+                final TextView DESCRIPT_TEXTVIEW = (TextView)findViewById(R.id.descriptTextView);
                 stuId.setText(studentID);
                 stuName.setText(studentName);
                 subj.setText(subject);
@@ -173,7 +171,7 @@ public class InformLeaveActivity extends AppCompatActivity {
                             imageTitle.setVisibility(View.VISIBLE);
                             imageName.setVisibility(View.VISIBLE);
                             imageButton.setVisibility(View.VISIBLE);
-                            descriptTextView.setVisibility(View.VISIBLE);
+                            DESCRIPT_TEXTVIEW.setVisibility(View.VISIBLE);
                             description.setVisibility(View.VISIBLE);
                             informButton.setVisibility(View.VISIBLE);
                             informCancel.setVisibility(View.VISIBLE);
@@ -194,13 +192,13 @@ public class InformLeaveActivity extends AppCompatActivity {
                             if(futureDate.isEmpty()){
                                 futureDate.add("สุดสุดการเรียน");
                                 dateSpinner.setEnabled(false);
-                                descriptTextView.setVisibility(View.INVISIBLE);
+                                DESCRIPT_TEXTVIEW.setVisibility(View.INVISIBLE);
                                 description.setVisibility(View.INVISIBLE);
                                 informButton.setVisibility(View.INVISIBLE);
                                 informCancel.setVisibility(View.INVISIBLE);
                             }else{
                                 dateSpinner.setEnabled(true);
-                                descriptTextView.setVisibility(View.VISIBLE);
+                                DESCRIPT_TEXTVIEW.setVisibility(View.VISIBLE);
                                 description.setVisibility(View.VISIBLE);
                                 informButton.setVisibility(View.VISIBLE);
                                 informCancel.setVisibility(View.VISIBLE);
@@ -227,7 +225,6 @@ public class InformLeaveActivity extends AppCompatActivity {
                         if(!check){
                             showRex.setMessage("ข้อมูลผิดพลาด :  กรณุากรอกคำอธิบายให้ถูกต้อง");
                             showRex.create().show();
-                            //Toast.makeText(InformLeaveActivity.this,"โปรดกรอกคำอธิบาย 5 ตัวอักษรขึ้นไป",Toast.LENGTH_SHORT).show();
                         }else{
                             showRex.setTitle("ยืนยันการลาเรียน");
                             showRex.setPositiveButton("ยืนยัน", new DialogInterface.OnClickListener() {
@@ -241,7 +238,7 @@ public class InformLeaveActivity extends AppCompatActivity {
                                     StudentModel studentModel = new StudentModel();
                                     studentModel.getStudent().setStudentID(Long.parseLong(StudentId.getText().toString()));
                                     ScheduleModel scheduleModel = new ScheduleModel();
-                            /*Parsing Date here*/
+                                    /*Parsing Date here*/
                                     try {
                                         Date parseDate = sdfAdd.parse(date.getSelectedItem().toString());
 
@@ -312,15 +309,12 @@ public class InformLeaveActivity extends AppCompatActivity {
     private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
-        } else {
-            //requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
-            //openFilePicker();
         }
-
     }
 
     public void futureDate() {
         Date d = new Date();
+        d.setMonth(7);
         futureDate = new ArrayList<String>();
         for (String s : allDate) {
             Log.d("ListDate ", "futureDate: "+s);

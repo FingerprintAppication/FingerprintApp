@@ -15,20 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
 import com.example.i2ichest_.fingerprintit.model.PeriodModel;
 import com.example.i2ichest_.fingerprintit.model.ScheduleModel;
 import com.example.i2ichest_.fingerprintit.model.TeacherModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -155,7 +148,6 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                 if (!editText.getText().toString().matches(patternName)){
                     showRex.setMessage("ข้อมูลผิดพลาด : กรุณากรอกรายละเอียดให้ ถูกต้อง");
                     showRex.create().show();
-                    //Toast.makeText(AnnouceNewsActivity.this, "กรุณากรอกรายละเอียด", Toast.LENGTH_SHORT).show();
                 } else {
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(AnnouceNewsActivity.this);
                     alertDialog.setMessage("ยืนยันการประกาศข่าว");
@@ -187,13 +179,11 @@ public class AnnouceNewsActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(Object response) {
                                     progress.dismiss();
-                                    if (response.toString().equals("1")) {
-                                        Toast.makeText(AnnouceNewsActivity.this, "ประกาศข่าวสำเร็จ", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        Toast.makeText(AnnouceNewsActivity.this, "ข้อมูลผิดพลาด \nกรุณาตรวจสอบข้อมูลอีกครั้ง", Toast.LENGTH_LONG).show();
-                                    }
                                     Intent intent = new Intent(AnnouceNewsActivity.this, ViewListSubjectActivity.class);
                                     intent.putExtra("personID", gb.getLoginModel().getLogin().getPerson().getPersonID());
+                                    intent.putExtra("result", response.toString());
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    finish();
                                     startActivity(intent);
                                 }
 

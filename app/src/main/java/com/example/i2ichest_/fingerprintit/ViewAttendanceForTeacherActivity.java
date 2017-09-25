@@ -124,7 +124,7 @@ public class ViewAttendanceForTeacherActivity extends AppCompatActivity {
         int late =0;
         int absence = 0;
         int inform = 0;
-        int total = 0;
+        int weeks = listAttendance.size();
         List<Integer> list = new ArrayList<Integer>();
         for(AttendanceModel.Attendance att:listAttendance) {
             if ("มา".equals(att.getStatus())) {
@@ -139,13 +139,11 @@ public class ViewAttendanceForTeacherActivity extends AppCompatActivity {
 
             }
         }
-
         list.add(come);
         list.add(late);
         list.add(absence);
         list.add(inform);
-        list.add(total);
-
+        list.add(weeks);
         return list;
 
     }

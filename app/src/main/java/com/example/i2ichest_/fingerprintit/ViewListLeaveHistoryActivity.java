@@ -3,7 +3,6 @@ package com.example.i2ichest_.fingerprintit;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.icu.util.Calendar;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
@@ -17,15 +16,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.InformLeaveModel;
 import com.example.i2ichest_.fingerprintit.model.PersonModel;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ViewListLeaveHistoryActivity extends AppCompatActivity {
@@ -74,9 +69,12 @@ public class ViewListLeaveHistoryActivity extends AppCompatActivity {
             if ("ลาเรียนสำเร็จ".equals(resultInform)) {
                 alertDialog.setIcon(getResources().getDrawable(R.drawable.success));
                 alertDialog.setMessage(resultInform);
-            } else {
+            } else if ("ไม่สามารถลาเรียนได้เนื่องจากท่านได้ลาเรียนวันนี้เเล้ว".equals(resultInform)){
                 alertDialog.setIcon(getResources().getDrawable(R.drawable.duplicated));
                 alertDialog.setMessage(resultInform);
+            }else{
+                alertDialog.setIcon(getResources().getDrawable(R.drawable.duplicated));
+                alertDialog.setMessage("ไม่สามารถลาเรียนได้");
             }
             alertDialog.show();
         }
@@ -125,7 +123,11 @@ public class ViewListLeaveHistoryActivity extends AppCompatActivity {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(ViewListLeaveHistoryActivity.this, android.R.layout.simple_selectable_list_item, string);
                     view.setAdapter(adapter);
                 } else {
-                    Toast.makeText(ViewListLeaveHistoryActivity.this, "ไม่พบข้อมูลการลา", Toast.LENGTH_SHORT).show();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ViewListLeaveHistoryActivity.this).create();
+                    alertDialog.setIcon(getResources().getDrawable(R.drawable.error));
+                    alertDialog.setTitle("สถานะข้อมูลการลา");
+                    alertDialog.setMessage("ไม่พบข้อมูลการลา");
+                    alertDialog.show();
                 }
 
                 view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -146,7 +148,11 @@ public class ViewListLeaveHistoryActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 progress.dismiss();
-                Toast.makeText(ViewListLeaveHistoryActivity.this, "ข้อมูลผิดพลาด", Toast.LENGTH_SHORT).show();
+                AlertDialog alertDialog = new AlertDialog.Builder(ViewListLeaveHistoryActivity.this).create();
+                alertDialog.setIcon(getResources().getDrawable(R.drawable.error));
+                alertDialog.setTitle("สถานะข้อมูลการลา");
+                alertDialog.setMessage("ข้อมูลผิดพลาด");
+                alertDialog.show();
             }
         });
 

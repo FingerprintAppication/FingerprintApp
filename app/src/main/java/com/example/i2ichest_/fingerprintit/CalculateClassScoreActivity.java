@@ -17,12 +17,9 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import com.example.i2ichest_.fingerprintit.manager.WSManager;
 import com.example.i2ichest_.fingerprintit.model.AttendanceModel;
 import com.example.i2ichest_.fingerprintit.model.EnrollmentModel;
-
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +29,7 @@ import java.util.List;
 public class CalculateClassScoreActivity extends AppCompatActivity {
     WSManager wsManager;
     Toolbar toolBar;
+    String secID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +61,7 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
 
     public void showCalculateScore(){
         Intent intent = getIntent();
-        final String secID = intent.getStringExtra("sectionID");
+        secID = intent.getStringExtra("sectionID");
         String secNo = intent.getStringExtra("sectionNumber");
         int semester = intent.getIntExtra("semester",1);
         int schoolYear = intent.getIntExtra("schoolYear",1);
@@ -95,7 +93,7 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
         spinnerScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final ProgressDialog progress = ProgressDialog.show(CalculateClassScoreActivity.this,"Please Wait...","Please wait...",true);
+                final ProgressDialog PREGRESS = ProgressDialog.show(CalculateClassScoreActivity.this,"Please Wait...","Please wait...",true);
                 wsManager.getEnrollmentForCalculateScore(secID, new WSManager.WSManagerListener() {
                     @Override
                     public void onComplete(Object response) {
@@ -129,7 +127,7 @@ public class CalculateClassScoreActivity extends AppCompatActivity {
                             student.setText(en.getStudent().getStudentID()+" "+en.getStudent().getTitle()+en.getStudent().getFirstName()+" "+en.getStudent().getLastName());
                             linearLayout.addView(view);
                         }
-                        progress.dismiss();
+                        PREGRESS.dismiss();
                     }
 
                     @Override

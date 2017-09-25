@@ -8,9 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
 import com.example.i2ichest_.fingerprintit.model.AnnouceNewsModel;
-
 import java.text.SimpleDateFormat;
 
 public class ViewAnnounceNews extends AppCompatActivity {
